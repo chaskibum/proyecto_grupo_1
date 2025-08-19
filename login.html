@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>eMercado - Todo lo que busques está aquí</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: rgb(248, 249, 250);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sectorIS">
+        <h1><strong>Inicio de Sesión:</strong></h1>
+
+        <hr>
+
+        <form id="login" action="/submit" method="post">
+            <label for="name">Usuario:</label>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="pword">Contraseña:</label>
+            <input type="password" id="pword" name="password" required><br><br>
+
+            <button type="submit">Ingresar</button>
+        </form>
+    </div>
+
+    <div id="alert" class="alerta">
+        <p id="msalert"></p>
+    </div>
+    <script src="login.js"></script>
+
+
+  <main class="mt-5">
+  </main>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-end">
+
+
+
+
+
+        <a href="#">Volver arriba</a>
+      </p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
+    </div>
+  </footer>
+  <script src="js/login.js"></script>
+</body>
+
+</html>
