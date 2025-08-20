@@ -1,3 +1,6 @@
+if (!localStorage.getItem("sesionActiva")) {
+    window.location.href = "login.html";
+}
 fetch("https://japceibal.github.io/emercado-api/cats_products/101.json")
     .then(response => response.json())
     .then(data => {

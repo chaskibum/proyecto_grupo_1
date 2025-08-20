@@ -7,9 +7,11 @@ document.getElementById("login").addEventListener("submit", function(event) { ev
         showAlert("Por favor, complete todos los campos requeridos.");
     } else {
         showAlert("Bienvenido, " + usuario + "!");
+         localStorage.setItem("sesionActiva", "true");
         setTimeout(() => {
             window.location.href = "index.html";
         }, 1500);
+       
     }
 });
 
@@ -20,15 +22,5 @@ function showAlert(mensaje) {
     setTimeout(() => {
         alerta.style.display = "none";
     }, 2000);
-
-
-    const sesion= localStorage.getItem("SesionActiva");
-    if (sesion !== "true") {
-        window.location.href = "login.html";
-    }
-
-
-
-
 }
 
