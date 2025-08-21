@@ -296,3 +296,6 @@ hr {
   margin-top: 5rem;
 }
 
+.py-5 {
+  padding-top: 7rem !important;
+}
