@@ -1,17 +1,16 @@
-document.getElementById("login").addEventListener("submit", function(event) { event.preventDefault();
-
-    let usuario= document.getElementById("name").value;
-    let contrasena= document.getElementById("pword").value;
-
+document.getElementById("login").addEventListener("submit", function(event) {
+    event.preventDefault();
+    let usuario = document.getElementById("name").value;
+    let contrasena = document.getElementById("pword").value;
     if (usuario === "" || contrasena === "") {
         showAlert("Por favor, complete todos los campos requeridos.");
     } else {
         showAlert("Bienvenido, " + usuario + "!");
-         localStorage.setItem("sesionActiva", "true");
+        localStorage.setItem("sesionActiva", "true");
+        localStorage.setItem("usuarioActivo", usuario);
         setTimeout(() => {
             window.location.href = "index.html";
         }, 1500);
-       
     }
 });
 
@@ -23,4 +22,11 @@ function showAlert(mensaje) {
         alerta.style.display = "none";
     }, 2000);
 }
+
+function volver() {
+    if (document.referrer) {
+        window.location.href = document.referrer; 
+    }
+}
+
 

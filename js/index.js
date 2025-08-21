@@ -14,4 +14,8 @@ document.addEventListener("DOMContentLoaded", function(){
         localStorage.setItem("catID", 103);
         window.location = "products.html"
     });
+    document.getElementById("computadoras").addEventListener("click", function() {
+        localStorage.setItem("catID", 104);
+        window.location = "products.html"
+    });
 });
