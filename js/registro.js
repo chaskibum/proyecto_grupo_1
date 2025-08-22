@@ -1,6 +1,3 @@
-
-
-
 function mostrarAlerta(mensaje, esExito = false) {
     const alerta = document.getElementById('alert');
     const msalert = document.getElementById('msalert');
@@ -40,3 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarAlerta('¡Gracias por registrarte!', true);
     });
 });
+
+function volver() {
+    if (document.referrer) {
+        window.location.href = document.referrer; 
+    }
+}

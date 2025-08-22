@@ -281,11 +281,55 @@ hr {
   background-color: #001e3f;
 }
 
+.registro {
+  border: 1px solid black;
+    padding: 20px;
+    width: 400px;
+    height: auto;
+    margin: 25px;
+    background-color: rgba(255, 248, 240, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    position: fixed;
+    object-fit: cover;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    object-fit: cover;
+    padding-top: 1px;
+    transition: all 0.2s ease-in-out;
+    justify-content: center;
+    align-items: center;
+}
+.registro:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 215, 166, 0.7);
+}
+
+.registro label {
+  font-weight: bold;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
 .card {
   border-radius: 20px;    
+  overflow: hidden;    
+  border: none;
+}
+
+.card img {
+  border-radius: 20px;
   border: 0;              
-  box-shadow: 5px 7px 4px rgba(131, 131, 131, 0.3);
-  overflow: hidden;       
+  box-shadow: 7px 7px 8px rgba(131, 131, 131, 0.3);
 }
 
 #boton {
@@ -319,3 +363,20 @@ hr {
 #ver-mas:hover img {
   filter: brightness(0) invert(1); 
 }
+
+.col-md-3 {
+  transition: all 0.3s ease; 
+  border-radius: 20px; 
+}
+
+.col-md-3:hover {
+  transform: scale(1.05);
+  filter: brightness(0.95);
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.card:hover::after {
+  background: rgba(0, 0, 0, 0.1);
+}
+
