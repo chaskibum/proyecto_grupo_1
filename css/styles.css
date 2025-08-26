@@ -9,8 +9,32 @@
   font-weight: bold;
 }
 
-nav a {
+#boton {
+  width: 35%;
+  margin: 0 auto;
+  margin-top: 5rem;
+}
+
+  nav.navbar a.nav-link, nav.navbar .dropdown-toggle{
   text-decoration: none;
+}
+nav.navbar {
+  padding:0 !important;
+}  
+@media (max-width:991.98px) {
+  nav.navbar .navbar-nav {
+    flex-direction: column !important;
+    width: 100%;
+    align-items: flex-start !important;
+}
+nav.navbar nav-item {
+  width: 100%;
+}
+nav.navbar .dropdown-menu {
+  width: 100%;
+}
+
+
 }
 
 .bd-placeholder-img {
@@ -22,19 +46,32 @@ nav a {
   user-select: none;
 }
 
+
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
 
   #boton {
-  width: 50%;
+  width: 20%;
 }
+
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
 }
 
 @media (min-width: 1366px) {
-  .
+
+  #boton {
+  width: 15%;
 }
+
+}
+
+
 
 .jumbotron {
   height: 50vh;
@@ -49,12 +86,6 @@ nav a {
   font-weight: bold;
 }
 
-@media (min-width: 768px) {
-  .jumbotron {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
 
 .jumbotron p:last-child {
   margin-bottom: 0;
@@ -239,13 +270,14 @@ a.custom-card:hover {
 button {
     background-color: rgb(0, 214, 203);
     color: white;
-    padding: 17px 17px;
+    width: 17px 17px;
     font-size: 20px;
     border: 3px rgb(255, 255, 255);
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 20px;
 }
+
 button:hover {
     background-color: #0064c2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -338,12 +370,6 @@ hr {
   border-radius: 20px;
   border: 0;              
   box-shadow: 7px 7px 8px rgba(131, 131, 131, 0.3);
-}
-
-#boton {
-  width: 15%;
-  margin: 0 auto;
-  margin-top: 5rem;
 }
 
 .py-5 {
