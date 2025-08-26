@@ -26,6 +26,14 @@ nav a {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
+
+  #boton {
+  width: 50%;
+}
+}
+
+@media (min-width: 1366px) {
+  .
 }
 
 .jumbotron {
@@ -333,7 +341,7 @@ hr {
 }
 
 #boton {
-  width: 10%;
+  width: 15%;
   margin: 0 auto;
   margin-top: 5rem;
 }
