@@ -1,0 +1,58 @@
+/* Estilos específicos para la pantalla principal (index) */
+.card {
+	border-radius: 20px;    
+	overflow: hidden;    
+	border: none;
+}
+
+.card img {
+	border-radius: 20px;
+	border: 0;              
+	box-shadow: 7px 7px 8px rgba(131, 131, 131, 0.3);
+}
+
+.py-5 {
+	padding-top: 7rem !important;
+}
+
+#dropdownMenuLink{
+	background-color: #212529 !important;
+	border: none;
+	color: rgba(255, 255, 255, .55);
+}
+
+#dropdownMenuLink:hover, #dropdownMenuLink:active, #dropdownMenuLink:focus {
+	color:white;
+	 box-shadow: none !important;  
+}
+
+#logo_jap {
+	width: 20%;
+	height: auto;
+	display: block;
+	margin-left: 0;   
+}
+
+#ver-mas:hover img {
+	filter: brightness(0) invert(1); 
+}
+
+.col-md-3 {
+	transition: all 0.3s ease; 
+	border-radius: 5%; 
+	padding-bottom: 3em;
+}
+
+.col-md-3:hover {
+	transform: scale(1.05);
+	filter: brightness(0.95);
+	cursor: pointer;
+	box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.card:hover::after {
+	background: rgba(0, 0, 0, 0.1);
+}
+/* Estilos específicos para la pantalla principal (index) */
+
+/* Puedes agregar aquí los estilos particulares de index.html */
