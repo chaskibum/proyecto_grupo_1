@@ -1,3 +1,61 @@
+/* Footer login específico */
+.footer-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100vw;
+  padding: 0 0 10px 0;
+  margin: 0;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 100;
+}
+.footer-left {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 30px;
+}
+.footer-text {
+  font-size: 1.2rem;
+  color: #000;
+  font-weight: 600;
+}
+.footer-right {
+  text-align: right;
+  margin-right: 40px;
+}
+#logo_jap {
+  width: 100px;
+  height: auto;
+}
+#logo_jap {
+  height: 80px;
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+@media (max-width: 600px) {
+  .footer-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 10px 0;
+  }
+  .footer-left {
+    margin-left: 10px;
+  }
+  .footer-right {
+    width: 100%;
+    text-align: left;
+    margin: 10px 0 0 10px;
+  }
+  #logo_jap {
+    height: 80px;
+  }
+}
 .jumbotron,
 .card-body,
 .container,
@@ -64,6 +122,12 @@ nav.navbar .dropdown-menu {
 }
 
 @media (min-width: 1366px) {
+.footer-text {
+  font-size: 2rem;
+  color: #000;
+  font-weight: 700;
+  margin-left: 10px;
+}
 
   #boton {
   width: 15%;
