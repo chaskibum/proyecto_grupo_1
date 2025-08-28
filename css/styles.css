@@ -1,4 +1,4 @@
-/* Footer login específico */
+
 .footer-flex {
   display: flex;
   justify-content: space-between;
@@ -67,7 +67,7 @@
   font-weight: bold;
 }
 
-#boton {
+#boton, #vender {
   width: 35%;
   margin: 0 auto;
   margin-top: 5rem;
@@ -110,7 +110,7 @@ nav.navbar .dropdown-menu {
     font-size: 3.5rem;
   }
 
-  #boton {
+  #boton, #vender {
   width: 20%;
 }
 
@@ -129,7 +129,7 @@ nav.navbar .dropdown-menu {
   margin-left: 10px;
 }
 
-  #boton {
+  #boton, #vender {
   width: 15%;
 }
 
@@ -300,7 +300,7 @@ a.custom-card:hover {
     width: 400px;
     height: auto;
     margin: 25px;
-    background-color: rgba(255, 248, 240, 0.5);
+    background-color: rgba(255, 248, 240);
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -425,3 +425,18 @@ hr {
 }
 
 
+/* boton vender */
+
+#vender {
+font-size: 1rem;
+padding: .375rem .75rem;
+border-radius: 30px;
+color: #212529;
+border-color: #212529;
+background-color: #fff;
+}
+
+#vender:hover {
+  background-color: #212529;
+  color: #fff;
+}

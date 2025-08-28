@@ -1,3 +1,111 @@
+@media (max-width: 800px) {
+  .footer-flex {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    z-index: 100;
+    background: #fff;
+    padding: 0 12px 8px 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0;
+  }
+  .footer-left {
+    display: flex;
+    align-items: flex-end;
+    margin-left: 0;
+  }
+  .footer-right {
+    text-align: right;
+    margin-right: 0;
+    align-self: flex-end;
+  }
+  #logo_jap {
+    margin-bottom: 0;
+    height: 40px;
+    max-width: 90vw;
+  }
+  main {
+    padding-bottom: 60px;
+  }
+}
+/* Footer responsivo: logo abajo a la izquierda y 'Volver arriba' abajo a la derecha */
+@media (max-width: 800px) {
+  .footer-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100vw;
+    padding: 0 12px 8px 12px;
+    box-sizing: border-box;
+    background: #fff;
+    position: static;
+    margin: 0;
+  }
+  .footer-left {
+    display: flex;
+    align-items: flex-end;
+    margin-left: 0;
+  }
+  .footer-right {
+    text-align: right;
+    margin-right: 0;
+    align-self: flex-end;
+  }
+  #logo_jap {
+    margin-bottom: 0;
+  }
+}
+/* Resolución estándar: 1366x768 */
+@media (max-width: 1366px) and (max-height: 800px) {
+  .sectorIS {
+    width: 400px;
+    padding: 24px 18px 18px 18px;
+    margin: 40px auto 0 auto;
+    font-size: 1.1rem;
+  }
+  #logo_jap {
+    height: 80px;
+  }
+}
+
+/* Tableta vertical: 768x1024 */
+@media (max-width: 800px) and (min-width: 600px) {
+  .sectorIS {
+    width: 90vw;
+    max-width: 420px;
+    padding: 18px 8px 8px 8px;
+    margin: 32px auto 0 auto;
+    font-size: 1rem;
+  }
+  #logo_jap {
+    height: 60px;
+  }
+}
+
+/* Smartphone pequeño: 320x568 */
+@media (max-width: 400px), (max-width: 320px) and (max-height: 600px) {
+  .sectorIS {
+    width: 98vw;
+    max-width: 320px;
+    min-width: 0;
+    padding: 10px 2px 2px 2px;
+    margin: 12px auto 0 auto;
+    font-size: 0.95rem;
+  }
+  #logo_jap {
+    height: 40px;
+    max-width: 90vw;
+  }
+  input, button {
+    font-size: 1rem;
+  }
+}
 /* Estilos específicos para la pantalla de login */
 .sectorIS {
 /* Estilos específicos para la pantalla de login */
