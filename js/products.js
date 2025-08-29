@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             container.innerHTML = "";
             products.forEach(product => {
                 const col = document.createElement("div");
-                col.className = "col-md-3 mb-4";
+                col.className = "col-12 col-sm-6 col-md-4 col-lg-3";
                 col.innerHTML = `
                     <div class="card h-100 shadow-sm custom-card" title="${product.description}">
                         <img src="${product.image}" class="card-img-top" alt="${product.name}">
@@ -28,6 +28,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 container.appendChild(col);
             });
+
+            if(window.innerWidth < 1000) {
+                const cards = container.querySelectorAll('.custom-card')
+                cards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        let tooltip = document.createElement('span');
+                        tooltip.className = 'tooltip-cel';
+                        tooltip.innerText = card.getAttribute('title');
+                        card.appendChild(tooltip);
+                        setTimeout(() => tooltip.remove(), 4000);
+                    });
+                });
+
+            }
+
         })
         .catch(error => {
             console.error('Error al obtener los datos:', error);
