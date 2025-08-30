@@ -25,18 +25,22 @@ main {
    Tarjeta del formulario
    =========================== */
 .sectorIS {
+  height: 100vh;
   background: #e1b27e;              
   border: 1px solid #b18a62;
   border-radius: 22px;              
   box-shadow: 0 4px 12px rgba(0,0,0,.18);
 
   width: 100%;
-  max-width: 480px;                  
+  max-width: 480px;
+  max-height: 620px;                   
   padding: 32px 28px;
   margin: 16px auto 0px auto;                 
   text-align: center;
-
+  
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 12px;
   transition: transform .2s ease, box-shadow .2s ease;
@@ -166,23 +170,4 @@ main {
   .sectorIS input, .sectorIS button { font-size: 0.95rem; }
 }
 
-
-/* registro */
-.registro {
-  background: #e1b27e;              
-  border: 1px solid #b18a62;
-  border-radius: 22px;              
-  box-shadow: 0 4px 12px rgba(0,0,0,.18);
-
-  width: 100%;
-  max-width: 480px;                  
-  padding: 32px 28px;
-  margin: 16px auto 0px auto;                 
-  text-align: center;
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: transform .2s ease, box-shadow .2s ease;
-}
 

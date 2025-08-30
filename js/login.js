@@ -4,6 +4,8 @@ document.getElementById("login").addEventListener("submit", function(event) {
     let contrasena = document.getElementById("pword").value;
     if (usuario === "" || contrasena === "") {
         showAlert("Por favor, complete todos los campos requeridos.");
+    } else if (usuario.length > 10) {
+        showAlert("El nombre de usuario no puede tener más de 10 caracteres.");
     } else {
         showAlert("Bienvenido, " + usuario + "!");
         localStorage.setItem("sesionActiva", "true");
