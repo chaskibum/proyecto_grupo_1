@@ -107,6 +107,38 @@ nav.navbar .dropdown-menu {
 
 }
 
+/* Navbar Cantidad de productos */
+
+#cantidad-agregada {
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#cantidad {
+  margin: 0;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+
+
+/* Manoo like */
+#mano-like {
+  margin-top: -2px!important;
+  margin-left: 10px!important;
+  position: absolute;
+}
+
+
 /* Icon Menú Query */
 
 .navbar-toggler {
@@ -474,3 +506,87 @@ button.btn-dark.mt-auto {
 }
 
 
+/*filtros de precios */
+
+
+
+.Filtros {
+  border-radius: 5px;
+  padding: 15px;
+  gap: 7px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  
+}
+
+.orden {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0;
+  color: black;
+  gap: 7px;
+}
+
+.orden button {
+  background-color: rgb(216, 216, 216);
+  border: 1px solid rgb(112, 112, 112);
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0;
+  border: black;
+}
+
+.orden button:hover {
+  background-color: rgb(100, 100, 100);
+}
+
+.orden-ascendente, .orden-descentende {
+  margin: 0;
+}
+
+.filtro-precio {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.filtro-precio label {
+  margin: 0;
+  font-weight: bold;
+  min-width: 50px;
+  color: rgb(94, 94, 94);
+}
+
+.filtro-precio input {
+  margin: 0;
+  border-radius: 4px;
+  width: 100px;
+  padding: 10px;
+  border: 1px solid rgb(145, 145, 145);
+}
+
+#filtro {
+  color: black;
+  background-color: rgb(231, 231, 231);
+  margin: 0;
+}
+
+#filtro:hover {
+  background-color: rgb(170, 170, 170);
+}
+
+#limpiar {
+  margin: 0;
+}
+
+#limpiar:hover {
+  color: blue;
+}

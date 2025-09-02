@@ -11,7 +11,10 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
+  <script src="js/categories.js"></script>
+  <script src="js/nombrecat.js"></script>
 </head>
+
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1 position-relative">
@@ -59,7 +62,31 @@
 </nav>
   <main class="pb-5 container">
     <div class="container">
-      <h2 class="my-4" id="category-title">Categoría: Autos</h2>
+  <h2 class="my-4" id="category-title">Categoría: <span id="catname"></span></h2>
+
+      
+      <div class="Filtros"> 
+        <div class="orden">
+
+          <button class="orden-ascendente">⬆︎$</button>
+          <button class="orden-descendente">⬇︎$</button>
+          <button class="rel?">Rel</button>
+
+        </div>
+
+        <div class="filtro-precio">
+          <label>Precio</label>
+          <input type="number" id="precio-min" placeholder="Mínimo">
+          <input type="number" id="precio-max" placeholder="Máximo">
+          <button id="filtro">Filtrar</button>
+          <a href="#" id="limpiar">Limpiar</a>
+        </div>
+
+      </div>
+    
+
+
+
       <div class="row" id="products-container">
       </div>
         <div class="row" id="boton"  >
@@ -86,7 +113,8 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/products.js"></script>
-</body>
-<script src="js/navbar-user.js"></script>
 
+</body>
+
+  <script src="js/navbar-user.js"></script>
 </html>
