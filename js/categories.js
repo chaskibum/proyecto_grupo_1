@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const list = document.getElementById('cat-list') || document.getElementById('categories-list') || document.querySelector('.list-group');
 
   function setCat(id, name) {
+    console.log('Guardando catID:', id, 'catName:', name);
     localStorage.setItem('catID', String(id));
     localStorage.setItem('catName', String(name));
     window.location = 'products.html';
@@ -48,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = e.target.closest('[data-cat-id]');
       if (!item) return;
       const id = item.getAttribute('data-cat-id');
-      const name = item.getAttribute('data-cat-name') || item.textContent.trim();
+      let name = item.getAttribute('data-cat-name');
+      if (!name || name === 'undefined') {
+        const h4 = item.querySelector('h4');
+        name = h4 ? h4.textContent.trim() : '';
+      }
       setCat(id, name);
     });
   }
