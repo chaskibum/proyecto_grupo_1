@@ -13,46 +13,24 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <div class="dropdown">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-    Categorías
-  </a>
+<div id="navbar"></div>
 
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <li><a class="dropdown-item" href="#" >Autos</a></li>
-    <li><a class="dropdown-item" href="#" >Juguetes</a></li>
-    <li><a class="dropdown-item" href="#">Muebles</a></li>
-    <li><a class="dropdown-item" href="#">Herramientas</a></li>
-    <li><a class="dropdown-item" href="#">Computadoras</a></li>
-    <li><a class="dropdown-item" href="#">Vestimenta</a></li>
-    <li><a class="dropdown-item" href="#">Electrodomésticos</a></li>
-    <li><a class="dropdown-item" href="#">Deporte</a></li>
-    <li><a class="dropdown-item" href="#">Celulares</a></li>
-  </ul>
-</div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="inicio-sesion" href="login.html">Inicio de Sesión</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<script>
+  fetch("navbar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+
+      // Recién ahora que la navbar existe, personalizamos el usuario
+      const usuario = localStorage.getItem('usuarioActivo');
+      const link = document.getElementById('inicio-sesion');
+      if (usuario && link) {
+        link.textContent = usuario;
+        link.href = 'my-profile.html';
+      }
+    });
+</script>
+
   <main class="pb-5">
     <div class="text-center p-4">
       <h2>Categorías</h2>
@@ -98,15 +76,7 @@
       </div>
     </div>
   </main>
-  <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      <p>
-  <img class="bd-placeholder-img card-img-top" id="logo_jap" src="img/logo_jap.svg" alt="icono_jap" style="cursor: pointer;" onclick="window.location.href='https://jovenesaprogramar.edu.uy/'">
-      <p/>
-    </div>
-  </footer>
+  <footer id="main-footer"></footer>
   <div id="spinner-wrapper">
     <div class="lds-ring">
       <div></div>
@@ -119,5 +89,4 @@
   <script src="js/init.js"></script>
   <script src="js/categories.js"></script>
 </body>
-
 </html>
