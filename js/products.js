@@ -80,6 +80,15 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>`;
       console.error(err);
     });
+
+    const buttonAsc = document.querySelector('.orden .orden-ascendente');
+    const buttonDes = document.querySelector('.orden .orden-descendente');
+    const buttonRel = document.querySelector('.orden button:nth-of-type(3)');
+
+    const inputMin = document.getElementById('precio-min');
+    const inputMax = document.getElementById('precio-max');
+
+
 });
 
  
