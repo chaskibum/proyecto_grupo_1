@@ -1,4 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {
+// navbar.js
+// Maneja la selección de categorías desde el navbar y la navegación correcta a products.html
+
+document.addEventListener('DOMContentLoaded', function() {
   const ID_MAP = {
     'Autos': '101',
     'Juguetes': '102',
@@ -12,12 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
-    a.addEventListener('click', () => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
       const name = (a.dataset.catName || a.textContent).trim();
       const id = a.dataset.catId || ID_MAP[name];
       if (id) {
         localStorage.setItem('catID', id);
         localStorage.setItem('catName', name);
+        window.location.href = 'products.html';
       }
     });
   });

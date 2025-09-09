@@ -42,21 +42,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-/*
-function wireNavbarCategories(categories, assignCategoryEvent) {
-  document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
-    const text = item.textContent.trim();
-    const cat = categories.find(c => c.name === text);
-    if (cat) assignCategoryEvent(item, cat);
-  });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  // ...tu código actual...
-  wireNavbarCategories(categories, assignCategoryEvent);
-});
-document.addEventListener('navbar:loaded', () => {
-  wireNavbarCategories(categories, assignCategoryEvent);
-});
-*/
