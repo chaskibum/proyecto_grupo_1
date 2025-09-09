@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<!--
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
     <div class="container">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -54,6 +55,50 @@
       </div>
     </div>
   </nav>
+-->
+
+  <div id="navbar"></div>
+
+<script>
+  fetch("navbar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+
+      
+      const usuario = localStorage.getItem('usuarioActivo');
+      const link = document.getElementById('inicio-sesion');
+      if (usuario && link) {
+        link.textContent = usuario;
+        link.href = 'my-profile.html';
+      }
+
+      const ID_MAP = {
+        'Autos': '101',
+        'Juguetes': '102',
+        'Muebles': '103',
+        'Herramientas': '104',
+        'Computadoras': '105',
+        'Vestimenta': '106',
+        'Electrodomésticos': '107',
+        'Deporte': '108',
+        'Celulares': '109'
+      };
+      document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          const name = (a.dataset.catName || a.textContent).trim();
+          const id = a.dataset.catId || ID_MAP[name];
+          if (id) {
+            localStorage.setItem('catID', id);
+            localStorage.setItem('catName', name);
+            window.location.href = 'products.html';
+          }
+        });
+      });
+    });
+</script>
+
   <main>
     <div class="container">
       <div class="alert alert-danger text-center" role="alert">
