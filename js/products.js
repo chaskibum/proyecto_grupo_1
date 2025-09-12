@@ -163,19 +163,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  const buscador = document.getElementById('buscador');
+  fetch("navbar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
 
-  if (buscador) {
-    buscador.addEventListener('input', e => {
-      const texto = e.target.value.toLowerCase();
-      verData = productosData.filter(p =>
-        (p.name || '').toLowerCase().includes(texto) || 
-        (p.description || '').toLowerCase().includes(texto)
-      );
-      renderProducts(verData);
+
+      const buscador = document.getElementById('buscador');
+      if (buscador) {
+        buscador.addEventListener('input', e => {
+          const texto = e.target.value.toLowerCase();
+          verData = productosData.filter(p =>
+            (p.name||'').toLowerCase().includes(texto) || (p.description||'').toLowerCase().includes(texto)
+          );
+          renderProducts(verData);
+        });
+      }
+
+      const localS = {
+        'Autos': '101','Juguetes':'102','Muebles':'103','Herramientas':'104',
+        'Computadoras':'105','Vestimenta':'106','Electrodomésticos':'107',
+        'Deporte':'108','Celulares':'109'
+      };
+      document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          const name = (a.dataset.catName || a.textContent).trim();
+          const id = localS[name];
+          if (id) {
+            localStorage.setItem('catID', id);
+            localStorage.setItem('catName', name);
+            window.location.reload();
+          }
+        });
+      });
     });
-  }
-
 });
-
  
