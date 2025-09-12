@@ -11,8 +11,11 @@
 
 .card img {
 	border-radius: 20px;
-	border: 0;              
-	box-shadow: 7px 7px 8px rgba(131, 131, 131, 0.3);
+	border: 0;   
+	border: 1px solid rgba(0,0,0,0.1); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+	border-bottom-width: 0px;
+    border-top-width: 0px;
 }
 
 .py-5, .pb-5 {
@@ -27,7 +30,7 @@
 
 #dropdownMenuLink:hover, #dropdownMenuLink:active, #dropdownMenuLink:focus {
 	color:#ffffff;
-	 box-shadow: none !important;  
+	box-shadow: none !important;  
 }
 
 #logo_jap {
@@ -41,12 +44,56 @@
 	filter: brightness(0) invert(1); 
 }
 
-.col-md-3, .col-12.col-sm-6.col-md-4.col-lg-3 {
+.col-12.col-sm-6.col-md-4 {
+	 padding-inline: 0%;
 	transition: all 0.3s ease; 
 	border-radius: 5%; 
 }
 
-.col-md-3:hover, .col-12.col-sm-6.col-md-4.col-lg-3:hover {
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;             
+  justify-content: center; 
+  margin: 0 auto;
+  padding: 0;
+}
+
+.row > [class*='col-'] {
+  flex: 1 1 250px;    
+  max-width: 300px;  
+  min-width: 250px;   
+}
+
+@media (min-width: 992px) {
+  .row > [class*='col-'] {
+    flex: 1 1 250px;
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .row > [class*='col-'] {
+    flex: 1 1 250px;
+    max-width: 400px; 
+  }
+}
+
+@media (max-width: 767px) {
+  .row > [class*='col-'] {
+    flex: 1 1 250px;
+    max-width: 500px;  
+  }
+}
+
+.row > [class*='col-'] .card {
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+}
+
+
+.col-12.col-sm-6.col-md-4:hover {
 	transform: scale(1.05);
 	filter: brightness(0.95);
 	cursor: pointer;

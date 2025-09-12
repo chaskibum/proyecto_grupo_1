@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       products.forEach(product => {
         const col = document.createElement('div');
-        col.className = 'col-12 col-sm-6 col-md-4 col-lg-3';
+        col.className = 'col-12 col-sm-6 col-md-4';
         col.innerHTML = `
           <div class="card h-100 shadow-sm custom-card product-select" data-product-id="${product.id}" title="${product.description}">
             <img src="${product.image}" class="card-img-top" alt="${product.name}">
@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
               <h5 class="card-title mb-2">${product.name}</h5>
               <p class="card-text mb-1"><b>${product.currency} ${product.cost}</b></p>
               <div class="mb-2">
-                <span class="text-warning">${'★'.repeat(product.soldCount > 200 ? 5 : product.soldCount > 100 ? 4 : 3)}</span>
+                <span class="text-warning">${'★'.repeat(product.soldCount > 80 ? 5 : product.soldCount > 50 ? 4 : product.soldCount > 30 ? 3 : product.soldCount > 15 ? 2 : 1)}</span>
+
                 <span class="text-muted">${product.soldCount} vendidos</span>
               </div>
               <button class="btn btn-dark mt-auto"><i class="fa fa-plus"></i></button>
@@ -109,11 +110,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttonFiltrar = document.getElementById('filtro');
     const buttonLimpiar = document.getElementById('limpiar');
 
-     if (buttonValorado) {  
+    if (buttonValorado) {  
   buttonValorado.addEventListener('click', () => {
-    verData = [...verData].sort((a, b) => b.algo - a.algo);
-    renderProducts(verData); // tengo que arreglar esto :/  //
+    verData = [...verData].sort((a, b) => {
+      const estrellasA = a.soldCount > 80 ? 5 : a.soldCount > 50 ? 4 : a.soldCount > 30 ? 3 : a.soldCount > 15 ? 2 : 1;
+      const estrellasB = b.soldCount > 80 ? 5 : b.soldCount > 50 ? 4 : b.soldCount > 30 ? 3 : b.soldCount > 15 ? 2 : 1;
+      return estrellasB - estrellasA;
+    });
+    renderProducts(verData);
   });
+
 }
 
     if (buttonAsc) {

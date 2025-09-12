@@ -511,10 +511,11 @@ button.btn-dark.mt-auto {
 
 
 .Filtros {
+  margin-top: -3rem;
   border-radius: 5px;
   padding: 15px;
   gap: 7px;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -546,7 +547,7 @@ button.btn-dark.mt-auto {
   background-color: rgb(100, 100, 100);
 }
 
-.orden-ascendente, .orden-descentende, .valorado {
+.orden-ascendente, .orden-descentende {
   margin: 0;
 }
 
@@ -556,6 +557,7 @@ button.btn-dark.mt-auto {
   align-items: center;
   width: 100%;
   gap: 10px;
+  margin-top: 1.5rem;
 }
 
 .filtro-precio label {
