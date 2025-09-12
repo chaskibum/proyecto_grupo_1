@@ -17,60 +17,72 @@
 </head>
 
 <body>
-<div id="navbar"></div>
 
-<script>
-  fetch("navbar.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("navbar").innerHTML = html;
+  <div id="navbar"></div>
 
-      // Recién ahora que la navbar existe, personalizamos el usuario
-      const usuario = localStorage.getItem('usuarioActivo');
-      const link = document.getElementById('inicio-sesion');
-      if (usuario && link) {
-        link.textContent = usuario;
-        link.href = 'my-profile.html';
-      }
+  <script>    
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
 
-      const ID_MAP = {
-        'Autos': '101',
-        'Juguetes': '102',
-        'Muebles': '103',
-        'Herramientas': '104',
-        'Computadoras': '105',
-        'Vestimenta': '106',
-        'Electrodomésticos': '107',
-        'Deporte': '108',
-        'Celulares': '109'
-      };
-      document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
-        a.addEventListener('click', function(e) {
-          e.preventDefault();
-          const name = (a.dataset.catName || a.textContent).trim();
-          const id = a.dataset.catId || ID_MAP[name];
-          if (id) {
-            localStorage.setItem('catID', id);
-            localStorage.setItem('catName', name);
-            window.location.href = 'products.html';
+
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = usuario;
+          link.href = 'my-profile.html';
+        }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '104',
+          'Computadoras': '105',
+          'Vestimenta': '106',
+          'Electrodomésticos': '107',
+          'Deporte': '108',
+          'Celulares': '109'
+        };
+
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
           }
         });
       });
-    });
-</script>
+  </script>
 
   <main class="pb-5 container">
     <div class="container">
-  <h2 class="my-4" id="category-title">Categoría: <span id="catname"></span></h2>
+      <h2 class="my-4" id="category-title">Categoría: <span id="catname"></span></h2>
 
-      
-      <div class="Filtros"> 
+
+      <div class="Filtros">
         <div class="orden">
 
           <button class="valorado">⭐</button>
           <button class="orden-ascendente">⬆︎$</button>
           <button class="orden-descendente">⬇︎$</button>
-          <button class="rel?">Rel</button>
+          <button class="rel">⬆︎🛒</button>
 
         </div>
 
@@ -83,15 +95,16 @@
         </div>
 
       </div>
-    
+
 
 
 
       <div class="row" id="products-container">
       </div>
-        <div class="row" id="boton"  >
-          <button type="button" class="btn btn-outline-dark" style="border-radius:30px" id="ver-mas">Ver más <img src="img/ver-mas.svg" alt="icono ver más" style="width:16px; height:auto; margin-left:10px;"></button>
-        </div>
+      <div class="row" id="boton">
+        <button type="button" class="btn btn-outline-dark" style="border-radius:30px" id="ver-mas">Ver más <img
+            src="img/ver-mas.svg" alt="icono ver más" style="width:16px; height:auto; margin-left:10px;"></button>
+      </div>
     </div>
   </main>
   <footer id="main-footer"></footer>
@@ -109,5 +122,5 @@
   <script src="js/include-partials.js"></script>
 </body>
 
-  
+
 </html>

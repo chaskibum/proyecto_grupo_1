@@ -1,7 +1,6 @@
-
 .card {
-	border-radius: 20px;    
-	overflow: hidden;    
+	border-radius: 20px;
+	overflow: hidden;
 	border: none;
 }
 
@@ -11,93 +10,116 @@
 
 .card img {
 	border-radius: 20px;
-	border: 0;   
-	border: 1px solid rgba(0,0,0,0.1); 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+	border: 0;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	border-bottom-width: 0px;
-    border-top-width: 0px;
+	border-top-width: 0px;
 }
 
-.py-5, .pb-5 {
+.py-5,
+.pb-5 {
 	padding-top: 5rem !important;
 }
 
-#dropdownMenuLink{
+#dropdownMenuLink {
 	background-color: #212529 !important;
 	border: none;
 	color: rgba(255, 255, 255, .55);
 }
 
-#dropdownMenuLink:hover, #dropdownMenuLink:active, #dropdownMenuLink:focus {
-	color:#ffffff;
-	box-shadow: none !important;  
+#dropdownMenuLink:hover,
+#dropdownMenuLink:active,
+#dropdownMenuLink:focus {
+	color: #ffffff;
+	box-shadow: none !important;
 }
 
 #logo_jap {
 	width: 20%;
 	height: auto;
 	display: block;
-	margin-left: 0;   
+	margin-left: 0;
 }
 
 #ver-mas:hover img {
-	filter: brightness(0) invert(1); 
+	filter: brightness(0) invert(1);
 }
 
 .col-12.col-sm-6.col-md-4 {
-	 padding-inline: 0%;
-	transition: all 0.3s ease; 
-	border-radius: 5%; 
+	padding-inline: 0%;
+	transition: all 0.3s ease;
+	border-radius: 5%;
 }
 
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;             
-  justify-content: center; 
-  margin: 0 auto;
-  padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	margin: 0 auto;
+	padding: 0;
 }
 
-.row > [class*='col-'] {
-  flex: 1 1 250px;    
-  max-width: 300px;  
-  min-width: 250px;   
+
+#sell-info .custom-control {
+  display: flex;
+  align-items: center;   
+  gap: 10px;            
+  margin-right: 20px;  
+  float: left;          
+}
+
+#sell-info .custom-control-label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+#sell-info #vender {
+  display: block;       
+  width: 80%;           
+  max-width: 400px;     
+  margin: 20px auto;   
+}
+
+.row>[class*='col-'] {
+	flex: 1 1 250px;
+	max-width: 400px;
+	min-width: 250px;
 }
 
 @media (min-width: 992px) {
-  .row > [class*='col-'] {
-    flex: 1 1 250px;
-    max-width: 300px;
-  }
+	.row>[class*='col-'] {
+		flex: 1 1 250px;
+		max-width: 400px;
+	}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .row > [class*='col-'] {
-    flex: 1 1 250px;
-    max-width: 400px; 
-  }
+	.row>[class*='col-'] {
+		flex: 1 1 250px;
+		max-width: 400px;
+	}
 }
 
 @media (max-width: 767px) {
-  .row > [class*='col-'] {
-    flex: 1 1 250px;
-    max-width: 500px;  
-  }
+	.row>[class*='col-'] {
+		flex: 1 1 250px;
+		max-width: 500px;
+	}
 }
 
-.row > [class*='col-'] .card {
-  height: 100%;
-  object-fit: cover;
-  margin: 0;
+.row>[class*='col-'] .card {
+	height: 100%;
+	object-fit: cover;
+	margin: 0;
 }
-
 
 .col-12.col-sm-6.col-md-4:hover {
 	transform: scale(1.05);
 	filter: brightness(0.95);
 	cursor: pointer;
-	box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover::after {

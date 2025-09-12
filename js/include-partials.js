@@ -6,6 +6,6 @@ function includePartial(id, url) {
       document.getElementById(id).outerHTML = html;
     });
 }
-document.addEventListener('DOMContentLoaded', function() {
-  if(document.getElementById('main-footer')) includePartial('main-footer', 'footer.html');
- });
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.getElementById('main-footer')) includePartial('main-footer', 'footer.html');
+});

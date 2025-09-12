@@ -1,4 +1,4 @@
-document.getElementById("login").addEventListener("submit", function(event) {
+document.getElementById("login").addEventListener("submit", function (event) {
     event.preventDefault();
     let usuario = document.getElementById("name").value;
     let contrasena = document.getElementById("pword").value;

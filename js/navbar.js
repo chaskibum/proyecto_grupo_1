@@ -1,7 +1,7 @@
 // navbar.js
 // Maneja la selección de categorías desde el navbar y la navegación correcta a products.html
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const ID_MAP = {
     'Autos': '101',
     'Juguetes': '102',
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
-    a.addEventListener('click', function(e) {
+    a.addEventListener('click', function (e) {
       e.preventDefault();
       const name = (a.dataset.catName || a.textContent).trim();
       const id = a.dataset.catId || ID_MAP[name];

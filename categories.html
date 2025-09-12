@@ -13,23 +13,57 @@
 </head>
 
 <body>
-<div id="navbar"></div>
+  <div id="navbar"></div>
 
-<script>
-  fetch("navbar.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("navbar").innerHTML = html;
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
 
-      // Recién ahora que la navbar existe, personalizamos el usuario
-      const usuario = localStorage.getItem('usuarioActivo');
-      const link = document.getElementById('inicio-sesion');
-      if (usuario && link) {
-        link.textContent = usuario;
-        link.href = 'my-profile.html';
-      }
-    });
-</script>
+
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = usuario;
+          link.href = 'my-profile.html';
+        }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '105',
+          'Computadoras': '106',
+          'Vestimenta': '107',
+          'Electrodomésticos': '108',
+          'Deporte': '109',
+          'Celulares': '110'
+        };
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      });
+  </script>
 
   <main class="pb-5">
     <div class="text-center p-4">
@@ -89,4 +123,5 @@
   <script src="js/init.js"></script>
   <script src="js/categories.js"></script>
 </body>
+
 </html>

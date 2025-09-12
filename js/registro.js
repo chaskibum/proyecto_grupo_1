@@ -14,15 +14,15 @@ function mostrarAlerta(mensaje, esExito = false) {
     }, 1500);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registroForm');
     if (!form) return;
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
         let campos = form.querySelectorAll('input, select, textarea');
         let vacio = false;
-        campos.forEach(function(campo) {
+        campos.forEach(function (campo) {
             if (campo.type !== 'submit' && campo.value.trim() === '') {
                 vacio = true;
                 campo.classList.add('is-invalid');
@@ -40,6 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function volver() {
     if (document.referrer) {
-        window.location.href = document.referrer; 
+        window.location.href = document.referrer;
     }
 }

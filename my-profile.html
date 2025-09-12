@@ -28,23 +28,23 @@
 </head>
 
 <body>
-<div id="navbar"></div>
+  <div id="navbar"></div>
 
-<script>
-  fetch("navbar.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("navbar").innerHTML = html;
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
 
-      // Recién ahora que la navbar existe, personalizamos el usuario
-      const usuario = localStorage.getItem('usuarioActivo');
-      const link = document.getElementById('inicio-sesion');
-      if (usuario && link) {
-        link.textContent = 'Cerrar sesión';
-        link.href = 'login.html';
-      }
-    });
-</script>
+        // Recién ahora que la navbar existe, personalizamos el usuario
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = 'Cerrar sesión';
+          link.href = 'login.html';
+        }
+      });
+  </script>
 
   <main>
     <div class="container">
