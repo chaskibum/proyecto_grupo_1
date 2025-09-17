@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const buttonValorado = document.querySelector('.orden .valorado');
       const buttonAsc = document.querySelector('.orden .orden-ascendente');
       const buttonDes = document.querySelector('.orden .orden-descendente');
-      const buttonRel = document.querySelector('.orden button:nth-of-type(3)');
+      const buttonRel = document.querySelector('.orden .rel');
 
 
       const inputMin = document.getElementById('precio-min');
@@ -121,50 +121,46 @@ document.addEventListener('DOMContentLoaded', function () {
       const buttonFiltrar = document.getElementById('filtro');
       const buttonLimpiar = document.getElementById('limpiar');
 
-      if (buttonValorado) {
-        buttonValorado.addEventListener('click', () => {
-          verData = [...verData].sort((a, b) => b.algo - a.algo);
-          renderProducts(verData); // tengo que arreglar esto :/  //
-        });
-      }
+      buttonValorado.addEventListener('click', () => {
+    verData = [...verData].sort((a, b) => {
+      const estrellasA = a.soldCount > 80 ? 5 : a.soldCount > 50 ? 4 : a.soldCount > 30 ? 3 : a.soldCount > 15 ? 2 : 1;
+      const estrellasB = b.soldCount > 80 ? 5 : b.soldCount > 50 ? 4 : b.soldCount > 30 ? 3 : b.soldCount > 15 ? 2 : 1;
+      return estrellasB - estrellasA;
+    });
+     renderProducts(verData);
+  });
 
-      if (buttonAsc) {
-        buttonAsc.addEventListener('click', () => {
-          verData = [...verData].sort((a, b) => Number(a.cost) - Number(b.cost));
-          renderProducts(verData);
-        });
-      }
+      buttonAsc.addEventListener('click', () => {
+    verData = [...verData].sort((a, b) => Number(a.cost) - Number(b.cost));
+    renderProducts(verData);
+  });
 
-      if (buttonDes) {
-        buttonDes.addEventListener('click', () => {
-          verData = [...verData].sort((a, b) => Number(b.cost) - Number(a.cost));
-          renderProducts(verData);
-        });
-      }
+      buttonDes.addEventListener('click', () => {
+    verData = [...verData].sort((a, b) => Number(b.cost) - Number(a.cost));
+    renderProducts(verData);
+  });
 
-      if (buttonRel) {
-        buttonRel.addEventListener('click', () => {
-          verData = [...verData].sort((a, b) => Number(b.soldCount) - Number(a.soldCount));
-          renderProducts(verData);
-        });
-      }
+      buttonRel.addEventListener('click', () => {
+    verData = [...verData].sort((a, b) => Number(b.soldCount) - Number(a.soldCount));
+    renderProducts(verData);
+  });
 
-      if (buttonFiltrar) {
-        buttonFiltrar.addEventListener('click', () => {
-          const rawMin = inputMin?.value ?? '';
-          const rawMax = inputMax?.value ?? '';
 
-          const min = rawMin === '' ? 0 : parseFloat(rawMin);
-          const max = rawMax === '' ? Infinity : parseFloat(rawMax);
-          const xmin = Number.isFinite(min) ? min : 0;
-          const xmax = Number.isFinite(max) ? max : Infinity;
-          verData = productsData.filter(p => {
-            const precio = Number(p.cost);
-            return precio >= xmin && precio <= xmax;
-          });
-          renderProducts(verData);
-        });
-      }
+      buttonFiltrar.addEventListener('click', () => {
+    const rawMin = inputMin?.value ?? '';
+    const rawMax = inputMax?.value ?? '';
+
+    const min = rawMin === '' ? 0 : parseFloat(rawMin);
+    const max = rawMax === '' ? Infinity : parseFloat(rawMax);
+    const xmin = Number.isFinite(min) ? min : 0;
+    const xmax = Number.isFinite(max) ? max : Infinity;
+    verData = productsData.filter(p => {
+       const precio = Number(p.cost);
+      return precio >= xmin && precio <= xmax;
+     });
+     renderProducts(verData);
+  });
+
       if (buttonLimpiar) {
         buttonLimpiar.addEventListener('click', (e) => {
           e.preventDefault();
@@ -218,4 +214,4 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         });
     });
-});
+  });
