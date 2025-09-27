@@ -149,17 +149,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         let comentarios = JSON.parse(localStorage.getItem(`comentarios_${productId}`)) || [];
 
 
-		 function mostrarComentarios() {
-            let html = '';
-            comentarios.forEach(c => {
-                let estrellasHTML = '';
-                for (let i = 0; i < c.estrellas; i++) {
-                    estrellasHTML += '<i class="bi bi-star-fill text-warning"></i> ';
-                }
-                html += `<div class="mb-2"><strong>${c.nombre}</strong> ${estrellasHTML}<br>${c.texto}</div>`;
-            });
-            comentariosLista.innerHTML = html;
-        }
+        function mostrarComentarios() {
+         let html = '';
+
+        // cambio de orden de mostrar comentarios, de mas recientes a mas antiguos 
+
+        for (let i = comentarios.length - 1; i >= 0; i--) {
+         const c = comentarios[i];
+            let estrellasHTML = '';
+        for (let j = 0; j < c.estrellas; j++) {
+            estrellasHTML += '<i class="bi bi-star-fill text-warning"></i> ';
+            }
+        html += `<div class="mb-2"><strong>${c.nombre}</strong> ${estrellasHTML}<br>${c.texto}</div>`;
+    }
+    comentariosLista.innerHTML = html;
+}
 		
         mostrarComentarios();
 
