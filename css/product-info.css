@@ -78,13 +78,8 @@
 
 .puntuacion-estrellas {
   font-size: 2rem;
-  color: gold;
+  color: #ffc107;
   cursor: pointer;
-}
-
-.puntuacion-estrellas i.hover,
-.puntuacion-estrellas i.activa {
-  color: gold;
 }
 
 #puntuacion-text {
