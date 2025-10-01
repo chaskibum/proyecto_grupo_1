@@ -11,39 +11,37 @@
   <link href="css/index.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/login.css" rel="stylesheet">
+  <link href="css/login-responsive.css" rel="stylesheet">
 
 </head>
 
 <body>
-  <main class="page">
-    <section class="card-login">
-      <h1>Inicio de Sesión:</h1>
-      <form id="login" action="/submit" method="post" novalidate>
-        <label for="name">Usuario:</label>
-        <input type="text" id="name" name="name" autocomplete="username" required>
+  <main class="login-bg">
+    <div class="login-box">
+      <div class="login-form-side">
+        <h2 class="login-title">Iniciar Sesión</h2>
+        <form id="login" action="/submit" method="post" novalidate>
+          <label for="name" class="login-label">USUARIO</label>
+          <input type="text" id="name" name="name" class="login-input" placeholder="Usuario" autocomplete="username" required>
 
-        <label for="pword">Contraseña</label>
-        <input type="password" id="pword" name="password" autocomplete="current-password" required>
+          <label for="pword" class="login-label">CONTRASEÑA</label>
+          <input type="password" id="pword" name="password" class="login-input" placeholder="Contraseña" autocomplete="current-password" required>
 
-        <button type="submit" class="btn-login">Ingresar</button>
-      </form>
-
-      <a class="link-back" href="#" onclick="history.back()">Volver</a>
-      <a class="link-register" href="registro.html">¿No tienes una cuenta? Regístrate!</a>
-
-      <p class="disclaimer">
-        Este sitio forma parte de
-        <a href="https://jovenesaprogramar.edu.uy/" target="_blank" rel="noopener">Jóvenes a Programar</a>
-      </p>
-    </section>
-
-    <section class="jap-strip">
-      <img id="logo_jap" src="img/logo_jap.svg" alt="Jóvenes a Programar">
-    </section>
-
-    <p class="volver-arriba">
-      <a href="#top">Volver arriba</a>
-    </p>
+          <div class="login-options">
+            <label class="remember-label">
+              <input type="checkbox" id="rememberMe"> Recuérdame
+            </label>
+            <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+          </div>
+          <button type="submit" class="btn-login neumorphic-btn">Ingresar</button>
+        </form>
+      </div>
+      <div class="login-welcome-side">
+        <h2 class="welcome-title">¡Bienvenido!</h2>
+        <p class="welcome-desc">¿No tienes una cuenta?</p>
+        <a href="registro.html" class="signup-btn">Regístrate</a>
+      </div>
+    </div>
   </main>
 
   <div id="alert" class="alerta" role="alert">

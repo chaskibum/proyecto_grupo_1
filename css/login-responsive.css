@@ -1,0 +1,13 @@
+@media (max-width: 700px) {
+  .login-box {
+    flex-direction: column;
+  }
+  .login-welcome-side {
+    order: -1;
+    border-radius: 14px 14px 0 0;
+    min-height: 180px;
+  }
+  .login-form-side {
+    order: 0;
+  }
+}
