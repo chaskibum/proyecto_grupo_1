@@ -41,4 +41,20 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cat) assignCategoryEvent(item, cat);
     });
 });
+const button = document.getElementById("oscuro");
+const body = document.body;
 
+// Si el usuario ya había elegido un tema antes, recuérdalo
+if (localStorage.getItem("theme") === "dark") {
+body.classList.add("dark-mode");
+}
+
+button.addEventListener("click", () => {
+body.classList.toggle("dark-mode");
+// Guardar preferencia
+if (body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+} else {
+    localStorage.setItem("theme", "light");
+}
+});

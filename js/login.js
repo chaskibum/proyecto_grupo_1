@@ -32,3 +32,15 @@ function volver() {
         window.location.href = "index.html";
     }
 }
+
+button.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+        icon.className = "bi bi-sun-fill";
+        localStorage.setItem("theme", "dark");
+    } else {
+        icon.className = "bi bi-moon-fill";
+        localStorage.setItem("theme", "light");
+    }
+});

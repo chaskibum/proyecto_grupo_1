@@ -9,6 +9,8 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -55,7 +57,7 @@
           'Deporte': '108',
           'Celulares': '109'
         };
-        
+
         document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
           a.addEventListener('click', function (e) {
             e.preventDefault();
@@ -83,16 +85,15 @@
 
   <main>
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
+      <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
     </div>
   </main>
   <footer id="main-footer"></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
-  <script src="js/my-profile.js"></script>
+  <script src="js/theme.js"></script>
   <script src="js/include-partials.js"></script>
+
 </body>
 
 </html>
