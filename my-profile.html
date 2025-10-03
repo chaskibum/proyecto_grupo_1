@@ -36,13 +36,48 @@
       .then(html => {
         document.getElementById("navbar").innerHTML = html;
 
-        // Recién ahora que la navbar existe, personalizamos el usuario
+
         const usuario = localStorage.getItem('usuarioActivo');
         const link = document.getElementById('inicio-sesion');
         if (usuario && link) {
           link.textContent = 'Cerrar sesión';
           link.href = 'login.html';
         }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '104',
+          'Computadoras': '105',
+          'Vestimenta': '106',
+          'Electrodomésticos': '107',
+          'Deporte': '108',
+          'Celulares': '109'
+        };
+        
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
       });
   </script>
 
