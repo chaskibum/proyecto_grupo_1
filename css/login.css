@@ -10,6 +10,12 @@
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 }
+
+.back-btn:hover {
+  background: #222;
+  color: #ffffff;
+}
+
 .login-bg {
   min-height: 100vh;
   background: #f7f8fa;
