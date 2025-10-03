@@ -25,13 +25,20 @@
 
                         <label for="pword" class="register-label">CONTRASEÑA</label>
                         <input type="password" id="pword" name="password" class="register-input" placeholder="Contraseña" required>
+                        <!-- Indicador de fuerza de contraseña -->
+                        <div class="pwd-strength">
+                            <div class="pwd-strength-bar" id="pwdStrengthBar">
+                                <div class="pwd-strength-fill" id="pwdStrengthFill"></div>
+                            </div>
+                            <div class="pwd-strength-text" id="pwdStrengthText">&nbsp;</div>
+                        </div>
 
-                        <label for="pword" class="register-label">CONFIRMAR CONTRASEÑA</label>
-                        <input type="password" id="pword" name="password" class="register-input" placeholder="Contraseña" required>
+                        <label for="pwordConfirm" class="register-label confirm-label">CONFIRMAR CONTRASEÑA</label>
+                        <input type="password" id="pwordConfirm" name="password_confirm" class="register-input" placeholder="Contraseña" required>
 
                         <button type="submit" class="neumorphic-btn">Registrarse</button>
                     </form>
-                    <a href="#" onclick="volver()" style="text-align:center;display:block;margin-top:10px;">Volver</a>
+                    <a href="#" onclick="volver()" class="back-btn" style="text-align:center;display:block;margin-top:10px;">Volver</a>
                 </div>
                 <div class="register-welcome-side">
                     <h2 class="welcome-title">¡Bienvenido!</h2>
