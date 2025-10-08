@@ -1,9 +1,3 @@
-
-
-
-
-
-
 const button = document.getElementById("oscuro");
 const body = document.body;
 const icon = button.querySelector("i"); // <i class="bi bi-moon-fill"></i>
