@@ -648,3 +648,81 @@ body {
   --bg-color: #121212;
   --text-color: #f5f5f5;
 }
+
+
+
+
+
+
+
+#fotoPerfilBtn {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, 0.2s;
+  background: transparent;
+}
+
+#fotoPerfilBtn i {
+  font-size: 10rem;
+  color: #6c757d;
+  transition: transform 0.2s, color 0.2s;
+}
+
+#fotoPerfilBtn:hover {
+  background-color: rgba(0,0,0,0.1);
+  transform: scale(1.05);
+}
+
+#fotoPerfilBtn:hover i {
+  color: #343a40;
+  transform: scale(1.05);
+  width: 80px;
+  height: 80px;
+}
+
+
+
+
+.osc {
+  transition: 0.2s;
+  all: unset;
+  display: block;
+  cursor: pointer;
+  font-size: 3rem;
+  
+}
+
+
+
+.infoPersonal,
+.datosCuenta,
+.seguridad,
+.tarjetas-direcciones,
+.privacidad,
+.notificaciones,
+.ayuda-soporte {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;  
+  transition: 0.2s;
+}
+
+.infoPersonal:hover,
+.datosCuenta:hover,
+.osc:hover,
+.seguridad:hover,
+.tarjetas-direcciones:hover,
+.privacidad:hover,
+.notificaciones:hover,
+.ayuda-soporte:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Ligero gris al pasar el mouse */
+}
