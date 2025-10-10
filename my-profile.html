@@ -88,29 +88,62 @@
     <div class="container">
 
       <div class="perfil">
-        
-        <button id="fotoPerfilBtn">
-          <i id="fotoPerfil" class="bi bi-person-circle"></i>
-          <span class="agregar">+ Agregar</span>
-        </button>
+        <div class="text-center mb-4">
+          <button id="fotoPerfilBtn" class="position-relative">
+            <i id="fotoPerfil" class="bi bi-person-circle"></i>
+            <span class="agregar">+ Agregar foto</span>
+          </button>
+        </div>
 
-        <h1 id="usuarioActivo">aaa</h1>
-
-        <h2 id="emailUsuario">aaaa</h2>
-
-        <button id="editarPerfil" class="btn btn-primary">Editar perfil</button>
+        <h1 id="usuarioActivo" class="text-center mb-3"></h1>
 
         <div class="container">
-      <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
+          <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
+        </div>
 
-      </div>
+        <hr>
 
-      <hr>
+      <div class="infoPersonal-section">
+        <div class="d-flex justify-content-between align-items-start p-3">
+          <div>
+            <h4><i class="bi bi-info-square"></i> Información Personal</h4>
+            <div id="profile-info" class="mt-3">
+              <p class="mb-2"><strong>Nombre:</strong> <span id="nombre-display">-</span></p>
+              <p class="mb-2"><strong>Apellido:</strong> <span id="apellido-display">-</span></p>
+              <p class="mb-2"><strong>Email:</strong> <span id="email-display">-</span></p>
+              <p class="mb-2"><strong>Teléfono:</strong> <span id="telefono-display">-</span></p>
+            </div>
+          </div>
+          <button type="button" id="actualizarPerfil" class="btn btn-outline-primary">
+            <i class="bi bi-pencil"></i> Actualizar Perfil
+          </button>
+        </div>
 
-      <button class="infoPersonal">
-        <h4><i class="bi bi-info-square"></i> Información Personal</h4>
-        <p>Información de tu documento de identidad.</p>
-        </button>
+        <div id="profile-form" class="container mt-3 border rounded p-4" style="display: none;">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nombre">Nombre*</label>
+              <input type="text" class="form-control" id="nombre" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="apellido">Apellido*</label>
+              <input type="text" class="form-control" id="apellido" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="email">Email*</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="telefono">Teléfono de Contacto</label>
+              <input type="tel" class="form-control" id="telefono">
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <button id="guardarPerfil" class="btn btn-primary">Guardar Cambios</button>
+          </div>
+        </div>
 
       <hr>
 
@@ -162,6 +195,7 @@
   <script src="js/init.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/include-partials.js"></script>
+  <script src="js/my-profile.js"></script>
 
 </body>
 
