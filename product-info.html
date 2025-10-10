@@ -84,9 +84,11 @@
       <div id="puntuacion-text" class="badge text-bg-dark ms-3">Medio</div>
     </div>
     <form id="form-comentario">
-      <div class="mb-3">
-        <textarea id="comentario-input" class="form-control" rows="3" placeholder="Escribí tu opinión..."></textarea>
+      <div class="mb-3 position-relative">
+        <textarea id="comentario-input" class="form-control" rows="3" maxlength="100" placeholder="Escribí tu opinión..."></textarea>
+        <small id="contador-caracteres" class="position-absolute end-0 bottom-0 me-2 mb-1 text-muted">0/100</small>
       </div>
+
       <button type="button" class="btn btn-primary" id="btn-enviar-comentario">Enviar</button>
     </form>
     <div id="comentarios-list" class="mt-3"></div>

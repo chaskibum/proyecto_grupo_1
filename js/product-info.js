@@ -145,14 +145,45 @@ document.addEventListener('DOMContentLoaded', async function () {
       
         const btnEnviar = document.getElementById('btn-enviar-comentario');
         const comentarioInput = document.getElementById('comentario-input');
+
+        const contador = document.getElementById('contador-caracteres');
+        const maxCaract = 100;
+
+        comentarioInput.addEventListener('input', () => {
+            let texto = comentarioInput.value;
+            if (texto.length > maxCaract) {
+                comentarioInput.value = texto.substring(0, maxCaract);
+            }
+            contador.textContent = `${comentarioInput.value.length}/${maxCaract}`;
+        });
+
         const comentariosLista = document.getElementById('comentarios-list');
         let comentarios = JSON.parse(localStorage.getItem(`comentarios_${productId}`)) || [];
 
 
+        function tiempoComentario(fechaISO) {
+            const fecha = new Date(fechaISO);
+            const ahora = new Date();
+            const diffSeg = Math.floor((ahora - fecha) / 1000);
+            if (diffSeg < 60) return `${diffSeg} seg`;
+            const diffMin = Math.floor(diffSeg / 60);
+            if (diffMin < 60) return `${diffMin} min`;
+            const diffHrs = Math.floor(diffMin / 60);
+            if (diffHrs < 24) return `${diffHrs} hs`;
+            const diffDias = Math.floor(diffHrs / 24);
+            if (diffDias < 7) return `${diffDias} días`;
+            const diffSem = Math.floor(diffDias / 7);
+            if (diffSem < 4) return `${diffSem} sem`;
+            const diffMes = Math.floor(diffDias / 30);
+            if (diffMes < 12) return `${diffMes} meses`;
+            return `${Math.floor(diffDias/365)} años`;
+        }
+
+
         function mostrarComentarios() {
+
          let html = '';
 
-        // cambio de orden de mostrar comentarios, de mas recientes a mas antiguos 
 
         for (let i = comentarios.length - 1; i >= 0; i--) {
          const c = comentarios[i];
@@ -160,9 +191,97 @@ document.addEventListener('DOMContentLoaded', async function () {
         for (let j = 0; j < c.estrellas; j++) {
             estrellasHTML += '<i class="bi bi-star-fill text-warning"></i> ';
             }
-        html += `<div class="mb-2"><strong>${c.nombre}</strong> ${estrellasHTML}<br>${c.texto}</div>`;
+
+            const usuarioAct = c.nombre === localStorage.getItem('usuarioActivo');
+            const usuario = localStorage.getItem('usuarioActivo');
+            const votoUsuario = c.votos?.[usuario] || null;
+
+            c.likes = c.likes || 0;
+            c.dislikes = c.dislikes || 0;
+
+        html += `
+
+        <div class="position-relative d-flex align-items-start mb-3 p-2 border rounded comentario-item" data-idx="${i}">
+
+        ${ usuarioAct ? `<i class="bi bi-trash-fill text-dark position-absolute top-0 end-0 m-2 btn-eliminar" data-idx="${i}" role="button" title="Eliminar" style="cursor:pointer; font-size:1.1rem;"></i>` : '' }
+
+        <div class="me-2">
+        <i class="bi bi-person-circle fs-3 text-secondary"></i>
+        </div>
+
+        <div class="mb-2">
+        <strong>${c.nombre}</strong> ${estrellasHTML}
+        <small class="text-muted">(${tiempoComentario(c.fecha)})</small><br>
+        ${c.texto}
+
+        <div class="mt-2 d-flex align-items-center gap-2">
+     
+        <i class="bi ${votoUsuario === 'like' ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up'} btn-like" data-idx="${i}" style="cursor:pointer;"></i>
+        <span id="like-num-${i}">${c.likes}</span>
+
+        <i class="bi ${votoUsuario === 'dislike' ? 'bi-hand-thumbs-down-fill' : 'bi-hand-thumbs-down'} ms-2 btn-dislike" data-idx="${i}" style="cursor:pointer;"></i>
+        <span id="dislike-num-${i}">${c.dislikes}</span>
+
+        </div>
+        </div>
+
+
+        </div>`;
     }
     comentariosLista.innerHTML = html;
+
+
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const idx = parseInt(e.currentTarget.getAttribute('data-idx'));
+             if (confirm('¿Estás seguro de querer eliminar este comentario?')) {
+                comentarios.splice(idx, 1);
+                localStorage.setItem(`comentarios_${productId}`, JSON.stringify(comentarios));
+                mostrarComentarios();
+             }
+            });
+        });
+
+    document.querySelectorAll('.btn-like').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const idx = parseInt(e.currentTarget.getAttribute('data-idx'));
+            const usuario = localStorage.getItem('usuarioActivo');
+            if (!comentarios[idx].votos) comentarios[idx].votos = {};
+            if (comentarios[idx].votos[usuario] === 'dislike') {
+                comentarios[idx].dislikes--;
+            }
+            if (comentarios[idx].votos[usuario] === 'like') {
+                comentarios[idx].likes--;
+                comentarios[idx].votos[usuario] = null;
+            } else {
+                comentarios[idx].likes++;
+                comentarios[idx].votos[usuario] = 'like';
+            }
+            localStorage.setItem(`comentarios_${productId}`, JSON.stringify(comentarios));
+            mostrarComentarios();
+        });
+    });
+
+    document.querySelectorAll('.btn-dislike').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const idx = parseInt(e.currentTarget.getAttribute('data-idx'));
+            const usuario = localStorage.getItem('usuarioActivo');
+            if (!comentarios[idx].votos) comentarios[idx].votos = {};
+            if (comentarios[idx].votos[usuario] === 'like') {
+                comentarios[idx].likes--;
+            }
+            if (comentarios[idx].votos[usuario] === 'dislike') {
+                comentarios[idx].dislikes--;
+                comentarios[idx].votos[usuario] = null;
+            } else {
+                comentarios[idx].dislikes++;
+                comentarios[idx].votos[usuario] = 'dislike';
+            }
+            localStorage.setItem(`comentarios_${productId}`, JSON.stringify(comentarios));
+            mostrarComentarios();
+        });
+    });
+
 }
 		
         mostrarComentarios();
@@ -186,7 +305,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             comentarios.push({
                 nombre: usuario,
                 texto: texto,
-                estrellas: estrellasSeleccionadas
+                estrellas: estrellasSeleccionadas,
+                fecha: new Date().toISOString(),
             });
 
 			 // Guarda los comentarios en el local
