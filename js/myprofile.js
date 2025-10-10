@@ -1,7 +1,7 @@
 // Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
     // Manejo del tema oscuro/claro
-   // const button = document.getElementById("oscuro");
+    const button = document.getElementById("oscuro");
     const body = document.body;
     const icon = document.getElementById("luna");
   

@@ -1,9 +1,11 @@
 const button = document.getElementById("oscuro");
 const body = document.body;
-const icon = button.querySelector("i"); // <i class="bi bi-moon-fill"></i>
+const icon = document.getElementById("luna"); 
 
 // Aplicar tema guardado al cargar la página
 addEventListener("DOMContentLoaded", () => {
+
+
     if (localStorage.getItem("theme") === "dark") {
         body.classList.add("dark-mode");
         icon.className = "bi bi-sun-fill"; // mostrar sol
@@ -12,27 +14,16 @@ addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Cambiar tema al hacer click
+
+
 button.addEventListener("click", () => {
     body.classList.toggle("dark-mode");
 
     if (body.classList.contains("dark-mode")) {
-        icon.className = "bi bi-sun-fill"; // mostrar sol
+       icon.className = "bi bi-sun-fill";
         localStorage.setItem("theme", "dark");
     } else {
-        icon.className = "bi bi-moon-fill"; // mostrar luna
-        localStorage.setItem("theme", "light");
+       icon.className = "bi bi-moon-fill";
+       localStorage.setItem("theme", "light");
     }
 });
-
-//button.addEventListener("click", () => {
-    //body.classList.toggle("dark-mode");
-
-    //if (body.classList.contains("dark-mode")) {
-      //  icon.className = "bi bi-sun-fill";
-      //  localStorage.setItem("theme", "dark");
-   // } else {
-      //  icon.className = "bi bi-moon-fill";
-       // localStorage.setItem("theme", "light");
-   // }
-//});

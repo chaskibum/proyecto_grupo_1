@@ -11,7 +11,7 @@
   <link href="css/my-profile.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
+  <script src="js/my-profile.js"></script>
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -93,29 +93,17 @@
           <div id="fotoPerfil" class="bi bi-person-circle"></div>
           <i id="agregarFoto" class="bi bi-plus"></i>
           <input type="file" id="inputFoto" accept="image/*" style="display: none;">
-
-
+          <img id="imgpreview" src="img/img_perfil.png" alt="Foto de perfil" class="profile-image">
         </div>
 
+              <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
 
         <div>
-
-
           <h1 id="usuarioActivo">aaa</h1>
-
-          <h2 id="emailUsuario">aaaa</h2>
-          <div class="text-center mb-4">
-            <button id="fotoPerfilBtn" class="position-relative">
-              <i id="fotoPerfil" class="bi bi-person-circle"></i>
-              <span class="agregar">+ Agregar foto</span>
-            </button>
-          </div>
+        </div>
 
           <h1 id="usuarioActivo" class="text-center mb-3"></h1>
 
-          <div class="container">
-            <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
-          </div>
 
           <hr>
 
@@ -131,24 +119,24 @@
                 </div>
               </div>
               <button type="button" id="actualizarPerfil" class="btn btn-outline-primary">
-                <i class="bi bi-pencil"></i> Actualizar Perfil
+                <i class="bi bi-pencil"></i> Editar Perfil
               </button>
             </div>
 
             <div id="profile-form" class="container mt-3 border rounded p-4" style="display: none;">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="nombre">Nombre*</label>
+                  <label for="nombre">Nombre</label>
                   <input type="text" class="form-control" id="nombre" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="apellido">Apellido*</label>
+                  <label for="apellido">Apellido</label>
                   <input type="text" class="form-control" id="apellido" required>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="email">Email*</label>
+                  <label for="email">Email</label>
                   <input type="email" class="form-control" id="email" required>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -161,21 +149,7 @@
               </div>
             </div>
 
-            <button id="editarPerfil" class="btn btn-primary">Editar perfil</button>
 
-            <div class="container">
-              <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
-
-            </div>
-
-            <hr>
-
-            <button class="infoPersonal">
-              <h4><i class="bi bi-info-square"></i> Información Personal</h4>
-              <p>Información de tu documento de identidad.</p>
-            </button>
-
-            <hr>
 
             <button class="datosCuenta">
               <h4><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h4>
@@ -225,7 +199,7 @@
   <script src="js/init.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/include-partials.js"></script>
-  <script src="js/my-profile.js"></script>
+ 
 
 </body>
 
