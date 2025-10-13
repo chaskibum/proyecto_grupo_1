@@ -1,0 +1,88 @@
+#product-info-container img {
+  border-radius: 10px;
+  object-fit: cover;
+  width: 100%;
+  max-height: 350px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+#product-info-container h3 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #3f3f3f;
+}
+
+#product-info-container p {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+#product-info-container p b {
+  font-size: 1.3rem;
+  color: #111;
+}
+
+#product-info-container .text-warning {
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+#product-info-container .text-muted {
+  font-size: 0.95rem;
+  margin-left: 0.5rem;
+  color: #777 !important;
+}
+
+@media (max-width: 768px) {
+  #product-info-container {
+    padding: 2rem 1.2rem;
+  }
+
+  #product-info-container h3 {
+    font-size: 2rem;
+  }
+
+  #product-info-container img {
+    max-height: 360px;
+  }
+}
+
+#product-info-container img:hover, #product-info-container h3:hover {
+    transform: scale(1.1);
+}
+
+
+#button-añadir-carro {
+  background-color: #28a745;
+  color: #fff;
+  font-size: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#button-añadir-carro:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+/* Estrellas */
+
+.puntuacion-estrellas {
+  font-size: 2rem;
+  color: #ffc107;
+  cursor: pointer;
+}
+
+#puntuacion-text {
+  color: #111;
+  font-size: 1rem;
+}

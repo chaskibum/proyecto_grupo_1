@@ -1,3 +1,71 @@
+/* Footer */
+.footer-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100vw;
+  padding: 0 0 10px 0;
+  margin: 0;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 100;
+}
+
+.footer-left {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 30px;
+}
+
+.footer-text {
+  font-size: 1.2rem;
+  color: #000;
+  font-weight: 600;
+}
+
+.footer-right {
+  text-align: right;
+  margin-right: 40px;
+}
+
+#logo_jap {
+  width: 100px;
+  height: auto;
+}
+
+#logo_jap {
+  height: 80px;
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .footer-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 10px 0;
+  }
+
+  .footer-left {
+    margin-left: 10px;
+  }
+
+  .footer-right {
+    width: 100%;
+    text-align: left;
+    margin: 10px 0 0 10px;
+  }
+
+  #logo_jap {
+    height: 80px;
+  }
+}
+
 .jumbotron,
 .card-body,
 .container,
@@ -9,9 +77,104 @@
   font-weight: bold;
 }
 
-nav a {
+#boton,
+#vender {
+  width: 35%;
+  margin: 0 auto;
+  margin-top: 5rem;
+}
+
+/* Navbar */
+
+.navbar-nav a {
+  padding-inline: 2rem
+}
+
+nav.navbar a.nav-link,
+nav.navbar .dropdown-toggle {
   text-decoration: none;
 }
+
+nav.navbar {
+  padding: 0 !important;
+}
+
+@media (max-width:991.98px) {
+  nav.navbar .navbar-nav {
+    flex-direction: column !important;
+    width: 100%;
+    align-items: flex-start !important;
+  }
+
+  .navbar-nav a {
+    padding-inline: 0rem
+  }
+
+  nav.navbar nav-item {
+    width: 100%;
+  }
+
+  nav.navbar .dropdown-menu {
+    width: 100%;
+  }
+
+}
+
+/* Navbar Cantidad de productos */
+
+#cantidad-agregada {
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#cantidad {
+  margin: 0;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+
+
+/* Manoo like */
+#mano-like {
+  margin-top: -2px !important;
+  margin-left: 10px !important;
+  position: absolute;
+}
+
+
+/* Icon Menú Query */
+
+.navbar-toggler {
+  margin-top: 1rem;
+  border: none;
+}
+
+/*  Buscador  */
+#buscador {
+  width: 20%;
+  border-radius: 30px;
+  margin-top: 1rem;
+}
+
+
+@media (max-width: 991px) {
+  #buscador {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 .bd-placeholder-img {
   font-size: 1.125rem;
@@ -22,11 +185,40 @@ nav a {
   user-select: none;
 }
 
+
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
+
+  #boton,
+  #vender {
+    width: 20%;
+  }
+
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
 }
+
+@media (min-width: 1366px) {
+  .footer-text {
+    font-size: 2rem;
+    color: #000;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+
+  #boton,
+  #vender {
+    width: 15%;
+  }
+
+}
+
+
 
 .jumbotron {
   height: 50vh;
@@ -41,12 +233,6 @@ nav a {
   font-weight: bold;
 }
 
-@media (min-width: 768px) {
-  .jumbotron {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
 
 .jumbotron p:last-child {
   margin-bottom: 0;
@@ -74,6 +260,7 @@ footer {
 
 footer p {
   margin-bottom: .25rem;
+
 }
 
 .site-header a {
@@ -187,4 +374,398 @@ a.custom-card:hover {
 
 .checked {
   color: orange;
+}
+
+
+
+
+button {
+  background-color: rgb(0, 214, 203);
+  color: white;
+  width: 17px 17px;
+  font-size: 20px;
+  border: 3px rgb(255, 255, 255);
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+button:hover {
+  background-color: #0064c2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input:hover {
+  border-color: rgb(0, 0, 0);
+}
+
+.alerta {
+  display: none;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #000000;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+.alerta p {
+  margin-bottom: 10px;
+}
+
+hr {
+  margin: 20px 0;
+  height: 2px;
+  border: none;
+  background-color: #001e3f;
+}
+
+
+
+/* boton vender */
+
+#vender {
+  font-size: 1rem;
+  padding: .375rem .75rem;
+  border-radius: 30px;
+  color: #212529;
+  border-color: #212529;
+  background-color: #fff;
+}
+
+#vender:hover {
+  background-color: #212529;
+  color: #fff;
+}
+
+
+/* info de productos en cel y tablet */
+.tooltip-cel {
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0, 80rem;
+  background-color: rgba(83, 83, 83, 0.8);
+  color: white;
+  text-align: center;
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+/* boton vender */
+
+#vender {
+  display: block;
+  margin: 20px auto;
+  font-size: 1rem;
+  padding: .375rem .75rem;
+  border-radius: 30px;
+  color: #212529;
+  border-color: #212529;
+  background-color: #fff;
+}
+
+#vender:hover {
+  background-color: #212529;
+  color: #fff;
+}
+
+/*  Productos  */
+
+button.btn-dark.mt-auto {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-body .btn {
+  align-self: flex-end;
+}
+
+/*  inicio sesion name */
+
+#inicio-sesion {
+  padding-left: 0;
+}
+
+
+
+/*  Products  */
+
+
+/* H2 de containers */
+
+.my-4 {
+  margin-bottom: 4rem !important;
+}
+
+
+/*filtros de precios */
+
+
+.Filtros {
+  margin-top: -3rem;
+  border-radius: 5px;
+  padding: 15px;
+  gap: 7px;
+  margin-bottom: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+}
+
+.orden {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0;
+  color: black;
+  gap: 7px;
+}
+
+.orden button {
+  background-color: rgb(216, 216, 216);
+  border: 1px solid rgb(112, 112, 112);
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0;
+  border: black;
+}
+
+.orden button:hover {
+  background-color: rgb(100, 100, 100);
+}
+
+.orden-ascendente,
+.orden-descentende {
+  margin: 0;
+}
+
+.filtro-precio {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+.filtro-precio label {
+  margin: 0;
+  font-weight: bold;
+  min-width: 50px;
+  color: rgb(94, 94, 94);
+}
+
+.filtro-precio input {
+  margin: 0;
+  border-radius: 4px;
+  width: 100px;
+  padding: 10px;
+  border: 1px solid rgb(145, 145, 145);
+}
+
+#filtro {
+  color: black;
+  background-color: rgb(231, 231, 231);
+  margin: 0;
+}
+
+#filtro:hover {
+  background-color: rgb(170, 170, 170);
+}
+
+#limpiar {
+  margin: 0;
+}
+
+#limpiar:hover {
+  color: blue;
+}
+
+@media (max-width: 600px) {
+  .filtro-precio {
+    flex-direction: column;
+    align-items: stretch; /* que cada elemento ocupe todo el ancho */
+    gap: 8px; /* separación entre elementos */
+  }
+
+  .filtro-precio label,
+  .filtro-precio input,
+  .filtro-precio button,
+  .filtro-precio a {
+    width: 100%; /* ocupan todo el ancho disponible */
+    text-align: center; /* centrado opcional para los botones y link */
+  }
+
+  .filtro-precio input {
+    box-sizing: border-box; /* para que padding no rompa el ancho */
+  }
+}
+
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Tema oscuro */
+.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+}
+
+#fotoPerfilBtn {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, 0.2s;
+  background: transparent;
+}
+
+#fotoPerfilBtn i {
+  font-size: 10rem;
+  color: #6c757d;
+  transition: transform 0.2s, color 0.2s;
+}
+
+#fotoPerfilBtn:hover {
+  background-color: rgba(0,0,0,0.1);
+  transform: scale(1.05);
+}
+
+#fotoPerfilBtn:hover i {
+  color: #343a40;
+  transform: scale(1.05);
+  width: 80px;
+  height: 80px;
+}
+
+.osc {
+  transition: 0.2s;
+  all: unset;
+  display: block;
+  cursor: pointer;
+  font-size: 3rem;
+  
+}
+
+.infoPersonal,
+.datosCuenta,
+.seguridad,
+.tarjetas-direcciones,
+.privacidad,
+.notificaciones,
+.ayuda-soporte {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;  
+  transition: 0.2s;
+}
+
+.infoPersonal:hover,
+.datosCuenta:hover,
+.osc:hover,
+.seguridad:hover,
+.tarjetas-direcciones:hover,
+.privacidad:hover,
+.notificaciones:hover,
+.ayuda-soporte:hover {
+  background-color: rgba(0, 0, 0, 0.05); 
+}
+
+
+/*-------------My-profile css Modo dark-------------------*/
+
+#oscuro {
+  border: none;
+  margin: 0;
+  outline: none !important;    
+  box-shadow: none 
+}
+
+#img-perfil {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+#fotoPerfil {
+  font-size: 120px;
+  color: #6c757d;
+}
+
+#img-perfil i.bi-plus-circle-fill {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(10%, 80%);
+  font-size: 40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-color: white;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 80%;
+}
+
+
+#img-perfil i.bi-plus-circle-fill:hover {
+  transform: translate(10%, 80%) scale(1.15);
+}
+
+/*--------- Dark mode------------ */
+
+body.dark-mode #img-perfil i.bi-plus-circle-fill {
+  background-color: rgb(0, 0, 0) !important;
+  color: white !important; 
 }

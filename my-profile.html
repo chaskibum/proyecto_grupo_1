@@ -8,6 +8,9 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -27,47 +30,136 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
-          </li>
-          <li class="nav-item">
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <div id="navbar"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = 'Cerrar sesión';
+          link.href = 'login.html';
+        }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '104',
+          'Computadoras': '105',
+          'Vestimenta': '106',
+          'Electrodomésticos': '107',
+          'Deporte': '108',
+          'Celulares': '109'
+        };
+
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      });
+  </script>
+
   <main>
+
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
+
+      <div class="perfil">
+        
+<div id="img-perfil">
+  <div id="fotoPerfil" class="bi bi-person-circle"></div>
+  <i class="bi bi-plus-circle-fill" id="agregarFoto"></i>
+  <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+</div>
+
+
+        <h1 id="usuarioActivo">aaa</h1>
+
+        <h2 id="emailUsuario">aaaa</h2>
+
+        <button id="editarPerfil" class="btn btn-primary">Editar perfil</button>
+
+      <hr>
+
+      <button class="infoPersonal">
+        <h4><i class="bi bi-info-square"></i> Información Personal</h4>
+        <p>Información de tu documento de identidad.</p>
+        </button>
+
+      <hr>
+
+      <button class="datosCuenta">
+        <h4><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h4>
+        <p>no se</p>
+        </button>
+
+      <hr>
+
+      <button class="seguridad">
+        <h4><i class= "bi bi-shield-lock"></i> Seguridad</h4>
+        <p>Configura la seguridad de tu cuenta.</p>
+        </button>
+
+      <hr>
+
+      <button class="tarjetas-direcciones">
+        <h4><i class="bi bi-credit-card"></i> <i class="bi bi-geo-alt"></i> Tarjetas y Direcciones</h4>
+        <p>Tarjetas y direcciones guardadas en tu cuenta.</p>
+        </button>
+
+      <hr>
+
+      <button class="privacidad">
+        <h4><i class="bi bi-shield-exclamation"></i> Privacidad</h4>
+        <p>Preferencias y control sobre el uso de tus datos.</p>
+        </button>
+
+      <hr>
+
+      <button class="notificaciones">
+        <h4><i class="bi bi-bell"></i> Notificaciones</h4>
+        <p>Elige que tipo de información quieres recibir.</p>
+        </button>
+
+      <hr>
+
+      <button class="ayuda-soporte">
+        <h4><i class="bi bi-patch-question-fill"></i> Ayuda y Soporte</h4>
+        <p>Si necesitas ayuda, haz click aquí!</p>
+        </button>
+
     </div>
+
   </main>
-  <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
-  </footer>
+  <footer id="main-footer"></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
-  <script src="js/my-profile.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/include-partials.js"></script>
+
 </body>
 
 </html>
