@@ -1,6 +1,6 @@
 function updateNavbarUser() {
     let usuario = localStorage.getItem('usuarioActivo');
-    // fallback: if perfilUsuario exists (from profile form), use its nombre
+    //  si existe perfilUsuario (desde el formulario de perfil), usar su nombre
     if (!usuario) {
         try {
             const raw = localStorage.getItem('perfilUsuario');
@@ -17,21 +17,18 @@ function updateNavbarUser() {
         if (currentPage === 'my-profile.html') {
             navSesion.textContent = 'Cerrar sesión';
             navSesion.href = 'login.html';
-            // attach logout action (idempotent)
             if (!navSesion.__logoutAttached) {
                 navSesion.__logoutAttached = true;
                 navSesion.addEventListener('click', function (e) {
                     e.preventDefault();
                     localStorage.removeItem('usuarioActivo');
                     localStorage.removeItem('sesionActiva');
-                    // optional: keep perfilUsuario but you could also remove it
                     window.location.href = 'login.html';
                 });
             }
         } else {
             navSesion.textContent = usuario;
             navSesion.href = 'my-profile.html';
-            // remove any logout handler flag if present
             navSesion.__logoutAttached = false;
         }
     }
