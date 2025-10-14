@@ -4,29 +4,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>eMercado - Todo lo que busques está aquí</title>
+  <title>eMercado - Perfil</title>
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link href="css/my-profile.css" rel="stylesheet">
-  <link href="css/index.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -37,7 +20,6 @@
       .then(res => res.text())
       .then(html => {
         document.getElementById("navbar").innerHTML = html;
-
 
         const usuario = localStorage.getItem('usuarioActivo');
         const link = document.getElementById('inicio-sesion');
@@ -89,181 +71,104 @@
 
       <div class="perfil">
 
-        <div id="img-perfil">
-          <div id="fotoPerfil" class="bi bi-person-circle"></div>
-          <i id="agregarFoto" class="bi bi-plus"></i>
-          <input type="file" id="inputFoto" accept="image/*" style="display: none;">
-          <img id="imgpreview" src="img/img_perfil.png" alt="Foto de perfil" class="profile-image">
-        </div>
-
-        <!-- Botón modo oscuro (estilo perfil-dark) -->
-        <button id="oscuro" class="btn btn-outline-light ms-2"><i class="bi bi-moon-fill"></i></button>
-
-        <div>
-          <h1 id="usuarioActivo">aaa</h1>
-        </div>
-
-
-          <hr>
-
-          <div class="infoPersonal-section">
-            <div class="d-flex justify-content-between align-items-start p-3">
-              <div>
-                <h4><i class="bi bi-info-square"></i> Información Personal</h4>
-                <div id="profile-info" class="mt-3">
-                  <p class="mb-2"><strong>Nombre:</strong> <span id="nombre-display">-</span></p>
-                  <p class="mb-2"><strong>Apellido:</strong> <span id="apellido-display">-</span></p>
-                  <p class="mb-2"><strong>Email:</strong> <span id="email-display">-</span></p>
-                  <p class="mb-2"><strong>Teléfono:</strong> <span id="telefono-display">-</span></p>
-                </div>
-              </div>
-              <button type="button" id="actualizarPerfil" class="btn btn-outline-primary">
-                <i class="bi bi-pencil"></i> Editar Perfil
-              </button>
-            </div>
-
-            <div id="profile-form" class="container mt-3 border rounded p-4" style="display: none;">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" id="nombre" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="apellido">Apellido</label>
-                  <input type="text" class="form-control" id="apellido" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="telefono">Teléfono de Contacto</label>
-                  <input type="tel" class="form-control" id="telefono">
-                </div>
-              </div>
-              <div class="text-center mt-3">
-                <button id="guardarPerfil" class="btn btn-primary">Guardar Cambios</button>
-              </div>
-            </div>
-
-
-
-            <button class="datosCuenta">
-              <h4><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h4>
-              <p>no se</p>
-            </button>
-
-            <hr>
-
-            <button class="seguridad">
-              <h4><i class="bi bi-shield-lock"></i> Seguridad</h4>
-              <p>Configura la seguridad de tu cuenta.</p>
-            </button>
-
-            <hr>
-
-            <button class="tarjetas-direcciones">
-              <h4><i class="bi bi-credit-card"></i> <i class="bi bi-geo-alt"></i> Tarjetas y Direcciones</h4>
-              <p>Tarjetas y direcciones guardadas en tu cuenta.</p>
-            </button>
-
-            <hr>
-
-            <button class="privacidad">
-              <h4><i class="bi bi-shield-exclamation"></i> Privacidad</h4>
-              <p>Preferencias y control sobre el uso de tus datos.</p>
-            </button>
-
-            <hr>
-
-            <button class="notificaciones">
-              <h4><i class="bi bi-bell"></i> Notificaciones</h4>
-              <p>Elige que tipo de información quieres recibir.</p>
-            </button>
-
-            <hr>
-
-            <button class="ayuda-soporte">
-              <h4><i class="bi bi-patch-question-fill"></i> Ayuda y Soporte</h4>
-              <p>Si necesitas ayuda, haz click aquí!</p>
-            </button>
-
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div id="img-perfil" style="width:80px; height:80px;">
+            <div id="fotoPerfil" class="bi bi-person-circle" style="font-size:80px;color:#6c757d;"></div>
+            <i id="agregarFoto" class="bi bi-plus" style="position:relative; left:-18px; top:50px; cursor:pointer;"></i>
+            <input type="file" id="inputFoto" accept="image/*" style="display: none;">
           </div>
-=======
-        
-<div id="img-perfil">
-  <div id="fotoPerfil" class="bi bi-person-circle"></div>
-  <i class="bi bi-plus-circle-fill" id="agregarFoto"></i>
-  <input type="file" id="inputFoto" accept="image/*" style="display: none;">
-</div>
 
+          <div>
+            <h1 id="usuarioActivo" class="h4 mb-0">Usuario</h1>
+            <div class="mt-1">
+              <button id="oscuro" class="btn btn-outline-light btn-sm me-2"><i class="bi bi-moon-fill"></i></button>
+              <button type="button" id="actualizarPerfil" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i> Editar Perfil</button>
+            </div>
+          </div>
+        </div>
 
-        <h1 id="usuarioActivo">aaa</h1>
+        <hr>
 
-        <h2 id="emailUsuario">aaaa</h2>
+        <section class="infoPersonal-section mb-4">
+          <h4><i class="bi bi-info-square"></i> Información Personal</h4>
+          <div id="profile-info" class="mt-3">
+            <p class="mb-2"><strong>Nombre:</strong> <span id="nombre-display">-</span></p>
+            <p class="mb-2"><strong>Apellido:</strong> <span id="apellido-display">-</span></p>
+            <p class="mb-2"><strong>Email:</strong> <span id="email-display">-</span></p>
+            <p class="mb-2"><strong>Teléfono:</strong> <span id="telefono-display">-</span></p>
+          </div>
 
-        <button id="editarPerfil" class="btn btn-primary">Editar perfil</button>
+          <div id="profile-form" class="container mt-3 border rounded p-4" style="display: none; max-width:700px;">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="apellido">Apellido</label>
+                <input type="text" class="form-control" id="apellido" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="telefono">Teléfono de Contacto</label>
+                <input type="tel" class="form-control" id="telefono">
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <button id="guardarPerfil" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+          </div>
+        </section>
 
-      <hr>
+        <hr>
 
-      <button class="infoPersonal">
-        <h4><i class="bi bi-info-square"></i> Información Personal</h4>
-        <p>Información de tu documento de identidad.</p>
-        </button>
+        <section class="account-options">
+          <button class="datosCuenta btn btn-light w-100 text-start mb-2">
+            <h5 class="mb-0"><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h5>
+            <small class="text-muted">no se</small>
+          </button>
 
-      <hr>
+          <button class="seguridad btn btn-light w-100 text-start mb-2">
+            <h5 class="mb-0"><i class="bi bi-shield-lock"></i> Seguridad</h5>
+            <small class="text-muted">Configura la seguridad de tu cuenta.</small>
+          </button>
 
-      <button class="datosCuenta">
-        <h4><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h4>
-        <p>no se</p>
-        </button>
+          <button class="tarjetas-direcciones btn btn-light w-100 text-start mb-2">
+            <h5 class="mb-0"><i class="bi bi-credit-card"></i> Tarjetas y Direcciones</h5>
+            <small class="text-muted">Tarjetas y direcciones guardadas en tu cuenta.</small>
+          </button>
 
-      <hr>
+          <button class="privacidad btn btn-light w-100 text-start mb-2">
+            <h5 class="mb-0"><i class="bi bi-shield-exclamation"></i> Privacidad</h5>
+            <small class="text-muted">Preferencias y control sobre el uso de tus datos.</small>
+          </button>
 
-      <button class="seguridad">
-        <h4><i class= "bi bi-shield-lock"></i> Seguridad</h4>
-        <p>Configura la seguridad de tu cuenta.</p>
-        </button>
+          <button class="notificaciones btn btn-light w-100 text-start mb-2">
+            <h5 class="mb-0"><i class="bi bi-bell"></i> Notificaciones</h5>
+            <small class="text-muted">Elige que tipo de información quieres recibir.</small>
+          </button>
 
-      <hr>
+          <button class="ayuda-soporte btn btn-light w-100 text-start mb-2">
+            <h5 class="mb-0"><i class="bi bi-patch-question-fill"></i> Ayuda y Soporte</h5>
+            <small class="text-muted">Si necesitas ayuda, haz click aquí!</small>
+          </button>
+        </section>
 
-      <button class="tarjetas-direcciones">
-        <h4><i class="bi bi-credit-card"></i> <i class="bi bi-geo-alt"></i> Tarjetas y Direcciones</h4>
-        <p>Tarjetas y direcciones guardadas en tu cuenta.</p>
-        </button>
-
-      <hr>
-
-      <button class="privacidad">
-        <h4><i class="bi bi-shield-exclamation"></i> Privacidad</h4>
-        <p>Preferencias y control sobre el uso de tus datos.</p>
-        </button>
-
-      <hr>
-
-      <button class="notificaciones">
-        <h4><i class="bi bi-bell"></i> Notificaciones</h4>
-        <p>Elige que tipo de información quieres recibir.</p>
-        </button>
-
-      <hr>
-
-      <button class="ayuda-soporte">
-        <h4><i class="bi bi-patch-question-fill"></i> Ayuda y Soporte</h4>
-        <p>Si necesitas ayuda, haz click aquí!</p>
-        </button>
-
+      </div>
     </div>
-
   </main>
+
   <footer id="main-footer"></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/include-partials.js"></script>
-
+  <script src="js/my-profile.js"></script>
 </body>
 
 </html>

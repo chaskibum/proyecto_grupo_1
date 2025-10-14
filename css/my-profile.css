@@ -6,8 +6,9 @@
   display: inline-block;
 }
 
+/* Avatar reducido para evitar imagen gigante */
 #fotoPerfil {
-  font-size: 100px;
+  font-size: 48px; /* reducido */
   color: #6c757d;
   display: block;
 }
@@ -35,35 +36,7 @@
   transform: translate(-10%, -55%) scale(1.15);
 }
 
-#fotoPerfilBtn {
-  width: 180px;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.2s, 0.2s;
-  background: transparent;
-}
-
-#fotoPerfilBtn i {
-  font-size: 10rem;
-  color: #6c757d;
-  transition: transform 0.2s, color 0.2s;
-}
-
-#fotoPerfilBtn:hover {
-  background-color: rgba(0,0,0,0.1);
-  transform: scale(1.05);
-}
-
-#fotoPerfilBtn:hover i {
-  color: #343a40;
-  transform: scale(1.05);
-  width: 80px;
-  height: 80px;
-}
+/* eliminadas reglas de foto gigante (no utilizadas) */
 
 /*-----------------------------------*/
 
