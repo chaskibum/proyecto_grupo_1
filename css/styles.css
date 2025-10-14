@@ -118,6 +118,38 @@ nav.navbar {
     width: 100%;
   }
 
+/* My-profile: posicionar botón Editar dentro de Información Personal */
+.infoPersonal {
+  position: relative;
+  padding-top: 1rem;
+}
+.infoPersonal .edit-profile-btn {
+  margin-left: 1rem;
+  white-space: nowrap;
+}
+@media (min-width: 576px) {
+  .infoPersonal .edit-profile-btn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+}
+@media (max-width: 575.98px) {
+  .infoPersonal .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .infoPersonal .edit-profile-btn {
+    position: static;
+    align-self: flex-start;
+  }
+}
+
+/* Profile header styles */
+.profile-header { margin-top: 1rem; margin-bottom: 1rem; }
+.profile-username { font-size: 3rem; margin: 0; }
+.profile-email { color: #6c757d; font-size: 1rem; margin-top: 0.25rem; }
+
 }
 
 /* Navbar Cantidad de productos */

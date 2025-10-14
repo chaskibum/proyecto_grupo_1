@@ -21,6 +21,7 @@
       .then(res => res.text())
       .then(html => {
         document.getElementById("navbar").innerHTML = html;
+        document.dispatchEvent(new Event('navbar:ready'));
 
 
         const usuario = localStorage.getItem('usuarioActivo');

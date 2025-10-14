@@ -1,32 +1,50 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Esperar a que el botón exista si navbar se carga dinámicamente
-  const checkButton = setInterval(() => {
-    const button = document.getElementById("oscuro");
+// Centralized theme handling. Listens for DOMContentLoaded and for
+// 'navbar:ready' (dispatched by include-partials) so it can safely attach
+// handlers to the #oscuro button whether the navbar is already present or
+// injected later.
+(function () {
+  const body = document.body;
+
+  function setIcon(iconEl, dark) {
+    if (!iconEl) return;
+    iconEl.className = dark ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+  }
+
+  function applyThemeFromStorage() {
+    const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) body.classList.add('dark-mode'); else body.classList.remove('dark-mode');
+    const btn = document.getElementById('oscuro');
+    const icon = btn ? btn.querySelector('i') : null;
+    setIcon(icon, isDark);
+  }
+
+  function attachButtonListener() {
+    const button = document.getElementById('oscuro');
     if (!button) return;
+    // Avoid adding multiple listeners
+    if (button.__themeListenerAttached) return;
+    button.__themeListenerAttached = true;
 
-    clearInterval(checkButton);
-    const body = document.body;
-    const icon = button.querySelector("i");
-
-    // Aplicar tema guardado
-    if (localStorage.getItem("theme") === "dark") {
-      body.classList.add("dark-mode");
-      icon.className = "bi bi-sun-fill";
-    } else {
-      icon.className = "bi bi-moon-fill";
-    }
-
-    // Cambiar tema al hacer click
-    button.addEventListener("click", () => {
-      body.classList.toggle("dark-mode");
-
-      if (body.classList.contains("dark-mode")) {
-        icon.className = "bi bi-sun-fill";
-        localStorage.setItem("theme", "dark");
-      } else {
-        icon.className = "bi bi-moon-fill";
-        localStorage.setItem("theme", "light");
-      }
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      body.classList.toggle('dark-mode');
+      const nowDark = body.classList.contains('dark-mode');
+      const icon = button.querySelector('i');
+      setIcon(icon, nowDark);
+      localStorage.setItem('theme', nowDark ? 'dark' : 'light');
     });
-  }, 50);
-});
+  }
+
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', function () {
+    applyThemeFromStorage();
+    attachButtonListener();
+  });
+
+  // Also run when navbar is injected
+  document.addEventListener('navbar:ready', function () {
+    applyThemeFromStorage();
+    attachButtonListener();
+  });
+
+})();

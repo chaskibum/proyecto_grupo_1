@@ -20,6 +20,7 @@
       .then(res => res.text())
       .then(html => {
         document.getElementById("navbar").innerHTML = html;
+        document.dispatchEvent(new Event('navbar:ready'));
 
 
         const usuario = localStorage.getItem('usuarioActivo');
@@ -124,6 +125,7 @@
   <script src="js/init.js"></script>
   <script src="js/categories.js"></script>
   <script src="js/theme.js"></script>
+  <script src="js/navbar-user.js"></script>
 </body>
 
 </html>
