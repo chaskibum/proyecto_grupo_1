@@ -11,7 +11,6 @@
   <link href="css/my-profile.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <script src="js/my-profile.js"></script>
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -89,6 +88,7 @@
     <div class="container">
 
       <div class="perfil">
+
         <div id="img-perfil">
           <div id="fotoPerfil" class="bi bi-person-circle"></div>
           <i id="agregarFoto" class="bi bi-plus"></i>
@@ -96,13 +96,12 @@
           <img id="imgpreview" src="img/img_perfil.png" alt="Foto de perfil" class="profile-image">
         </div>
 
-              <button id="oscuro" class="osc"><i class="bi bi-moon-fill"></i></button>
+        <!-- Botón modo oscuro (estilo perfil-dark) -->
+        <button id="oscuro" class="btn btn-outline-light ms-2"><i class="bi bi-moon-fill"></i></button>
 
         <div>
           <h1 id="usuarioActivo">aaa</h1>
         </div>
-
-          <h1 id="usuarioActivo" class="text-center mb-3"></h1>
 
 
           <hr>
@@ -192,6 +191,71 @@
             </button>
 
           </div>
+=======
+        
+<div id="img-perfil">
+  <div id="fotoPerfil" class="bi bi-person-circle"></div>
+  <i class="bi bi-plus-circle-fill" id="agregarFoto"></i>
+  <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+</div>
+
+
+        <h1 id="usuarioActivo">aaa</h1>
+
+        <h2 id="emailUsuario">aaaa</h2>
+
+        <button id="editarPerfil" class="btn btn-primary">Editar perfil</button>
+
+      <hr>
+
+      <button class="infoPersonal">
+        <h4><i class="bi bi-info-square"></i> Información Personal</h4>
+        <p>Información de tu documento de identidad.</p>
+        </button>
+
+      <hr>
+
+      <button class="datosCuenta">
+        <h4><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h4>
+        <p>no se</p>
+        </button>
+
+      <hr>
+
+      <button class="seguridad">
+        <h4><i class= "bi bi-shield-lock"></i> Seguridad</h4>
+        <p>Configura la seguridad de tu cuenta.</p>
+        </button>
+
+      <hr>
+
+      <button class="tarjetas-direcciones">
+        <h4><i class="bi bi-credit-card"></i> <i class="bi bi-geo-alt"></i> Tarjetas y Direcciones</h4>
+        <p>Tarjetas y direcciones guardadas en tu cuenta.</p>
+        </button>
+
+      <hr>
+
+      <button class="privacidad">
+        <h4><i class="bi bi-shield-exclamation"></i> Privacidad</h4>
+        <p>Preferencias y control sobre el uso de tus datos.</p>
+        </button>
+
+      <hr>
+
+      <button class="notificaciones">
+        <h4><i class="bi bi-bell"></i> Notificaciones</h4>
+        <p>Elige que tipo de información quieres recibir.</p>
+        </button>
+
+      <hr>
+
+      <button class="ayuda-soporte">
+        <h4><i class="bi bi-patch-question-fill"></i> Ayuda y Soporte</h4>
+        <p>Si necesitas ayuda, haz click aquí!</p>
+        </button>
+
+    </div>
 
   </main>
   <footer id="main-footer"></footer>
@@ -199,7 +263,6 @@
   <script src="js/init.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/include-partials.js"></script>
- 
 
 </body>
 

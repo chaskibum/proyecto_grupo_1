@@ -1,29 +1,32 @@
-const button = document.getElementById("oscuro");
-const body = document.body;
-const icon = document.getElementById("luna"); 
+// theme.js - manejo del tema oscuro, compatible con carga dinámica del navbar
+document.addEventListener('DOMContentLoaded', () => {
+  const body = document.body;
 
-// Aplicar tema guardado al cargar la página
-addEventListener("DOMContentLoaded", () => {
+  // Esperar hasta que el botón exista (en caso de carga dinámica de navbar)
+  const waitBtn = setInterval(() => {
+    const button = document.getElementById('oscuro');
+    if (!button) return;
+    clearInterval(waitBtn);
+    const icon = button.querySelector('i') || document.getElementById('luna');
 
-
-    if (localStorage.getItem("theme") === "dark") {
-        body.classList.add("dark-mode");
-        icon.className = "bi bi-sun-fill"; // mostrar sol
+    // Aplicar tema guardado
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-mode');
+      if (icon) icon.className = 'bi bi-sun-fill';
     } else {
-        icon.className = "bi bi-moon-fill"; // mostrar luna
+      if (icon) icon.className = 'bi bi-moon-fill';
     }
-});
 
-
-
-button.addEventListener("click", () => {
-    body.classList.toggle("dark-mode");
-
-    if (body.classList.contains("dark-mode")) {
-       icon.className = "bi bi-sun-fill";
-        localStorage.setItem("theme", "dark");
-    } else {
-       icon.className = "bi bi-moon-fill";
-       localStorage.setItem("theme", "light");
-    }
+    // Alternar tema al hacer click
+    button.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      if (body.classList.contains('dark-mode')) {
+        if (icon) icon.className = 'bi bi-sun-fill';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        if (icon) icon.className = 'bi bi-moon-fill';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  }, 50);
 });

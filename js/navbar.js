@@ -1,6 +1,4 @@
-// navbar.js
 // Maneja la selección de categorías desde el navbar y la navegación correcta a products.html
-
 document.addEventListener('DOMContentLoaded', function () {
   const ID_MAP = {
     'Autos': '101',

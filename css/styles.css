@@ -1,87 +1,68 @@
-/* Footer */
-.footer-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100vw;
-  padding: 0 0 10px 0;
+/* Base global y variables */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Tema oscuro */
+.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+}
+
+/* Estilos relacionados con el perfil y el botón de modo oscuro */
+#oscuro {
+  border: none;
   margin: 0;
-  box-sizing: border-box;
-  position: fixed;
-  left: 0;
+  outline: none !important;
+  box-shadow: none;
+}
+
+#img-perfil {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+#fotoPerfil {
+  font-size: 120px;
+  color: #6c757d;
+}
+
+#img-perfil i.bi-plus-circle-fill {
+  position: absolute;
   bottom: 0;
-  background: transparent;
-  z-index: 100;
-}
-
-.footer-left {
+  right: 0;
+  transform: translate(10%, 80%);
+  font-size: 40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
-  align-items: flex-end;
-  margin-left: 30px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-color: white;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 0.8;
 }
 
-.footer-text {
-  font-size: 1.2rem;
-  color: #000;
-  font-weight: 600;
+#img-perfil i.bi-plus-circle-fill:hover {
+  transform: translate(10%, 80%) scale(1.15);
 }
 
-.footer-right {
-  text-align: right;
-  margin-right: 40px;
-}
-
-#logo_jap {
-  width: 100px;
-  height: auto;
-}
-
-#logo_jap {
-  height: 80px;
-  width: auto;
-  max-width: 100%;
-  margin: 0 0 8px 0;
-  padding: 0;
-}
-
-@media (max-width: 600px) {
-  .footer-flex {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0 0 10px 0;
-  }
-
-  .footer-left {
-    margin-left: 10px;
-  }
-
-  .footer-right {
-    width: 100%;
-    text-align: left;
-    margin: 10px 0 0 10px;
-  }
-
-  #logo_jap {
-    height: 80px;
-  }
-}
-
-.jumbotron,
-.card-body,
-.container,
-.site-header {
-  font-family: 'Verdana', serif !important;
-}
-
-.jumbotron .display-4 {
-  font-weight: bold;
-}
-
-#boton,
-#vender {
-  width: 35%;
-  margin: 0 auto;
-  margin-top: 5rem;
+body.dark-mode #img-perfil i.bi-plus-circle-fill {
+  background-color: rgb(0, 0, 0) !important;
+  color: white !important;
 }
 
 /* Navbar */
@@ -98,66 +79,61 @@ nav.navbar .dropdown-toggle {
 nav.navbar {
   padding: 0 !important;
 }
+      background-color: rgba(0, 0, 0, 0.05); /* Ligero gris al pasar el mouse */
+    }
 
-@media (max-width:991.98px) {
-  nav.navbar .navbar-nav {
-    flex-direction: column !important;
-    width: 100%;
-    align-items: flex-start !important;
-  }
+    /*-------------My-profile css Modo dark-------------------*/
 
-  .navbar-nav a {
-    padding-inline: 0rem
-  }
+    #oscuro {
+      border: none;
+      margin: 0;
+      outline: none !important;    
+      box-shadow: none;
+    }
 
-  nav.navbar nav-item {
-    width: 100%;
-  }
+    #img-perfil {
+      display: inline-block;
+      width: 120px;
+      height: 120px;
+      position: relative;
+    }
 
-  nav.navbar .dropdown-menu {
-    width: 100%;
-  }
+    #fotoPerfil {
+      font-size: 120px;
+      color: #6c757d;
+    }
 
-}
-
-/* Navbar Cantidad de productos */
-
-#cantidad-agregada {
-  background-color: red;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#cantidad {
-  margin: 0;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
-}
-
-
-
-/* Manoo like */
-#mano-like {
-  margin-top: -2px !important;
-  margin-left: 10px !important;
-  position: absolute;
-}
+    #img-perfil i.bi-plus-circle-fill {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transform: translate(10%, 80%);
+      font-size: 40px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background-color: white;
+      outline: none !important;
+      box-shadow: none !important;
+      opacity: 0.8;
+    }
 
 
-/* Icon Menú Query */
+    #img-perfil i.bi-plus-circle-fill:hover {
+      transform: translate(10%, 80%) scale(1.15);
+    }
 
-.navbar-toggler {
-  margin-top: 1rem;
-  border: none;
-}
+    /*--------- Dark mode------------ */
+
+    body.dark-mode #img-perfil i.bi-plus-circle-fill {
+      background-color: rgb(0, 0, 0) !important;
+      color: white !important; 
+    }
 
 /*  Buscador  */
 #buscador {
@@ -652,6 +628,34 @@ body {
 #oscuro {
   border: none;
   margin-bottom: 0;
+#fotoPerfilBtn {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, 0.2s;
+  background: transparent;
+}
+
+#fotoPerfilBtn i {
+  font-size: 10rem;
+  color: #6c757d;
+  transition: transform 0.2s, color 0.2s;
+}
+
+#fotoPerfilBtn:hover {
+  background-color: rgba(0,0,0,0.1);
+  transform: scale(1.05);
+}
+
+#fotoPerfilBtn:hover i {
+  color: #343a40;
+  transform: scale(1.05);
+  width: 80px;
+  height: 80px;
 }
 
 .osc {
@@ -663,7 +667,7 @@ body {
   
 }
 
-
+.infoPersonal,
 .infoPersonal,
 .datosCuenta,
 .seguridad,
@@ -690,4 +694,58 @@ body {
 .notificaciones:hover,
 .ayuda-soporte:hover {
   background-color: rgba(0, 0, 0, 0.05); /* Ligero gris al pasar el mouse */
+}
+
+
+/*-------------My-profile css Modo dark-------------------*/
+
+#oscuro {
+  border: none;
+  margin: 0;
+  outline: none !important;    
+  box-shadow: none 
+}
+
+#img-perfil {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+#fotoPerfil {
+  font-size: 120px;
+  color: #6c757d;
+}
+
+#img-perfil i.bi-plus-circle-fill {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(10%, 80%);
+  font-size: 40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-color: white;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 0.8;
+}
+
+
+#img-perfil i.bi-plus-circle-fill:hover {
+  transform: translate(10%, 80%) scale(1.15);
+}
+
+/*--------- Dark mode------------ */
+
+body.dark-mode #img-perfil i.bi-plus-circle-fill {
+  background-color: rgb(0, 0, 0) !important;
+  color: white !important; 
 }
