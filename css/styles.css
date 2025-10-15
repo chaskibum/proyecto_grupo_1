@@ -663,6 +663,17 @@ button.btn-dark.mt-auto {
   }
 }
 
+@media (max-width: 600px) {
+  .divPerfilFoto {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  text-align: center;     
+}
+
+}
+
 
 :root {
   --bg-color: #ffffff;
@@ -709,6 +720,10 @@ body {
   transform: scale(1.05);
   width: 80px;
   height: 80px;
+}
+
+button#editarPerfil {
+  margin-top: 1rem;
 }
 
 .osc {
@@ -763,6 +778,7 @@ body {
   width: 120px;
   height: 120px;
   position: relative;
+  margin-bottom: 3rem;
 }
 
 #fotoPerfil {
