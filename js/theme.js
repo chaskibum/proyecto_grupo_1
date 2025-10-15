@@ -1,7 +1,4 @@
-// Centralized theme handling. Listens for DOMContentLoaded and for
-// 'navbar:ready' (dispatched by include-partials) so it can safely attach
-// handlers to the #oscuro button whether the navbar is already present or
-// injected later.
+// Modo oscuro
 (function () {
   const body = document.body;
 
@@ -21,7 +18,7 @@
   function attachButtonListener() {
     const button = document.getElementById('oscuro');
     if (!button) return;
-    // Avoid adding multiple listeners
+  
     if (button.__themeListenerAttached) return;
     button.__themeListenerAttached = true;
 
@@ -35,13 +32,13 @@
     });
   }
 
-  // Initialize on load
+  // Inicializa al cargar
   document.addEventListener('DOMContentLoaded', function () {
     applyThemeFromStorage();
     attachButtonListener();
   });
 
-  // Also run when navbar is injected
+  // Se ejecuta cuando este cargado el navBar
   document.addEventListener('navbar:ready', function () {
     applyThemeFromStorage();
     attachButtonListener();

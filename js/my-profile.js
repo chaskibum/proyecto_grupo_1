@@ -1,8 +1,6 @@
-// Theme behavior is centralized in js/theme.js
-
 // --- Perfil (Información personal) ---
 (function () {
-    // Keys and DOM
+    // Id---DOM
     const STORAGE_KEY = 'perfilUsuario';
 
     const editarBtn = document.getElementById('editarPerfil');
