@@ -827,8 +827,19 @@ button#editarPerfil {
 }
 
 #fotoPerfil {
-  font-size: 120px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
   color: #6c757d;
+  font-size: 120px;
+  text-align: center;
+  line-height: 120px;
+  border: 2px solid #dee2e6;
+  margin-top: 20px; 
 }
 
 #img-perfil i.bi-plus-circle-fill {
@@ -861,4 +872,86 @@ button#editarPerfil {
 body.dark-mode #img-perfil i.bi-plus-circle-fill {
   background-color: rgb(0, 0, 0) !important;
   color: white !important; 
+}
+
+
+
+
+
+
+
+
+
+.globo-opciones {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 150px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.globo-opciones .btn {
+  font-size: 0.9rem;
+  padding: 5px 8px;
+}
+
+.globo-flechita {
+  position: absolute;
+  bottom: 100%;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #fff;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.imagen-recorte {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 10px;
+}
+
+#fotoPerfil.tiene-foto {
+  background-size: cover;  
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%; 
+  color: transparent; 
+}
+
+
+#fotoPerfil img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin-top: 20px;
+}
+
+.imagen-recorte {
+  max-width: 100%;
+  max-height: 70vh; 
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
 }

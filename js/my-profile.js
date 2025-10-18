@@ -101,3 +101,156 @@
     }
 
 })();
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const fotoPerfil = document.getElementById("fotoPerfil");
+  const agregarFotoBtn = document.getElementById("agregarFoto");
+  const inputFoto = document.getElementById("inputFoto");
+
+  let cropper = null;
+  let modal = null;
+
+  const fotoGuardada = localStorage.getItem("fotoPerfilUsuario");
+  if (fotoGuardada) {
+    aplicarFoto(fotoGuardada);
+  }
+
+  agregarFotoBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelector(".globo-opciones")?.remove();
+
+    const globo = document.createElement("div");
+    globo.className = "globo-opciones shadow";
+    globo.innerHTML = `
+      <button class="btn btn-outline-primary btn-sm w-100 mb-2" id="btnAgregarFoto">Agregar foto</button>
+      <button class="btn btn-outline-danger btn-sm w-100" id="btnEliminarFoto">Eliminar foto</button>
+      <div class="globo-flechita"></div>
+    `;
+    agregarFotoBtn.parentElement.appendChild(globo);
+
+    globo.querySelector("#btnAgregarFoto").addEventListener("click", () => {
+      globo.remove();
+      inputFoto.click();
+    });
+
+    globo.querySelector("#btnEliminarFoto").addEventListener("click", () => {
+      globo.remove();
+      eliminarFoto();
+    });
+
+    document.addEventListener(
+      "click",
+      function cerrar(e) {
+        if (!globo.contains(e.target) && e.target !== agregarFotoBtn) {
+          globo.remove();
+          document.removeEventListener("click", cerrar);
+        }
+      },
+      { once: true }
+    );
+  });
+
+  inputFoto.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => mostrarModalRecorte(ev.target.result);
+    reader.readAsDataURL(file);
+  });
+
+  function mostrarModalRecorte(imagenSrc) {
+    modal = document.createElement("div");
+    modal.classList.add("modal", "fade");
+    modal.innerHTML = `
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ajustar foto de perfil</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img id="imgRecorte" src="${imagenSrc}" class="imagen-recorte">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelarRecorte">Cancelar</button>
+            <button type="button" class="btn btn-success" id="aceptarRecorte">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+
+    modal.addEventListener("shown.bs.modal", () => {
+      const img = document.getElementById("imgRecorte");
+      cropper = new Cropper(img, {
+        aspectRatio: 1,
+        viewMode: 2,
+        background: false,
+        dragMode: "move",
+        autoCropArea: 1,
+        responsive: true,
+        movable: true,
+        zoomable: true,
+        scalable: false
+      });
+    });
+
+    modal.querySelector("#cancelarRecorte").addEventListener("click", () => {
+      bsModal.hide();
+    });
+
+    modal.querySelector("#aceptarRecorte").addEventListener("click", () => {
+      const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+      const dataURL = canvas.toDataURL("image/png");
+      aplicarFoto(dataURL);
+      localStorage.setItem("fotoPerfilUsuario", dataURL);
+      bsModal.hide();
+    });
+
+    modal.addEventListener("hidden.bs.modal", () => {
+      if (cropper) {
+        cropper.destroy();
+        cropper = null;
+      }
+      modal.remove();
+    });
+  }
+
+  function aplicarFoto(dataURL) {
+    fotoPerfil.style.backgroundImage = `url(${dataURL})`;
+    fotoPerfil.classList.remove("bi-person-circle");
+  }
+
+  function eliminarFoto() {
+    fotoPerfil.style.backgroundImage = "";
+    fotoPerfil.classList.add("bi-person-circle");
+    localStorage.removeItem("fotoPerfilUsuario");
+  }
+
+  function cargarCropper(callback) {
+    if (window.Cropper) return callback();
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css";
+    document.head.appendChild(link);
+
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js";
+    script.onload = callback;
+    document.body.appendChild(script);
+  }
+  cargarCropper(() => {});
+});

@@ -205,8 +205,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         ${ usuarioAct ? `<i class="bi bi-trash-fill text-dark position-absolute top-0 end-0 m-2 btn-eliminar" data-idx="${i}" role="button" title="Eliminar" style="cursor:pointer; font-size:1.1rem;"></i>` : '' }
 
-        <div class="me-2">
-        <i class="bi bi-person-circle fs-3 text-secondary"></i>
+
+        <div class="me-2" style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; flex-shrink: 0;">
+        ${
+            (localStorage.getItem('fotoPerfil_' + (c.nombre || '')) && c.nombre)
+            ? `<img src="${localStorage.getItem('fotoPerfil_' + c.nombre)}" 
+            style="width: 100%; height: 100%; object-fit: cover;">`
+            : `<i class="bi bi-person-circle fs-3 text-secondary"></i>`
+        }
         </div>
 
         <div class="mb-2">
