@@ -4,3 +4,20 @@ h1 {
     text-align: center;
     margin-top: 2rem;
 }
+
+/* Posicionamiento del checkbox de selección sobre la imagen del producto */
+.cart-card .col-md-3 { position: relative; }
+.cart-select-pos { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; }
+/* Por defecto, colocamos el checkbox ligeramente a la izquierda de la imagen */
+.cart-select-pos { left: -18px; }
+/* Ajustes para pantallas medianas/anchas: más separación a la izquierda */
+@media (min-width: 768px) {
+    .cart-select-pos { left: -30px; }
+}
+/* Ajustes para pantallas muy pequeñas: reducir separación para que no salga del viewport */
+@media (max-width: 480px) {
+    .cart-select-pos { left: -8px; }
+}
+
+/* Hacer el checkbox más visible y con buen tamaño en móviles */
+.cart-select-pos .form-check-input { width: 20px; height: 20px; }
