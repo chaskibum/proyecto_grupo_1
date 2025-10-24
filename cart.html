@@ -4,32 +4,92 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>eMercado - Todo lo que busques está aquí</title>
-  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/font-awesome.min.css" rel="stylesheet">
-  <link href="css/styles.css" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet"> 
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/index.css" rel="stylesheet">
+<link href="css/cart.css" rel="stylesheet">
+
+
+
 </head>
 
 <body>
-  <nav id="main-navbar"></nav>
-  <main>
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+  <div id="navbar"></div>
+
+  <main class="container py-4">
+    <h1 class="mb-4"> Mi carrito</h1>
+
+
+    <div class="card mb-3 cart-card cart-item">
+      <div class="row g-0 align-items-center">
+        <div class="col-md-3 text-center">
+          <img src="https://via.placeholder.com/150" alt="Producto 1" class="img-fluid p-2">
+        </div>
+        <div class="col-md-5">
+          <div class="card-body">
+            <h5 class="card-title">Auriculares Bluetooth</h5>
+            <p class="card-text text-muted mb-1">Marca: Sony</p>
+            <p class="card-text fw-bold text-success">$2.990</p>
+          </div>
+        </div>
+        <div class="col-md-2 text-center">
+          <input type="number" class="form-control w-75 mx-auto" min="1" value="1">
+        </div>
+        <div class="col-md-2 text-center">
+          <button class="btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card mb-3 cart-card cart-item">
+      <div class="row g-0 align-items-center">
+        <div class="col-md-3 text-center">
+          <img src="https://via.placeholder.com/150" alt="Producto 2" class="img-fluid p-2">
+        </div>
+        <div class="col-md-5">
+          <div class="card-body">
+            <h5 class="card-title">Smartwatch Deportivo</h5>
+            <p class="card-text text-muted mb-1">Marca: Amazfit</p>
+            <p class="card-text fw-bold text-success">$4.200</p>
+          </div>
+        </div>
+        <div class="col-md-2 text-center">
+          <input type="number" class="form-control w-75 mx-auto" min="1" value="2">
+        </div>
+        <div class="col-md-2 text-center">
+          <button class="btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center total-section">
+          <h5 class="mb-0">Total</h5>
+          <h4 class="fw-bold text-success">$11.390</h4>
+        </div>
+        <div class="text-end mt-3">
+          <button class="btn btn-success btn-lg">Finalizar compra</button>
+        </div>
       </div>
     </div>
   </main>
+
+
   <footer id="main-footer"></footer>
-  <div id="spinner-wrapper">
-    <div class="lds-ring">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
-  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/include-partials.js"></script>
