@@ -154,24 +154,15 @@ nav.navbar {
 
 /* Navbar Cantidad de productos */
 
-#cantidad-agregada {
-  background-color: red;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#cantidad {
-  margin: 0;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
+#cart-badge {
+  display: inline-block;
+  min-width: 24px;
+  height: 24px;
+  line-height: 22px;
+  padding: 0 6px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
 }
 
 

@@ -7,24 +7,31 @@ document.addEventListener('DOMContentLoaded', function () {
 	const checkoutBtn = document.getElementById('checkout-btn');
 
 	// Cargar carrito desde localStorage
-	function loadCart() {
+	function cargarCarrito() {
 		try {
 			const raw = localStorage.getItem(STORAGE_KEY);
 			const parsed = raw ? JSON.parse(raw) : [];
 			return Array.isArray(parsed) ? parsed : [];
 		} catch (e) {
-			console.error('Error parsing cart from localStorage:', e);
+			console.error('Error parseando carrito desde localStorage:', e);
 			return [];
 		}
 	}
 
 	// Guardar carrito en localStorage
-	function saveCart(cart) {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+	function guardarCarrito(cart) {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+			// Despachar un evento para que otras partes de la app (navbar) se actualicen inmediatamente
+			try {
+				const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
+				document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total } }));
+			} catch (e) {
+				console.warn('Error despachando cart:updated', e);
+			}
 	}
 
 	// Calcular total (no hace conversión de monedas: asume misma moneda)
-	function calcTotal(cart) {
+	function calcularTotal(cart) {
 		// Sumar solo los items que estén seleccionados (selected !== false)
 		return cart
 			.filter(it => it && it.selected !== false)
@@ -32,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Render del carrito
-	function renderCart() {
-		const cart = loadCart();
+	function renderizarCarrito() {
+		const cart = cargarCarrito();
 		containerItems.innerHTML = '';
 
 		if (!cart || cart.length === 0) {
@@ -103,12 +110,11 @@ document.addEventListener('DOMContentLoaded', function () {
 					});
 				}
 
-				updateTotalDisplay(cart);
-				attachControls();
+				actualizarMostradorTotal(cart);
+				adjuntarControles();
 	}
-
-	function updateTotalDisplay(cart) {
-		const total = calcTotal(cart);
+	function actualizarMostradorTotal(cart) {
+		const total = calcularTotal(cart);
 		// Mostrar con separador de miles y sin decimales si entero
 		const formatted = new Intl.NumberFormat('es-AR').format(total);
 		// Intentamos obtener la moneda del primer item
@@ -127,93 +133,94 @@ document.addEventListener('DOMContentLoaded', function () {
 					if (checkoutBtn.disabled) checkoutBtn.classList.add('disabled'); else checkoutBtn.classList.remove('disabled');
 				}
 	}
-
 	// Adjuntar listeners a inputs y botones dinamicamente
-	function attachControls() {
+	function adjuntarControles() {
 		const qtyInputs = document.querySelectorAll('.cart-qty');
 		const deleteBtns = document.querySelectorAll('.btn-delete');
 		const selectBoxes = document.querySelectorAll('.cart-select');
 		const selectAllBox = document.getElementById('select-all');
 
 		qtyInputs.forEach(inp => {
-			inp.removeEventListener('change', onQtyChange);
-			inp.addEventListener('change', onQtyChange);
+			inp.removeEventListener('change', cambioCantidad);
+			inp.addEventListener('change', cambioCantidad);
 		});
 
 		deleteBtns.forEach(btn => {
-			btn.removeEventListener('click', onDelete);
-			btn.addEventListener('click', onDelete);
+			btn.removeEventListener('click', eliminarItem);
+			btn.addEventListener('click', eliminarItem);
 		});
 
 		selectBoxes.forEach(cb => {
-			cb.removeEventListener('change', onSelectChange);
-			cb.addEventListener('change', onSelectChange);
+			cb.removeEventListener('change', cambioSeleccion);
+			cb.addEventListener('change', cambioSeleccion);
 		});
 
 		if (selectAllBox) {
-			selectAllBox.removeEventListener('change', onSelectAll);
-			selectAllBox.addEventListener('change', onSelectAll);
+			selectAllBox.removeEventListener('change', seleccionarTodo);
+			selectAllBox.addEventListener('change', seleccionarTodo);
 			// Inicializar estado del selectAll según si todos los items están seleccionados
-			const cart = loadCart();
+			const cart = cargarCarrito();
 			selectAllBox.checked = cart.length > 0 && cart.every(it => it.selected !== false);
 		}
 	}
 
-	function onQtyChange(e) {
+	function cambioCantidad(e) {
 		const id = e.target.getAttribute('data-id');
 		let val = parseInt(e.target.value, 10);
 		if (isNaN(val) || val < 1) val = 1;
 		e.target.value = val;
 
-		const cart = loadCart();
+		const cart = cargarCarrito();
 		const idx = cart.findIndex(it => String(it.id) === String(id));
 		if (idx > -1) {
 			cart[idx].count = val;
-			saveCart(cart);
+			guardarCarrito(cart);
 			// Re-render para actualizar el desglose y totales
-			renderCart();
+			renderizarCarrito();
 		}
 	}
 
-	function onSelectChange(e) {
+	function cambioSeleccion(e) {
 		const id = e.target.getAttribute('data-id');
 		const checked = e.target.checked;
-		const cart = loadCart();
+		const cart = cargarCarrito();
 		const idx = cart.findIndex(it => String(it.id) === String(id));
 		if (idx > -1) {
 			cart[idx].selected = checked;
-			saveCart(cart);
-			renderCart();
+			guardarCarrito(cart);
+			renderizarCarrito();
 		}
 	}
 
-	function onSelectAll(e) {
+	function seleccionarTodo(e) {
 		const checked = e.target.checked;
-		const cart = loadCart();
+		const cart = cargarCarrito();
 		const newCart = cart.map(it => (Object.assign({}, it, { selected: checked })));
-		saveCart(newCart);
-		renderCart();
+		guardarCarrito(newCart);
+		renderizarCarrito();
 	}
 
-	function onDelete(e) {
+	function eliminarItem(e) {
 		const id = e.currentTarget.getAttribute('data-id');
-		let cart = loadCart();
+		let cart = cargarCarrito();
 		cart = cart.filter(it => String(it.id) !== String(id));
-		saveCart(cart);
-		renderCart();
+		guardarCarrito(cart);
+		renderizarCarrito();
 	}
 
 	// Accion de finalizar compra: aquí solo limpia el carrito y muestra mensaje simple
 	checkoutBtn && checkoutBtn.addEventListener('click', function () {
-		const cart = loadCart();
+		const cart = cargarCarrito();
 		if (!cart || cart.length === 0) return;
 		// Por simplicidad: vaciamos el carrito y mostramos mensaje
 		localStorage.removeItem(STORAGE_KEY);
-		renderCart();
+		// notificar a otros listeners que el carrito ahora está vacío
+		document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total: 0 } }));
+		renderizarCarrito();
 		alert('Gracias por su compra. (Simulación)');
 	});
 
-	// Inicial render
-	renderCart();
+	// Render inicial
+	renderizarCarrito();
 });
 

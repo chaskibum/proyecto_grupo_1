@@ -24,7 +24,29 @@
       .then(res => res.text())
       .then(html => {
         document.getElementById("navbar").innerHTML = html;
-        document.dispatchEvent(new Event('navbar:ready'));
+        // Actualizar badge inmediatamente tras insertar el partial (respaldo)
+        try {
+          const raw = localStorage.getItem('cart');
+          const cart = raw ? JSON.parse(raw) : [];
+          const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
+          const badge = document.getElementById('cart-badge');
+          if (badge) {
+            badge.textContent = total;
+            badge.style.display = total > 0 ? 'inline-block' : 'none';
+          }
+        } catch (e) {
+          console.warn('No se pudo actualizar badge tras inyectar navbar en product-info:', e);
+        }
+
+        if (!window.__navbar_script_loaded) {
+          window.__navbar_script_loaded = true;
+          const s = document.createElement('script');
+          s.src = 'js/navbar.js';
+          s.onload = () => document.dispatchEvent(new Event('navbar:ready'));
+          document.body.appendChild(s);
+        } else {
+          document.dispatchEvent(new Event('navbar:ready'));
+        }
 
         const usuario = localStorage.getItem('usuarioActivo');
         const link = document.getElementById('inicio-sesion');
