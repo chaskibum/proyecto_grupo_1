@@ -158,7 +158,32 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
 
         const comentariosLista = document.getElementById('comentarios-list');
-        let comentarios = JSON.parse(localStorage.getItem(`comentarios_${productId}`)) || [];
+
+
+     
+
+        //la API usada en el curso guarda comentarios en archivos separados bajo
+        //    PRODUCT_INFO_COMMENTS_URL + <productId> + EXT_TYPE.
+        try {
+            if (typeof PRODUCT_INFO_COMMENTS_URL !== 'undefined' && typeof EXT_TYPE !== 'undefined') {
+                const resComments = await getJSONData(PRODUCT_INFO_COMMENTS_URL + productId + EXT_TYPE);
+                if (resComments.status === 'ok' && resComments.data) {
+                    let src = [];
+                    if (Array.isArray(resComments.data)) src = resComments.data;
+                    else if (Array.isArray(resComments.data.comments)) src = resComments.data.comments;
+                    if (src.length) {
+                        comentariosDesdeJson = comentariosDesdeJson.concat(src.map(mapExternalComment));
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn('No se pudieron cargar comentarios externos:', err);
+        }
+
+        // Comentarios guardados localmente por este usuario/sesión (tienen preferencia o se añaden)
+        const comentariosLocales = JSON.parse(localStorage.getItem(`comentarios_${productId}`)) || [];
+
+  
 
 
         function tiempoComentario(fechaISO) {
