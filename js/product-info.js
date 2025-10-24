@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         50925: ["img/prod50925_1.jpg", "img/prod50925_2.jpg", "img/prod50925_3.jpg", "img/prod50925_4.jpg"]
     };
 
+    // Bandera para activar logs de depuración (false en producción)
+    const DEBUG = false;
+
     // Sacamos el id del producto desde la URL
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
@@ -21,10 +24,31 @@ document.addEventListener('DOMContentLoaded', async function () {
     const url = `https://japceibal.github.io/emercado-api/cats_products/${catID}.json`;
 
     try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const products = Array.isArray(data.products) ? data.products : [];
-        const product = products.find(p => p.id == productId);
+    if (DEBUG) console.log('Cargando lista de productos desde:', url);
+        // Usar helper getJSONData (definido en init.js) para manejar spinner y errores
+        let dataResp = await getJSONData(url);
+        let data = (dataResp && dataResp.status === 'ok') ? dataResp.data : null;
+        let products = Array.isArray(data?.products) ? data.products : [];
+        let product = products.find(p => p.id == productId);
+
+        // Si no lo encontramos en la lista por categoría, intentamos la URL de producto individual
+        if (!product) {
+            try {
+                if (typeof PRODUCT_INFO_URL !== 'undefined' && typeof EXT_TYPE !== 'undefined') {
+                    const singleUrl = PRODUCT_INFO_URL + productId + EXT_TYPE;
+                    if (DEBUG) console.log('Producto no encontrado en categoría. Intentando cargar desde:', singleUrl);
+                    const singleResp = await getJSONData(singleUrl);
+                    if (singleResp.status === 'ok' && singleResp.data) {
+                        // singleResp.data puede ser el objeto del producto directamente
+                        // o un objeto con propiedad 'product'. Normalizamos ambos casos.
+                        const single = singleResp.data;
+                        product = single.product || single;
+                    }
+                }
+            } catch (e) {
+                console.warn('Error al intentar cargar producto desde PRODUCT_INFO_URL:', e);
+            }
+        }
 
         if (!product) {
             document.getElementById('product-info-container').innerHTML = '<div class="alert alert-warning">Producto no encontrado.</div>';
@@ -69,6 +93,41 @@ document.addEventListener('DOMContentLoaded', async function () {
                 document.getElementById('imagen-principal').src = imgs[idx];
             });
         });
+
+        // Funcionamiento del botón "Añadir al carro" -> guarda en localStorage y navega a cart.html
+        const btnAñadir = document.getElementById('button-añadir-carro');
+        if (btnAñadir) {
+            btnAñadir.addEventListener('click', () => {
+                try {
+                    const STORAGE_KEY = 'cart';
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    const cart = Array.isArray(JSON.parse(raw)) ? JSON.parse(raw) : [];
+
+                    // Forma del item en el carrito: { id, name, count, unitCost, currency, image }
+                    const existing = cart.find(it => String(it.id) === String(product.id));
+                    if (existing) {
+                        existing.count = (existing.count || 1) + 1;
+                    } else {
+                        const itemImage = (product.images && product.images.length) ? product.images[0] : product.image;
+                        cart.push({
+                            id: product.id,
+                            name: product.name,
+                            count: 1,
+                            unitCost: product.cost,
+                            currency: product.currency,
+                            image: itemImage
+                        });
+                    }
+
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+                    // Navegar al carrito
+                    window.location.href = 'cart.html';
+                } catch (e) {
+                    console.error('Error al añadir al carrito:', e);
+                    alert('No se pudo añadir el producto al carrito. Revisá la consola para más detalles.');
+                }
+            });
+        }
 
         const conteinerRelacionados = document.getElementById('prod-relacionados');
         conteinerRelacionados.innerHTML = '';
@@ -159,6 +218,22 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const comentariosLista = document.getElementById('comentarios-list');
 
+        // Mapea comentarios externos al formato interno esperado
+        function mapComentarioExterno(c) {
+            return {
+                nombre: c.user || c.usuario || c.nombre || 'Anónimo',
+                texto: c.description || c.descripcion || c.texto || '',
+                estrellas: c.score || c.puntaje || c.estrellas || 0,
+                fecha: c.dateTime || c.fecha || new Date().toISOString(),
+                likes: c.likes || 0,
+                dislikes: c.dislikes || 0,
+                votos: c.votos || {}
+            };
+        }
+
+        // Inicializar array con comentarios que vengan embebidos en product (si aplica)
+    let comentariosDesdeJson = Array.isArray(product.comments) ? product.comments.map(mapComentarioExterno) : [];
+
 
      
 
@@ -172,7 +247,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     if (Array.isArray(resComments.data)) src = resComments.data;
                     else if (Array.isArray(resComments.data.comments)) src = resComments.data.comments;
                     if (src.length) {
-                        comentariosDesdeJson = comentariosDesdeJson.concat(src.map(mapExternalComment));
+                        comentariosDesdeJson = comentariosDesdeJson.concat(src.map(mapComentarioExterno));
                     }
                 }
             }
@@ -182,6 +257,23 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // Comentarios guardados localmente por este usuario/sesión (tienen preferencia o se añaden)
         const comentariosLocales = JSON.parse(localStorage.getItem(`comentarios_${productId}`)) || [];
+
+        // Combinar comentarios desde JSON (embebidos + externos) y locales, y eliminar duplicados simples
+        const vistos = new Set();
+        const combinados = [];
+        comentariosDesdeJson.concat(comentariosLocales).forEach(c => {
+            const key = `${c.nombre}|${c.texto}|${c.fecha}`;
+            if (!vistos.has(key)) {
+                vistos.add(key);
+                c.likes = c.likes || 0;
+                c.dislikes = c.dislikes || 0;
+                c.votos = c.votos || {};
+                combinados.push(c);
+            }
+        });
+
+        // Array final que usa la UI
+        let comentarios = combinados;
 
   
 
@@ -352,6 +444,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
 
     } catch (e) {
-        document.getElementById('product-info-container').innerHTML = '<div class="alert alert-danger">Error al cargar el producto.</div>';
+        // Loguear el error para poder diagnosticar en consola
+        console.error('Error en product-info:', e);
+        const container = document.getElementById('product-info-container');
+        if (container) {
+            container.innerHTML = `<div class="alert alert-danger">Error al cargar el producto. <small class="d-block text-muted">${e && e.message ? e.message : ''}</small></div>`;
+        }
     }
 });
