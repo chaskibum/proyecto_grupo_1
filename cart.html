@@ -24,30 +24,6 @@
     <div class="card mb-3 cart-card cart-item">
       <div class="row g-0 align-items-center">
         <div class="col-md-3 text-center">
-          <img src="https://via.placeholder.com/150" alt="Producto 1" class="img-fluid p-2">
-        </div>
-        <div class="col-md-5">
-          <div class="card-body">
-            <h5 class="card-title">Auriculares Bluetooth</h5>
-            <p class="card-text text-muted mb-1">Marca: Sony</p>
-            <p class="card-text fw-bold text-success">$2.990</p>
-          </div>
-        </div>
-        <div class="col-md-2 text-center">
-          <input type="number" class="form-control w-75 mx-auto" min="1" value="1">
-        </div>
-        <div class="col-md-2 text-center">
-          <button class="btn btn-danger btn-sm">
-            <i class="bi bi-trash"></i> Eliminar
-          </button>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="card mb-3 cart-card cart-item">
-      <div class="row g-0 align-items-center">
-        <div class="col-md-3 text-center">
           <img src="https://via.placeholder.com/150" alt="Producto 2" class="img-fluid p-2">
         </div>
         <div class="col-md-5">
@@ -57,12 +33,27 @@
             <p class="card-text fw-bold text-success">$4.200</p>
           </div>
         </div>
-        <div class="col-md-2 text-center">
-          <input type="number" class="form-control w-75 mx-auto" min="1" value="2">
-        </div>
+
+<div class="col-md-2 text-center">
+  <div class="d-flex justify-content-center align-items-center" id="cantidadDeseada">
+    <!-- Botón menos -->
+    <button class="btn" type="button" data-action="disminuir">
+      <i class="bi bi-dash-circle-fill"></i>
+    </button>
+
+    <!--cantidad de producto-->
+    <input type="text" class="form-control text-center mx-2" value="2" min="1" style="width: 60px;" />
+
+  <!--Boton más-->
+    <button class="btn" type="button" data-action="aumentar">
+      <i class="bi bi-plus-circle-fill"></i>
+    </button>
+  </div>
+</div>
+
         <div class="col-md-2 text-center">
           <button class="btn btn-danger btn-sm">
-            <i class="bi bi-trash"></i> Eliminar
+            <i class="bi bi-trash"></i> 
           </button>
         </div>
       </div>
