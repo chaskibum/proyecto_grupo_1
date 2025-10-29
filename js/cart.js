@@ -218,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total: 0 } }));
 		renderizarCarrito();
 		alert('Gracias por su compra. (Simulación)');
+		window.location.href = "index.html"
 	});
 
 	// Render inicial
