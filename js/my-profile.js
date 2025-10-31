@@ -255,15 +255,24 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarCropper(() => {});
 });
 
+
+
+
+
 // --- Resumen del Historial de Compras: total gastado y número de compras ---
 document.addEventListener('DOMContentLoaded', function () {
   const summaryEl = document.getElementById('purchase-summary');
   const countEl = document.getElementById('purchases-count');
   const totalEl = document.getElementById('purchases-total');
 
+  function getUserKey(prefix) {
+    const usuario = localStorage.getItem('usuarioActivo');
+    return usuario ? `${prefix}_${usuario}` : prefix;
+  }
   function loadPurchases() {
     try {
-      const raw = localStorage.getItem('purchases');
+      const key = getUserKey("purchases");
+      const raw = localStorage.getItem(key);
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
@@ -271,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return [];
     }
   }
+
 
   function computeSummary() {
     const purchases = loadPurchases();
@@ -305,6 +315,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // actualizar si hay cambios en storage
   window.addEventListener('storage', function (e) {
-    if (e.key === 'purchases' || e.key === 'cart') computeSummary();
+    if (e.key && (e.key.includes('purchases_') || e.key.includes('cart_'))) {
+      computeSummary();
+    }
   });
 });
