@@ -11,6 +11,7 @@
     const apellidoValor = document.getElementById('apellidoValor');
     const emailValor = document.getElementById('emailValor');
     const telefonoValor = document.getElementById('telefonoValor');
+  const birthdateValor = document.getElementById('birthdateValor');
 
     const inputNombre = document.getElementById('inputNombre');
     const inputApellido = document.getElementById('inputApellido');
@@ -39,7 +40,22 @@
         nombreValor.textContent = obj && obj.nombre ? obj.nombre : '-';
         apellidoValor.textContent = obj && obj.apellido ? obj.apellido : '-';
         emailValor.textContent = obj && obj.email ? obj.email : '-';
-        telefonoValor.textContent = obj && obj.telefono ? obj.telefono : '-';
+    telefonoValor.textContent = obj && obj.telefono ? obj.telefono : '-';
+    // Mostrar fecha de nacimiento en formato local si existe
+    try {
+      if (birthdateValor) {
+        if (obj && obj.birthdate) {
+          const d = new Date(obj.birthdate);
+          if (!isNaN(d.getTime())) {
+            birthdateValor.textContent = new Intl.DateTimeFormat('es-ES').format(d);
+          } else {
+            birthdateValor.textContent = obj.birthdate || '-';
+          }
+        } else {
+          birthdateValor.textContent = '-';
+        }
+      }
+    } catch (e) { if (birthdateValor) birthdateValor.textContent = '-'; }
     }
 
     function populateForm(obj) {
@@ -74,12 +90,15 @@
 
     if (guardarBtn) {
         guardarBtn.addEventListener('click', function () {
-            const newData = {
-                nombre: inputNombre.value && inputNombre.value.trim(),
-                apellido: inputApellido.value && inputApellido.value.trim(),
-                email: inputEmail.value && inputEmail.value.trim(),
-                telefono: inputTelefono.value && inputTelefono.value.trim()
-            };
+      // Preservar la fecha de nacimiento existente si la hay
+      const existente = loadPerfil();
+      const newData = {
+        nombre: inputNombre.value && inputNombre.value.trim(),
+        apellido: inputApellido.value && inputApellido.value.trim(),
+        email: inputEmail.value && inputEmail.value.trim(),
+        telefono: inputTelefono.value && inputTelefono.value.trim(),
+        birthdate: existente && existente.birthdate ? existente.birthdate : undefined
+      };
 
             // Basic validation: email if provided should include @
             if (newData.email && !newData.email.includes('@')) {
@@ -271,8 +290,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function loadPurchases() {
     try {
-      const key = getUserKey("purchases");
-      const raw = localStorage.getItem(key);
+      // Intentar leer primero la clave por usuario (p.ej. purchases_username).
+      // Si no existe, caer de vuelta a la clave global 'purchases' para compatibilidad.
+      const userKey = getUserKey("purchases");
+      let raw = localStorage.getItem(userKey);
+      if (!raw) {
+        raw = localStorage.getItem('purchases');
+      }
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
@@ -315,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // actualizar si hay cambios en storage
   window.addEventListener('storage', function (e) {
-    if (e.key && (e.key.includes('purchases_') || e.key.includes('cart_'))) {
+    if (e.key && (e.key.includes('purchases_') || e.key === 'purchases' || e.key.includes('cart_') || e.key === 'cart')) {
       computeSummary();
     }
   });

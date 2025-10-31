@@ -4,7 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function loadPurchases() {
     try {
-      const raw = localStorage.getItem('purchases');
+      // Intentar leer clave por usuario primero (purchases_<usuario>), si no existe caer
+      const usuario = localStorage.getItem('usuarioActivo');
+      let raw = null;
+      if (usuario) raw = localStorage.getItem(`purchases_${usuario}`);
+      if (!raw) raw = localStorage.getItem('purchases');
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
@@ -42,10 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const keys = Object.keys(groups).sort((a,b) => new Date(b) - new Date(a));
 
     keys.forEach(key => {
+      const displayDate = (key === 'unknown') ? 'Fecha desconocida' : formatDate(key);
       const items = groups[key];
-      // calcular total del pedido
-      const total = items.reduce((s,it) => s + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
-      const currency = (items[0] && items[0].currency) ? (items[0].currency + ' ') : '';
+  // calcular subtotal del pedido
+  const subtotal = items.reduce((s,it) => s + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
+  // calcular descuento acumulado (cada item puede llevar orderDiscountPercent)
+  const totalDescuento = items.reduce((s,it) => s + ((Number(it.unitCost || 0) * Number(it.count || 0)) * (Number(it.orderDiscountPercent || 0) / 100)), 0);
+  const finalTotal = subtotal - totalDescuento;
+  const currency = (items[0] && items[0].currency) ? (items[0].currency + ' ') : '';
 
       const card = document.createElement('div');
       card.className = 'card mb-3 purchase-card';
@@ -56,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div>
             <strong>Compra</strong>
-            <div class="text-muted small">${formatDate(key)}</div>
+            <div class="text-muted small">${displayDate}</div>
           </div>
-          <div class="fw-bold">${currency}${new Intl.NumberFormat('es-AR').format(total)}</div>
+          <div class="fw-bold">${currency}${new Intl.NumberFormat('es-AR').format(finalTotal)}</div>
         </div>
       `;
 
@@ -85,6 +93,32 @@ document.addEventListener('DOMContentLoaded', function () {
         list.appendChild(row);
       });
 
+      // Mostrar fila de descuento si corresponde
+      if (totalDescuento > 0) {
+        // Determinar si todos los items comparten el mismo porcentaje/razón
+        const percentSet = new Set(items.map(i => Number(i.orderDiscountPercent || 0)));
+        const reasonSet = new Set(items.map(i => i.orderDiscountReason || ''));
+        const uniformPercent = percentSet.size === 1 ? Array.from(percentSet)[0] : null;
+        const uniformReason = reasonSet.size === 1 ? Array.from(reasonSet)[0] : null;
+
+        const discountRow = document.createElement('div');
+        discountRow.className = 'd-flex justify-content-between align-items-center mt-2 small text-muted';
+        const left = document.createElement('div');
+        left.innerHTML = `<div>Descuento${uniformReason ? '' : ' (varios)'}</div>${uniformReason ? `<div class="text-muted small">${uniformReason}</div>` : ''}`;
+        const right = document.createElement('div');
+        const formattedDesc = new Intl.NumberFormat('es-AR').format(Math.round(totalDescuento));
+        right.innerHTML = `- ${currency}${formattedDesc}${uniformPercent ? ` (${uniformPercent}%)` : ''}`;
+        discountRow.appendChild(left);
+        discountRow.appendChild(right);
+        body.appendChild(discountRow);
+      }
+
+      // Mostrar subtotal / final total en pie si no mostrado ya (finalTotal mostrado at top)
+      const footer = document.createElement('div');
+      footer.className = 'd-flex justify-content-between align-items-center mt-3';
+      footer.innerHTML = `<div class="text-muted small">Subtotal</div><div class="fw-bold">${currency}${new Intl.NumberFormat('es-AR').format(subtotal)}</div>`;
+      body.appendChild(footer);
+
       body.appendChild(list);
       card.appendChild(body);
       container.appendChild(card);
@@ -94,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
   render();
 
   window.addEventListener('storage', function (e) {
-    if (e.key === 'purchases' || e.key === 'cart') render();
+    if (!e.key) return;
+    if (e.key === 'purchases' || e.key === 'cart' || e.key.startsWith('purchases_') || e.key.startsWith('cart_')) render();
   });
 });

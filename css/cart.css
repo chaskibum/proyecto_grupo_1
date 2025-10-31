@@ -152,3 +152,9 @@ h1 {
         width: 100%;
     }
 }
+
+/* Cuando hay descuento, mostrar el subtotal tachado para enfatizar el ahorro */
+.subtotal-tachado {
+    text-decoration: line-through;
+    color: #6c757d; /* muted color */
+}

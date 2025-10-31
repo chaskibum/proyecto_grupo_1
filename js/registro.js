@@ -103,6 +103,23 @@ document.addEventListener('DOMContentLoaded', function () {
             mostrarAlerta('Por favor, completa todos los campos.');
             return;
         }
+        // Validar fecha de nacimiento y edad mínima (18 años)
+        const birthInput = form.querySelector('#birthdate');
+        if (!birthInput || !birthInput.value) {
+            mostrarAlerta('Por favor, ingresa tu fecha de nacimiento.');
+            return;
+        }
+        const birthDate = new Date(birthInput.value);
+        if (isNaN(birthDate.getTime())) {
+            mostrarAlerta('Fecha de nacimiento inválida.');
+            return;
+        }
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear() - (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate()) ? 1 : 0);
+        if (age < 18) {
+            mostrarAlerta('Debes ser mayor de 18 años para registrarte.');
+            return;
+        }
         // Validar que las contraseñas coincidan
         const pwd1 = form.querySelector('#pword');
         const pwd2 = form.querySelector('#pwordConfirm');
@@ -121,6 +138,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         }
+        // Guardar perfil de usuario con fecha de nacimiento
+        try {
+            const nombre = document.getElementById('name')?.value || '';
+            const email = document.getElementById('email')?.value || '';
+            const perfil = {
+                nombre: nombre,
+                email: email,
+                birthdate: birthInput.value
+            };
+            localStorage.setItem('perfilUsuario', JSON.stringify(perfil));
+            // opcional: establecer usuario activo
+            localStorage.setItem('usuarioActivo', nombre);
+        } catch (e) {
+            console.warn('No se pudo guardar perfil en localStorage', e);
+        }
+
         mostrarAlerta('¡Gracias por registrarte!', true);
     });
 });

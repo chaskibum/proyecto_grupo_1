@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-	const STORAGE_KEY = 'cart';
-	const containerItems = document.getElementById('cart-items');
-	const emptyMessage = document.getElementById('cart-empty');
-	const totalCard = document.getElementById('cart-total-card');
-	const totalEl = document.getElementById('cart-total');
-	const checkoutBtn = document.getElementById('checkout-btn');
+	const CLAVE_ALMACENAMIENTO = 'cart';
+	const contenedorItems = document.getElementById('cart-items');
+	const mensajeVacio = document.getElementById('cart-empty');
+	const tarjetaTotal = document.getElementById('cart-total-card');
+	const elementoTotal = document.getElementById('cart-total');
+	const botonFinalizar = document.getElementById('checkout-btn');
 
 	// Cargar carrito desde localStorage
 	function cargarCarrito() {
 		try {
-			const raw = localStorage.getItem(STORAGE_KEY);
+			const raw = localStorage.getItem(CLAVE_ALMACENAMIENTO);
 			const parsed = raw ? JSON.parse(raw) : [];
 			return Array.isArray(parsed) ? parsed : [];
 		} catch (e) {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Guardar carrito en localStorage
 	function guardarCarrito(cart) {
-			localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+				localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(cart));
 			// Despachar un evento para que otras partes de la app (navbar) se actualicen inmediatamente
 			try {
 				const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
@@ -40,17 +40,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Render del carrito
 	function renderizarCarrito() {
-		const cart = cargarCarrito();
-		containerItems.innerHTML = '';
+	const cart = cargarCarrito();
+	contenedorItems.innerHTML = '';
 
 		if (!cart || cart.length === 0) {
-			emptyMessage.style.display = 'block';
-			totalCard.style.display = 'none';
+			mensajeVacio.style.display = 'block';
+			tarjetaTotal.style.display = 'none';
 			return;
 		}
 
-		emptyMessage.style.display = 'none';
-		totalCard.style.display = 'block';
+		mensajeVacio.style.display = 'none';
+		tarjetaTotal.style.display = 'block';
 
 			cart.forEach(item => {
 			const row = document.createElement('div');
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				</div>
 			`;
 
-			containerItems.appendChild(row);
+			contenedorItems.appendChild(row);
 		});
 
 				// Construir el desglose por artículos (lista en la tarjeta de totales)
@@ -114,31 +114,80 @@ document.addEventListener('DOMContentLoaded', function () {
 				adjuntarControles();
 	}
 	function actualizarMostradorTotal(cart) {
-		const total = calcularTotal(cart);
+		const subtotal = calcularTotal(cart);
 		// Mostrar con separador de miles y sin decimales si entero
-		const formatted = new Intl.NumberFormat('es-AR').format(total);
+		const formattedSubtotal = new Intl.NumberFormat('es-AR').format(subtotal);
 		// Intentamos obtener la moneda del primer item
 		const currency = (cart[0] && cart[0].currency) ? (cart[0].currency + ' ') : '';
-				// Subtotal (todos los artículos)
-				const subtotalAllEl = document.getElementById('cart-subtotal-all');
-				if (subtotalAllEl) subtotalAllEl.textContent = currency + formatted;
+		// Subtotal (todos los artículos)
+	const subtotalAllEl = document.getElementById('cart-subtotal-all');
+		if (subtotalAllEl) subtotalAllEl.textContent = currency + formattedSubtotal;
 
-				// Total (por ahora igual al subtotal agregado; en el futuro puede incluir impuestos/envío)
-				totalEl.textContent = currency + formatted;
-
-				// Habilitar/deshabilitar botón de checkout según existan artículos seleccionados
-				const anySelected = cart.some(it => it && it.selected !== false);
-				if (checkoutBtn) {
-					checkoutBtn.disabled = !anySelected;
-					if (checkoutBtn.disabled) checkoutBtn.classList.add('disabled'); else checkoutBtn.classList.remove('disabled');
+	// Calcular descuento según perfil del usuario (misma lógica que en checkout)
+	function obtenerDescuentoNacimiento() {
+			try {
+				const rawPerfil = localStorage.getItem('perfilUsuario');
+				if (!rawPerfil) return { percent: 0, reason: null };
+				const perfil = JSON.parse(rawPerfil);
+				if (!perfil || !perfil.birthdate) return { percent: 0, reason: null };
+				const b = new Date(perfil.birthdate);
+				if (isNaN(b.getTime())) return { percent: 0, reason: null };
+				const today = new Date();
+				const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+				// Si hoy es tu cumpleaños -> 10% (prioritario)
+				if (b.getDate() === today.getDate() && b.getMonth() === today.getMonth()) {
+					return { percent: 10, reason: `Descuento por cumpleaños (${monthNames[b.getMonth()]} ${b.getDate()})` };
 				}
+				// Si no, descuento igual al número del mes de nacimiento (enero=1 -> 1%)
+				const monthPercent = (b.getMonth() + 1);
+				return { percent: monthPercent, reason: `Descuento por mes de nacimiento (${monthNames[b.getMonth()]})` };
+			} catch (e) {
+				console.warn('Error leyendo perfil para descuentos', e);
+				return { percent: 0, reason: null };
+			}
+		}
+
+		const birthDiscount = obtenerDescuentoNacimiento();
+		const porcentajeDescuento = birthDiscount.percent || 0;
+		const razonDescuento = birthDiscount.reason || null;
+
+		const filaDescuento = document.getElementById('cart-discount-row');
+		const montoDescuentoEl = document.getElementById('cart-discount-amount');
+		const razonDescuentoEl = document.getElementById('cart-discount-reason');
+		if (porcentajeDescuento > 0) {
+			const montoDescuento = Math.round((subtotal * porcentajeDescuento) / 100);
+			const formattedDescuento = new Intl.NumberFormat('es-AR').format(montoDescuento);
+			if (filaDescuento) filaDescuento.style.display = 'flex';
+			if (montoDescuentoEl) montoDescuentoEl.textContent = `- ${currency}${formattedDescuento} (${porcentajeDescuento}%)`;
+			if (razonDescuentoEl) {
+				razonDescuentoEl.textContent = razonDescuento || '';
+				razonDescuentoEl.style.display = razonDescuento ? 'block' : 'none';
+			}
+			if (subtotalAllEl) subtotalAllEl.classList.add('subtotal-tachado');
+			// Total después del descuento
+			const totalDespues = subtotal - montoDescuento;
+			const formattedTotalAfter = new Intl.NumberFormat('es-AR').format(totalDespues);
+			if (elementoTotal) elementoTotal.textContent = currency + formattedTotalAfter;
+		} else {
+			if (filaDescuento) filaDescuento.style.display = 'none';
+			if (razonDescuentoEl) { razonDescuentoEl.textContent = ''; razonDescuentoEl.style.display = 'none'; }
+			if (subtotalAllEl) subtotalAllEl.classList.remove('subtotal-tachado');
+			if (elementoTotal) elementoTotal.textContent = currency + formattedSubtotal;
+		}
+
+		// Habilitar/deshabilitar botón de checkout según existan artículos seleccionados
+		const anySelected = cart.some(it => it && it.selected !== false);
+		if (botonFinalizar) {
+			botonFinalizar.disabled = !anySelected;
+			if (botonFinalizar.disabled) botonFinalizar.classList.add('disabled'); else botonFinalizar.classList.remove('disabled');
+		}
 	}
 	// Adjuntar listeners a inputs y botones dinamicamente
 	function adjuntarControles() {
 		const qtyInputs = document.querySelectorAll('.cart-qty');
 		const deleteBtns = document.querySelectorAll('.btn-delete');
 		const selectBoxes = document.querySelectorAll('.cart-select');
-		const selectAllBox = document.getElementById('select-all');
+	const selectAllBox = document.getElementById('select-all');
 
 		qtyInputs.forEach(inp => {
 			inp.removeEventListener('change', cambioCantidad);
@@ -210,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Accion de finalizar compra: guardar los productos seleccionados en 'purchases'
 	// y eliminarlos del carrito
-	checkoutBtn && checkoutBtn.addEventListener('click', function () {
+	botonFinalizar && botonFinalizar.addEventListener('click', function () {
 		const cart = cargarCarrito();
 		if (!cart || cart.length === 0) return;
 
@@ -226,10 +275,43 @@ document.addEventListener('DOMContentLoaded', function () {
 			const rawPrev = localStorage.getItem('purchases');
 			const prev = rawPrev ? JSON.parse(rawPrev) : [];
 			const timestamp = new Date().toISOString();
-			// Añadir metadata mínima (fecha) a cada item guardado
-			const toSave = selected.map(item => Object.assign({}, item, { purchasedAt: timestamp }));
+			// Unificar cálculo de descuento para metadata y notificación
+			function obtenerDescuentoParaCompra() {
+				try {
+					const rawPerfil = localStorage.getItem('perfilUsuario');
+					if (!rawPerfil) return { percent: 0, reason: null };
+					const perfil = JSON.parse(rawPerfil);
+					if (!perfil || !perfil.birthdate) return { percent: 0, reason: null };
+					const b = new Date(perfil.birthdate);
+					if (isNaN(b.getTime())) return { percent: 0, reason: null };
+					const today = new Date();
+					const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+					if (b.getDate() === today.getDate() && b.getMonth() === today.getMonth()) {
+						return { percent: 10, reason: `Descuento por cumpleaños (${monthNames[b.getMonth()]} ${b.getDate()})` };
+					}
+					const monthPercent = (b.getMonth() + 1);
+					return { percent: monthPercent, reason: `Descuento por mes de nacimiento (${monthNames[b.getMonth()]})` };
+				} catch (e) { return { percent: 0, reason: null }; }
+			}
+			const metaDescuento = obtenerDescuentoParaCompra();
+			const toSave = selected.map(item => Object.assign({}, item, { purchasedAt: timestamp, orderDiscountPercent: metaDescuento.percent || 0, orderDiscountReason: metaDescuento.reason || null }));
 			const merged = Array.isArray(prev) ? prev.concat(toSave) : toSave;
 			localStorage.setItem('purchases', JSON.stringify(merged));
+
+				// Calcular totales y notificar al usuario del descuento (usar bd_meta calculado antes)
+				try {
+					const descuento = metaDescuento || { percent: 0, reason: null };
+					const subtotal = selected.reduce((s, it) => s + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
+					const montoDescuento = Math.round((subtotal * (descuento.percent || 0)) / 100);
+					const totalAfter = subtotal - montoDescuento;
+					// No mostrar alert() bloqueante. Guardamos un resumen no intrusivo en localStorage
+					// para que otras partes de la app puedan leerlo si lo desean.
+					try {
+						localStorage.setItem('lastPurchaseSummary', JSON.stringify({ subtotal, montoDescuento, totalAfter, descuento }));
+					} catch (err) { /* ignore storage errors */ }
+					// opcional: log para debug
+					console.info('Compra procesada', { subtotal, montoDescuento, totalAfter, descuento });
+				} catch (e) { /* ignore */ }
 		} catch (e) {
 			console.error('No se pudo guardar la compra en localStorage:', e);
 			alert('Ocurrió un error al procesar la compra. Intente nuevamente.');
@@ -249,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// Re-renderizar y notificar al usuario
 		renderizarCarrito();
-		alert('Gracias por su compra. Los productos seleccionados fueron guardados.');
 		// Opcional: redirigir a inicio
 		window.location.href = "index.html";
 	});
