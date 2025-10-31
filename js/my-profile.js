@@ -265,14 +265,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const countEl = document.getElementById('purchases-count');
   const totalEl = document.getElementById('purchases-total');
 
-  function getUserKey(prefix) {
-    const usuario = localStorage.getItem('usuarioActivo');
-    return usuario ? `${prefix}_${usuario}` : prefix;
-  }
   function loadPurchases() {
     try {
-      const key = getUserKey("purchases");
-      const raw = localStorage.getItem(key);
+      const raw = localStorage.getItem('purchases');
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
@@ -315,8 +310,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // actualizar si hay cambios en storage
   window.addEventListener('storage', function (e) {
-    if (e.key && (e.key.includes('purchases_') || e.key.includes('cart_'))) {
-      computeSummary();
-    }
+    if (e.key === 'purchases' || e.key === 'cart') render();
   });
 });
