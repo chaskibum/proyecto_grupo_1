@@ -1076,30 +1076,85 @@ body.dark-mode #img-perfil i.bi-plus-circle-fill {
 
 
 /*ofertas */
-.carrusel {
-  width: 100%;
-  max-width: 800px;
-  height: 250px;
-  overflow: hidden;
-  border-radius: 10px;
-  margin: 20px auto;
-  position: relative;
+.ads-container-compact {
+  display: flex;
+  gap: 12px;
+  max-width: 880px;
+  margin: 12px auto;
+  align-items: stretch;
 }
 
-.slide {
+.ad-vertical {
+  width: 280px;
+  height: 360px;
+}
+
+.ad-right-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.ad-horizontal {
+  height: 174px;
+}
+
+.ad-slider {
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+}
+
+.ad-slide {
+  width: 100%;
+  height: 100%;
+  display: none;
   position: absolute;
-  opacity: 0;
-  transition: opacity .7s ease-in-out;
+  top: 0;
+  left: 0;
 }
 
-.slide.active {
-  opacity: 1;
-}
-
-.carrusel img {
+.ad-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.ad-slide.active {
+  display: block;
+  animation: fade 600ms;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@media (max-width: 720px) {
+  .ads-container-compact {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 12px;
+  }
+  .ad-vertical { width: 100%; height: 220px; }
+  .ad-horizontal { height: 140px; }
+}
+
+.ad-slide {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.ad-slide:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }

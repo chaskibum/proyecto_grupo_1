@@ -59,3 +59,34 @@ setInterval(() => {
   index = (index + 1) % slides.length;
   slides[index].classList.add('active');
 }, 3000); ]*/
+
+
+
+function initAdSlider(sliderId, interval = 3500) {
+  const slider = document.getElementById(sliderId);
+  if (!slider) return;
+  const slides = Array.from(slider.querySelectorAll('.ad-slide'));
+  if (!slides.length) return;
+  let current = 0;
+
+  function show(index) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+  }
+
+  show(current);
+
+  const t = setInterval(() => {
+    current = (current + 1) % slides.length;
+    show(current);
+  }, interval);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) clearInterval(t);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAdSlider('adSliderLeft', 4100);
+  initAdSlider('adSliderTopRight', 3700);
+  initAdSlider('adSliderBottomRight', 3800);
+});
