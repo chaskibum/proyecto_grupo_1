@@ -172,28 +172,30 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       fetch("navbar.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("navbar").innerHTML = html;
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("navbar").innerHTML = html;
 
-          const usuario = localStorage.getItem('usuarioActivo');
-          const link = document.getElementById('inicio-sesion');
-          if (usuario && link) {
-            link.textContent = usuario;
-            link.href = 'my-profile.html';
-          }
+    const usuario = localStorage.getItem('usuarioActivo');
+    const link = document.getElementById('inicio-sesion');
+    if (usuario && link) {
+      link.textContent = usuario;
+      link.href = 'my-profile.html';
+    }
 
+  });
 
-          const buscador = document.getElementById('buscador');
-          if (buscador) {
-            buscador.addEventListener('input', e => {
-              const texto = e.target.value.toLowerCase();
-              verData = productsData.filter(p =>
-                (p.name || '').toLowerCase().includes(texto) || (p.description || '').toLowerCase().includes(texto)
-              );
-              renderProducts(verData);
-            });
-          }
+const buscador = document.getElementById('buscador');
+if (buscador) {
+  buscador.addEventListener('input', e => {
+    const texto = e.target.value.toLowerCase();
+    verData = productsData.filter(p =>
+      (p.name || '').toLowerCase().includes(texto) ||
+      (p.description || '').toLowerCase().includes(texto)
+    );
+    renderProducts(verData);
+  });
+}
 
           const localS = {
             'Autos': '101', 'Juguetes': '102', 'Muebles': '103', 'Herramientas': '104',
@@ -214,4 +216,3 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         });
     });
-  });

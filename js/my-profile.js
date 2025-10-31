@@ -11,6 +11,7 @@
     const apellidoValor = document.getElementById('apellidoValor');
     const emailValor = document.getElementById('emailValor');
     const telefonoValor = document.getElementById('telefonoValor');
+  const birthdateValor = document.getElementById('birthdateValor');
 
     const inputNombre = document.getElementById('inputNombre');
     const inputApellido = document.getElementById('inputApellido');
@@ -39,7 +40,22 @@
         nombreValor.textContent = obj && obj.nombre ? obj.nombre : '-';
         apellidoValor.textContent = obj && obj.apellido ? obj.apellido : '-';
         emailValor.textContent = obj && obj.email ? obj.email : '-';
-        telefonoValor.textContent = obj && obj.telefono ? obj.telefono : '-';
+    telefonoValor.textContent = obj && obj.telefono ? obj.telefono : '-';
+    // Mostrar fecha de nacimiento en formato local si existe
+    try {
+      if (birthdateValor) {
+        if (obj && obj.birthdate) {
+          const d = new Date(obj.birthdate);
+          if (!isNaN(d.getTime())) {
+            birthdateValor.textContent = new Intl.DateTimeFormat('es-ES').format(d);
+          } else {
+            birthdateValor.textContent = obj.birthdate || '-';
+          }
+        } else {
+          birthdateValor.textContent = '-';
+        }
+      }
+    } catch (e) { if (birthdateValor) birthdateValor.textContent = '-'; }
     }
 
     function populateForm(obj) {
@@ -74,12 +90,15 @@
 
     if (guardarBtn) {
         guardarBtn.addEventListener('click', function () {
-            const newData = {
-                nombre: inputNombre.value && inputNombre.value.trim(),
-                apellido: inputApellido.value && inputApellido.value.trim(),
-                email: inputEmail.value && inputEmail.value.trim(),
-                telefono: inputTelefono.value && inputTelefono.value.trim()
-            };
+      // Preservar la fecha de nacimiento existente si la hay
+      const existente = loadPerfil();
+      const newData = {
+        nombre: inputNombre.value && inputNombre.value.trim(),
+        apellido: inputApellido.value && inputApellido.value.trim(),
+        email: inputEmail.value && inputEmail.value.trim(),
+        telefono: inputTelefono.value && inputTelefono.value.trim(),
+        birthdate: existente && existente.birthdate ? existente.birthdate : undefined
+      };
 
             // Basic validation: email if provided should include @
             if (newData.email && !newData.email.includes('@')) {
@@ -253,4 +272,75 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(script);
   }
   cargarCropper(() => {});
+});
+
+
+
+
+
+// --- Resumen del Historial de Compras: total gastado y número de compras ---
+document.addEventListener('DOMContentLoaded', function () {
+  const summaryEl = document.getElementById('purchase-summary');
+  const countEl = document.getElementById('purchases-count');
+  const totalEl = document.getElementById('purchases-total');
+
+  function getUserKey(prefix) {
+    const usuario = localStorage.getItem('usuarioActivo');
+    return usuario ? `${prefix}_${usuario}` : prefix;
+  }
+
+  function loadPurchases() {
+    try {
+      // Intentar leer primero la clave por usuario (p.ej. purchases_<usuario>).
+      // Si no existe, caer a la clave global 'purchases' para compatibilidad.
+      const userKey = getUserKey('purchases');
+      let raw = localStorage.getItem(userKey);
+      if (!raw) raw = localStorage.getItem('purchases');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error('Error parseando purchases:', e);
+      return [];
+    }
+  }
+
+
+  function computeSummary() {
+    const purchases = loadPurchases();
+    if (!summaryEl) return;
+
+    if (!purchases || purchases.length === 0) {
+      if (countEl) countEl.textContent = '0';
+      if (totalEl) totalEl.textContent = 'USD 0';
+      return;
+    }
+
+    // count purchases by unique purchasedAt timestamps
+    const groups = {};
+    purchases.forEach(item => {
+      const key = item.purchasedAt || (Math.random().toString(36).slice(2));
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(item);
+    });
+    const purchaseCount = Object.keys(groups).length;
+
+    // total spent across all purchases
+    const total = purchases.reduce((s, it) => s + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
+
+    // currency: prefer first item's currency
+    const currency = (purchases[0] && purchases[0].currency) ? (purchases[0].currency + ' ') : '';
+
+    if (countEl) countEl.textContent = String(purchaseCount);
+    if (totalEl) totalEl.textContent = currency + new Intl.NumberFormat('es-AR').format(total);
+  }
+
+  computeSummary();
+
+  // actualizar si hay cambios en storage
+  window.addEventListener('storage', function (e) {
+    if (!e.key) return;
+    if (e.key === 'purchases' || e.key === 'cart' || e.key.startsWith('purchases_') || e.key.startsWith('cart_')) {
+      computeSummary();
+    }
+  });
 });

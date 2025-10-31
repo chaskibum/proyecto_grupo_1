@@ -118,6 +118,7 @@
           <p><strong>Apellido:</strong> <span id="apellidoValor">-</span></p>
           <p><strong>Email:</strong> <span id="emailValor">-</span></p>
           <p><strong>Teléfono:</strong> <span id="telefonoValor">-</span></p>
+          <p><strong>Fecha de nacimiento:</strong> <span id="birthdateValor">-</span></p>
         </div>
 
         <form id="personal-form" class="mt-3 d-none">
@@ -145,10 +146,23 @@
 
       <hr>
 
-      <button class="datosCuenta">
-        <h4><i class="bi-person-lines-fill"></i> Datos de tu Cuenta</h4>
-        <p>no se</p>
-        </button>
+      <!-- Resumen del historial de compras -->
+      <div id="purchase-summary" class="mt-3">
+        <h4><i class="bi bi-bag-check"></i> Historial de compras</h4>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="small text-muted">Compras realizadas</div>
+            <div id="purchases-count" class="fs-5">0</div>
+          </div>
+          <div class="col-6 text-end">
+            <div class="small text-muted">Total gastado</div>
+            <div id="purchases-total" class="fs-5">USD 0</div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <a id="ver-historial-btn" href="historial.html" class="btn btn-outline-primary">Ver historial completo</a>
+        </div>
+      </div>
 
       <hr>
 

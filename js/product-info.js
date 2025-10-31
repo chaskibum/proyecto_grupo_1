@@ -121,6 +121,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
                     // Navegar al carrito
+                    try {
+                        const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
+                        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total } }));
+                    } catch (e) {
+                        console.warn('Error despachando cart:updated desde product-info', e);
+                    }
                     window.location.href = 'cart.html';
                 } catch (e) {
                     console.error('Error al añadir al carrito:', e);
