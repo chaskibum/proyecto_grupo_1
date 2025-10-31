@@ -2,22 +2,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const container = document.getElementById('historial-container');
   const noMsg = document.getElementById('no-purchases');
 
-function getUserKey(prefix) {
-  const usuario = localStorage.getItem('usuarioActivo');
-  return usuario ? `${prefix}_${usuario}` : prefix;
-}
-
-function loadPurchases() {
-  try {
-    const key = getUserKey("purchases");
-    const raw = localStorage.getItem(key);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.error('Error parseando purchases:', e);
-    return [];
+  function loadPurchases() {
+    try {
+      const raw = localStorage.getItem('purchases');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error('Error parseando purchases:', e);
+      return [];
+    }
   }
-}
 
   function formatDate(iso) {
     try {
@@ -100,8 +94,6 @@ function loadPurchases() {
   render();
 
   window.addEventListener('storage', function (e) {
-  if (e.key && (e.key.includes('purchases_') || e.key.includes('cart_'))) {
-    render();
-  }
-});
+    if (e.key === 'purchases' || e.key === 'cart') render();
+  });
 });
