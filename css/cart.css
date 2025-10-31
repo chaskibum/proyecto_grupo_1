@@ -21,3 +21,134 @@ h1 {
 
 /* Hacer el checkbox más visible y con buen tamaño en móviles */
 .cart-select-pos .form-check-input { width: 20px; height: 20px; }
+
+/* Mejoras de responsividad para pantallas móviles */
+@media (max-width: 767.98px) {
+    /* Mantener layout tipo 'desktop' en móviles: imagen a la izquierda y detalles a la derecha */
+    .cart-card .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        /* permitir wrap para evitar overflow en pantallas muy angostas */
+        flex-wrap: wrap;
+    }
+
+    /* Título principal algo más pequeño y compacto en móvil */
+    h1 {
+        margin-top: 1rem;
+        margin-bottom: 0.6rem;
+        font-size: 1.6rem;
+    }
+
+    /* Columnas: forzar anchos relativos similares a desktop */
+    .cart-card .col-md-3 {
+        flex: 0 0 28%;
+        max-width: 28%;
+        position: relative; /* mantener referencia para checkbox absoluto */
+        padding: 0.35rem 0.5rem;
+    }
+    .cart-card .col-md-5 {
+        flex: 1 0 45%;
+        max-width: 45%;
+        padding: 0.35rem 0.5rem;
+    }
+    /* Las dos columnas de 2 unidades se ajustan para compartir el espacio restante */
+    .cart-card .col-md-2 {
+        flex: 0 0 13%;
+        max-width: 13%;
+        padding: 0.35rem 0.25rem;
+        text-align: center;
+    }
+
+    /* Checkbox en esquina superior izquierda de la imagen (como en desktop) */
+    .cart-select-pos {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        transform: none;
+        z-index: 5;
+    }
+
+    /* Imagen centrada verticalmente en su columna y con tamaño reducido */
+    .cart-card img {
+        max-height: 100px;
+        width: auto;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+        border-radius: 8px;
+    }
+
+    /* Compactar padding de la card para ahorrar espacio vertical */
+    .cart-card {
+        margin-bottom: 0.6rem;
+        border-radius: 8px;
+    }
+    .cart-card .card-body {
+        padding: 0.5rem 0.6rem;
+    }
+
+    /* Inputs y botones: ocupar todo el ancho de su columna pero sin forzar salto */
+    .cart-qty {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .btn-delete {
+        width: 100%;
+        margin-top: 0.2rem;
+    }
+
+    /* Totales: mantener en columna pequeña pero sin cambiar la estructura principal */
+    .total-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    #checkout-btn {
+        width: auto;
+        min-width: 140px;
+    }
+
+    /* Ajustes para el desglose dentro de la tarjeta de totales */
+    #cart-breakdown .list-group-item {
+        font-size: 0.95rem;
+        word-break: break-word;
+        padding-top: 0.35rem;
+        padding-bottom: 0.35rem;
+    }
+}
+
+/* En pantallas muy pequeñas, permitir apilar verticalmente para evitar que el contenido salga del viewport */
+@media (max-width: 420px) {
+    .cart-card .row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .cart-card .col-md-3,
+    .cart-card .col-md-5,
+    .cart-card .col-md-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0.35rem 0.5rem;
+    }
+    .cart-select-pos {
+        position: static;
+        margin-bottom: 0.25rem;
+        left: auto;
+        top: auto;
+    }
+    .cart-card img {
+        max-height: 120px;
+        max-width: 60%;
+        margin: 0.25rem auto;
+    }
+    .total-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    #checkout-btn {
+        width: 100%;
+    }
+}

@@ -254,3 +254,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   cargarCropper(() => {});
 });
+
+// --- Resumen del Historial de Compras: total gastado y número de compras ---
+document.addEventListener('DOMContentLoaded', function () {
+  const summaryEl = document.getElementById('purchase-summary');
+  const countEl = document.getElementById('purchases-count');
+  const totalEl = document.getElementById('purchases-total');
+
+  function loadPurchases() {
+    try {
+      const raw = localStorage.getItem('purchases');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error('Error parseando purchases:', e);
+      return [];
+    }
+  }
+
+  function computeSummary() {
+    const purchases = loadPurchases();
+    if (!summaryEl) return;
+
+    if (!purchases || purchases.length === 0) {
+      if (countEl) countEl.textContent = '0';
+      if (totalEl) totalEl.textContent = 'USD 0';
+      return;
+    }
+
+    // count purchases by unique purchasedAt timestamps
+    const groups = {};
+    purchases.forEach(item => {
+      const key = item.purchasedAt || (Math.random().toString(36).slice(2));
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(item);
+    });
+    const purchaseCount = Object.keys(groups).length;
+
+    // total spent across all purchases
+    const total = purchases.reduce((s, it) => s + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
+
+    // currency: prefer first item's currency
+    const currency = (purchases[0] && purchases[0].currency) ? (purchases[0].currency + ' ') : '';
+
+    if (countEl) countEl.textContent = String(purchaseCount);
+    if (totalEl) totalEl.textContent = currency + new Intl.NumberFormat('es-AR').format(total);
+  }
+
+  computeSummary();
+
+  // actualizar si hay cambios en storage
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'purchases' || e.key === 'cart') computeSummary();
+  });
+});

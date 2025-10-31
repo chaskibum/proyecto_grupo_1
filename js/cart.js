@@ -208,16 +208,50 @@ document.addEventListener('DOMContentLoaded', function () {
 		renderizarCarrito();
 	}
 
-	// Accion de finalizar compra: aquí solo limpia el carrito y muestra mensaje simple
+	// Accion de finalizar compra: guardar los productos seleccionados en 'purchases'
+	// y eliminarlos del carrito
 	checkoutBtn && checkoutBtn.addEventListener('click', function () {
 		const cart = cargarCarrito();
 		if (!cart || cart.length === 0) return;
-		// Por simplicidad: vaciamos el carrito y mostramos mensaje
-		localStorage.removeItem(STORAGE_KEY);
-		// notificar a otros listeners que el carrito ahora está vacío
-		document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total: 0 } }));
+
+		// Items seleccionados (selected !== false)
+		const selected = cart.filter(it => it && it.selected !== false);
+		if (!selected || selected.length === 0) {
+			alert('Seleccione al menos un producto para comprar.');
+			return;
+		}
+
+		// Guardar en localStorage bajo la clave 'purchases' (concatenando compras previas)
+		try {
+			const rawPrev = localStorage.getItem('purchases');
+			const prev = rawPrev ? JSON.parse(rawPrev) : [];
+			const timestamp = new Date().toISOString();
+			// Añadir metadata mínima (fecha) a cada item guardado
+			const toSave = selected.map(item => Object.assign({}, item, { purchasedAt: timestamp }));
+			const merged = Array.isArray(prev) ? prev.concat(toSave) : toSave;
+			localStorage.setItem('purchases', JSON.stringify(merged));
+		} catch (e) {
+			console.error('No se pudo guardar la compra en localStorage:', e);
+			alert('Ocurrió un error al procesar la compra. Intente nuevamente.');
+			return;
+		}
+
+		// Eliminar los productos seleccionados del carrito y guardar el resto
+		const remaining = cart.filter(it => !(it && it.selected !== false));
+		guardarCarrito(remaining);
+
+		// Notificar a otros listeners del nuevo total (guardarCarrito ya despacha cart:updated,
+		// pero aseguramos que el detalle esté actualizado)
+		try {
+			const totalRemaining = Array.isArray(remaining) ? remaining.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
+			document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total: totalRemaining } }));
+		} catch (e) { /* ignore */ }
+
+		// Re-renderizar y notificar al usuario
 		renderizarCarrito();
-		alert('Gracias por su compra. (Simulación)');
+		alert('Gracias por su compra. Los productos seleccionados fueron guardados.');
+		// Opcional: redirigir a inicio
+		window.location.href = "index.html";
 	});
 
 	// Render inicial
