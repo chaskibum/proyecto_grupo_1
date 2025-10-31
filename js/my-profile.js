@@ -288,15 +288,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const usuario = localStorage.getItem('usuarioActivo');
     return usuario ? `${prefix}_${usuario}` : prefix;
   }
+
   function loadPurchases() {
     try {
-      // Intentar leer primero la clave por usuario (p.ej. purchases_username).
-      // Si no existe, caer de vuelta a la clave global 'purchases' para compatibilidad.
-      const userKey = getUserKey("purchases");
+      // Intentar leer primero la clave por usuario (p.ej. purchases_<usuario>).
+      // Si no existe, caer a la clave global 'purchases' para compatibilidad.
+      const userKey = getUserKey('purchases');
       let raw = localStorage.getItem(userKey);
-      if (!raw) {
-        raw = localStorage.getItem('purchases');
-      }
+      if (!raw) raw = localStorage.getItem('purchases');
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
@@ -339,7 +338,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // actualizar si hay cambios en storage
   window.addEventListener('storage', function (e) {
-    if (e.key && (e.key.includes('purchases_') || e.key === 'purchases' || e.key.includes('cart_') || e.key === 'cart')) {
+    if (!e.key) return;
+    if (e.key === 'purchases' || e.key === 'cart' || e.key.startsWith('purchases_') || e.key.startsWith('cart_')) {
       computeSummary();
     }
   });
