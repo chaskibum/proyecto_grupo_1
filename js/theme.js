@@ -1,47 +1,50 @@
-// Modo oscuro
 (function () {
-  const body = document.body;
+    const cuerpo = document.body;
 
-  function setIcon(iconEl, dark) {
-    if (!iconEl) return;
-    iconEl.className = dark ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
-  }
+    // Establecer icono del botón según estado del tema
+    function establecerIcono(elementoIcono, oscuro) {
+        if (!elementoIcono) return;
+        elementoIcono.className = oscuro ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+    }
 
-  function applyThemeFromStorage() {
-    const isDark = localStorage.getItem('theme') === 'dark';
-    if (isDark) body.classList.add('dark-mode'); else body.classList.remove('dark-mode');
-    const btn = document.getElementById('oscuro');
-    const icon = btn ? btn.querySelector('i') : null;
-    setIcon(icon, isDark);
-  }
+    // Aplicar tema guardado en localStorage
+    function aplicarTemaDesdeAlmacenamiento() {
+        const esOscuro = localStorage.getItem('theme') === 'dark';
+        if (esOscuro) cuerpo.classList.add('dark-mode'); 
+        else cuerpo.classList.remove('dark-mode');
+        const boton = document.getElementById('oscuro');
+        const icono = boton ? boton.querySelector('i') : null;
+        establecerIcono(icono, esOscuro);
+    }
 
-  function attachButtonListener() {
-    const button = document.getElementById('oscuro');
-    if (!button) return;
-  
-    if (button.__themeListenerAttached) return;
-    button.__themeListenerAttached = true;
+    // Adjuntar evento click al botón de cambio de tema
+    function adjuntarEscuchaBoton() {
+        const boton = document.getElementById('oscuro');
+        if (!boton) return;
+    
+        if (boton.__escuchaTemaCargada) return;
+        boton.__escuchaTemaCargada = true;
 
-    button.addEventListener('click', function (e) {
-      e.preventDefault();
-      body.classList.toggle('dark-mode');
-      const nowDark = body.classList.contains('dark-mode');
-      const icon = button.querySelector('i');
-      setIcon(icon, nowDark);
-      localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+        boton.addEventListener('click', function (evento) {
+            evento.preventDefault();
+            cuerpo.classList.toggle('dark-mode');
+            const ahoraOscuro = cuerpo.classList.contains('dark-mode');
+            const icono = boton.querySelector('i');
+            establecerIcono(icono, ahoraOscuro);
+            localStorage.setItem('theme', ahoraOscuro ? 'dark' : 'light');
+        });
+    }
+
+    // Inicializar tema al cargar el DOM
+    document.addEventListener('DOMContentLoaded', function () {
+        aplicarTemaDesdeAlmacenamiento();
+        adjuntarEscuchaBoton();
     });
-  }
 
-  // Inicializa al cargar
-  document.addEventListener('DOMContentLoaded', function () {
-    applyThemeFromStorage();
-    attachButtonListener();
-  });
-
-  // Se ejecuta cuando este cargado el navBar
-  document.addEventListener('navbar:ready', function () {
-    applyThemeFromStorage();
-    attachButtonListener();
-  });
+    // Inicializar tema cuando el navbar está listo
+    document.addEventListener('navbar:ready', function () {
+        aplicarTemaDesdeAlmacenamiento();
+        adjuntarEscuchaBoton();
+    });
 
 })();

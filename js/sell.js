@@ -1,139 +1,128 @@
-let productCost = 0;
-let productCount = 0;
-let comissionPercentage = 0.13;
-let MONEY_SYMBOL = "$";
-let DOLLAR_CURRENCY = "Dólares (USD)";
-let PESO_CURRENCY = "Pesos Uruguayos (UYU)";
-let DOLLAR_SYMBOL = "USD ";
-let PESO_SYMBOL = "UYU ";
-let PERCENTAGE_SYMBOL = '%';
-let MSG = "FUNCIONALIDAD NO IMPLEMENTADA";
+let costoProducto = 0;
+let cantidadProducto = 0;
+let porcentajeComision = 0.13;
+let SIMBOLO_MONEDA = "$";
+let MONEDA_DOLAR = "Dólares (USD)";
+let MONEDA_PESO = "Pesos Uruguayos (UYU)";
+let SIMBOLO_DOLAR = "USD ";
+let SIMBOLO_PESO = "UYU ";
+let SIMBOLO_PORCENTAJE = '%';
+let MENSAJE = "FUNCIONALIDAD NO IMPLEMENTADA";
 
-//Función que se utiliza para actualizar los costos de publicación
-function updateTotalCosts() {
-    let unitProductCostHTML = document.getElementById("productCostText");
-    let comissionCostHTML = document.getElementById("comissionText");
-    let totalCostHTML = document.getElementById("totalCostText");
+// Actualizar visualización de costos según comisión y precio
+function actualizarCostosTotales() {
+    let htmlCostoProducto = document.getElementById("productCostText");
+    let htmlComision = document.getElementById("comissionText");
+    let htmlCostoTotal = document.getElementById("totalCostText");
 
-    let unitCostToShow = MONEY_SYMBOL + productCost;
-    let comissionToShow = Math.round((comissionPercentage * 100)) + PERCENTAGE_SYMBOL;
-    let totalCostToShow = MONEY_SYMBOL + ((Math.round(productCost * comissionPercentage * 100) / 100) + parseInt(productCost));
+    let costoUnitarioMostrar = SIMBOLO_MONEDA + costoProducto;
+    let comisionMostrar = Math.round((porcentajeComision * 100)) + SIMBOLO_PORCENTAJE;
+    let costoTotalMostrar = SIMBOLO_MONEDA + ((Math.round(costoProducto * porcentajeComision * 100) / 100) + parseInt(costoProducto));
 
-    unitProductCostHTML.innerHTML = unitCostToShow;
-    comissionCostHTML.innerHTML = comissionToShow;
-    totalCostHTML.innerHTML = totalCostToShow;
+    htmlCostoProducto.innerHTML = costoUnitarioMostrar;
+    htmlComision.innerHTML = comisionMostrar;
+    htmlCostoTotal.innerHTML = costoTotalMostrar;
 }
 
-//Función que se ejecuta una vez que se haya lanzado el evento de
-//que el documento se encuentra cargado, es decir, se encuentran todos los
-//elementos HTML presentes.
-document.addEventListener("DOMContentLoaded", function (e) {
+document.addEventListener("DOMContentLoaded", function (evento) {
+    // Actualizar cantidad de productos
     document.getElementById("productCountInput").addEventListener("change", function () {
-        productCount = this.value;
-        updateTotalCosts();
+        cantidadProducto = this.value;
+        actualizarCostosTotales();
     });
 
+    // Actualizar costo del producto
     document.getElementById("productCostInput").addEventListener("change", function () {
-        productCost = this.value;
-        updateTotalCosts();
+        costoProducto = this.value;
+        actualizarCostosTotales();
     });
 
+    // Cambiar comisión según tipo de publicación (Gold)
     document.getElementById("goldradio").addEventListener("change", function () {
-        comissionPercentage = 0.13;
-        updateTotalCosts();
+        porcentajeComision = 0.13;
+        actualizarCostosTotales();
     });
 
+    // Cambiar comisión según tipo de publicación (Premium)
     document.getElementById("premiumradio").addEventListener("change", function () {
-        comissionPercentage = 0.07;
-        updateTotalCosts();
+        porcentajeComision = 0.07;
+        actualizarCostosTotales();
     });
 
+    // Cambiar comisión según tipo de publicación (Standard)
     document.getElementById("standardradio").addEventListener("change", function () {
-        comissionPercentage = 0.03;
-        updateTotalCosts();
+        porcentajeComision = 0.03;
+        actualizarCostosTotales();
     });
 
+    // Cambiar símbolo de moneda
     document.getElementById("productCurrency").addEventListener("change", function () {
-        if (this.value == DOLLAR_CURRENCY) {
-            MONEY_SYMBOL = DOLLAR_SYMBOL;
+        if (this.value == MONEDA_DOLAR) {
+            SIMBOLO_MONEDA = SIMBOLO_DOLAR;
         }
-        else if (this.value == PESO_CURRENCY) {
-            MONEY_SYMBOL = PESO_SYMBOL;
+        else if (this.value == MONEDA_PESO) {
+            SIMBOLO_MONEDA = SIMBOLO_PESO;
         }
 
-        updateTotalCosts();
+        actualizarCostosTotales();
     });
 
-
-    //Configuraciones para el elemento que sube archivos
-    let dzoptions = {
+    // Configurar Dropzone para subida de imágenes
+    let opcionesDz = {
         url: "/",
         autoQueue: false
     };
-    let myDropzone = new Dropzone("div#file-upload", dzoptions);
+    let miDropzone = new Dropzone("div#file-upload", opcionesDz);
 
+    let formularioVenta = document.getElementById("sell-info");
 
-    //Se obtiene el formulario de publicación de producto
-    let sellForm = document.getElementById("sell-info");
+    // Validar formulario antes de enviar
+    formularioVenta.addEventListener("submit", function (evento) {
+        evento.preventDefault();
 
-    //Se agrega una escucha en el evento 'submit' que será
-    //lanzado por el formulario cuando se seleccione 'Vender'.
-    sellForm.addEventListener("submit", function (e) {
+        let inputNombreProducto = document.getElementById("productName");
+        let categoriaProducto = document.getElementById("productCategory");
+        let costoProducto = document.getElementById("productCostInput");
+        let faltaInformacion = false;
 
-        e.preventDefault();
-        e.preventDefault();
+        inputNombreProducto.classList.remove('is-invalid');
+        categoriaProducto.classList.remove('is-invalid');
+        costoProducto.classList.remove('is-invalid');
 
-        let productNameInput = document.getElementById("productName");
-        let productCategory = document.getElementById("productCategory");
-        let productCost = document.getElementById("productCostInput");
-        let infoMissing = false;
-
-        //Quito las clases que marcan como inválidos
-        productNameInput.classList.remove('is-invalid');
-        productCategory.classList.remove('is-invalid');
-        productCost.classList.remove('is-invalid');
-
-        //Se realizan los controles necesarios,
-        //En este caso se controla que se haya ingresado el nombre y categoría.
-        //Consulto por el nombre del producto
-        if (productNameInput.value === "") {
-            productNameInput.classList.add('is-invalid');
-            infoMissing = true;
+        // Validar nombre del producto
+        if (inputNombreProducto.value === "") {
+            inputNombreProducto.classList.add('is-invalid');
+            faltaInformacion = true;
         }
 
-        //Consulto por la categoría del producto
-        if (productCategory.value === "") {
-            productCategory.classList.add('is-invalid');
-            infoMissing = true;
+        // Validar categoría del producto
+        if (categoriaProducto.value === "") {
+            categoriaProducto.classList.add('is-invalid');
+            faltaInformacion = true;
         }
 
-        //Consulto por el costo
-        if (productCost.value <= 0) {
-            productCost.classList.add('is-invalid');
-            infoMissing = true;
+        // Validar costo del producto
+        if (costoProducto.value <= 0) {
+            costoProducto.classList.add('is-invalid');
+            faltaInformacion = true;
         }
 
-        if (!infoMissing) {
-            //Aquí ingresa si pasó los controles, irá a enviar
-            //la solicitud para crear la publicación.
+        // Intentar publicar producto si todos los campos son válidos
+        if (!faltaInformacion) {
+            getJSONData(PUBLISH_PRODUCT_URL).then(function (objetoResultado) {
+                let htmlMensajeMostrar = document.getElementById("resultSpan");
+                let mensajeMostrar = "";
 
-            getJSONData(PUBLISH_PRODUCT_URL).then(function (resultObj) {
-                let msgToShowHTML = document.getElementById("resultSpan");
-                let msgToShow = "";
-
-                //Si la publicación fue exitosa, devolverá mensaje de éxito,
-                //de lo contrario, devolverá mensaje de error.
-                //FUNCIONALIDAD NO IMPLEMENTADA
-                if (resultObj.status === 'ok') {
-                    msgToShow = MSG;
+                if (objetoResultado.status === 'ok') {
+                    mensajeMostrar = MENSAJE;
                     document.getElementById("alertResult").classList.add('alert-primary');
                 }
-                else if (resultObj.status === 'error') {
-                    msgToShow = MSG;
+                else if (objetoResultado.status === 'error') {
+                    mensajeMostrar = MENSAJE;
                     document.getElementById("alertResult").classList.add('alert-primary');
                 }
 
-                msgToShowHTML.innerHTML = msgToShow;
+                htmlMensajeMostrar.innerHTML = mensajeMostrar;
                 document.getElementById("alertResult").classList.add("show");
             });
         }

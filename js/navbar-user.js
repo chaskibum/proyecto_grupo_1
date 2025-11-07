@@ -1,39 +1,45 @@
-function updateNavbarUser() {
+// Actualizar nombre de usuario en el navbar
+function actualizarUsuarioNavbar() {
     let usuario = localStorage.getItem('usuarioActivo');
-    //  si existe perfilUsuario (desde el formulario de perfil), usar su nombre
+    
+    // Si no hay usuario activo, intentar obtenerlo del perfil
     if (!usuario) {
         try {
-            const raw = localStorage.getItem('perfilUsuario');
-            if (raw) {
-                const p = JSON.parse(raw);
-                if (p && p.nombre) usuario = p.nombre;
+            const datos = localStorage.getItem('perfilUsuario');
+            if (datos) {
+                const perfil = JSON.parse(datos);
+                if (perfil && perfil.nombre) usuario = perfil.nombre;
             }
-        } catch (e) { /* ignore parse errors */ }
+        } catch (error) { }
     }
     if (!usuario) return;
-    const navSesion = document.getElementById('inicio-sesion');
-    if (navSesion) {
-        const currentPage = window.location.pathname.split('/').pop();
-        if (currentPage === 'my-profile.html') {
-            navSesion.textContent = 'Cerrar sesión';
-            navSesion.href = 'login.html';
-            if (!navSesion.__logoutAttached) {
-                navSesion.__logoutAttached = true;
-                navSesion.addEventListener('click', function (e) {
-                    e.preventDefault();
+    
+    const navegacionSesion = document.getElementById('inicio-sesion');
+    if (navegacionSesion) {
+        const paginaActual = window.location.pathname.split('/').pop();
+        
+        // Si estamos en la página de perfil, mostrar opción de cerrar sesión
+        if (paginaActual === 'my-profile.html') {
+            navegacionSesion.textContent = 'Cerrar sesión';
+            navegacionSesion.href = 'login.html';
+            if (!navegacionSesion.__cerrarSesionAdjuntado) {
+                navegacionSesion.__cerrarSesionAdjuntado = true;
+                navegacionSesion.addEventListener('click', function (evento) {
+                    evento.preventDefault();
                     localStorage.removeItem('usuarioActivo');
                     localStorage.removeItem('sesionActiva');
                     window.location.href = 'login.html';
                 });
             }
         } else {
-            navSesion.textContent = usuario;
-            navSesion.href = 'my-profile.html';
-            navSesion.__logoutAttached = false;
+            // En otras páginas, mostrar nombre del usuario con enlace al perfil
+            navegacionSesion.textContent = usuario;
+            navegacionSesion.href = 'my-profile.html';
+            navegacionSesion.__cerrarSesionAdjuntado = false;
         }
     }
 }
 
-document.addEventListener('DOMContentLoaded', updateNavbarUser);
-document.addEventListener('navbar:ready', updateNavbarUser);
-updateNavbarUser();
+document.addEventListener('DOMContentLoaded', actualizarUsuarioNavbar);
+document.addEventListener('navbar:ready', actualizarUsuarioNavbar);
+actualizarUsuarioNavbar();

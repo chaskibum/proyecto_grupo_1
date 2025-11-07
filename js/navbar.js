@@ -1,71 +1,70 @@
-// Maneja la selección de categorías desde el navbar y la navegación correcta a products.html
 function inicializarNavbar() {
-  const ID_MAP = {
-    'Autos': '101',
-    'Juguetes': '102',
-    'Muebles': '103',
-    'Herramientas': '105',
-    'Computadoras': '106',
-    'Vestimenta': '107',
-    'Electrodomésticos': '108',
-    'Deporte': '109',
-    'Celulares': '110'
-  };
+    // Mapeo de nombres de categorías a IDs
+    const MAPA_IDS = {
+        'Autos': '101',
+        'Juguetes': '102',
+        'Muebles': '103',
+        'Herramientas': '105',
+        'Computadoras': '106',
+        'Vestimenta': '107',
+        'Electrodomésticos': '108',
+        'Deporte': '109',
+        'Celulares': '110'
+    };
 
-  document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      const name = (a.dataset.catName || a.textContent).trim();
-      const id = a.dataset.catId || ID_MAP[name];
-      if (id) {
-        localStorage.setItem('catID', id);
-        localStorage.setItem('catName', name);
-        window.location.href = 'products.html';
-      }
+    // Configurar enlaces de categorías en el menú desplegable
+    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(enlace => {
+        enlace.addEventListener('click', function (evento) {
+            evento.preventDefault();
+            const nombre = (enlace.dataset.catName || enlace.textContent).trim();
+            const id = enlace.dataset.catId || MAPA_IDS[nombre];
+            if (id) {
+                localStorage.setItem('catID', id);
+                localStorage.setItem('catName', nombre);
+                window.location.href = 'products.html';
+            }
+        });
     });
-  });
 
-    // --- Mostrar badge con la cantidad total de productos en el carrito ---
-    function actualizarBadgeCarrito() {
-      try {
-        const raw = localStorage.getItem('cart');
-        const cart = raw ? JSON.parse(raw) : [];
-        const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
-        const badge = document.getElementById('cart-badge');
-        if (badge) {
-          badge.textContent = total;
-          badge.style.display = total > 0 ? 'inline-block' : 'none';
+    // Actualizar badge del carrito con cantidad de productos
+    function actualizarInsigniaCarrito() {
+        try {
+            const datos = localStorage.getItem('cart');
+            const carrito = datos ? JSON.parse(datos) : [];
+            const total = Array.isArray(carrito) ? carrito.reduce((suma, item) => suma + (Number(item.count || 0)), 0) : 0;
+            const insignia = document.getElementById('cart-badge');
+            if (insignia) {
+                insignia.textContent = total;
+                insignia.style.display = total > 0 ? 'inline-block' : 'none';
+            }
+        } catch (error) {
         }
-      } catch (e) {
-        console.error('Error leyendo carrito para badge:', e);
-      }
     }
 
-  // Actualizar al cargar
-  actualizarBadgeCarrito();
-  // Escuchar evento personalizado para actualizaciones dentro de la misma pestaña
-  document.addEventListener('cart:updated', function (e) {
-    try {
-      if (e && e.detail && typeof e.detail.total !== 'undefined') {
-        const badge = document.getElementById('cart-badge');
-        if (badge) {
-          badge.textContent = e.detail.total;
-          badge.style.display = e.detail.total > 0 ? 'inline-block' : 'none';
+    actualizarInsigniaCarrito();
+
+    // Escuchar eventos de actualización del carrito
+    document.addEventListener('cart:updated', function (evento) {
+        try {
+            if (evento && evento.detail && typeof evento.detail.total !== 'undefined') {
+                const insignia = document.getElementById('cart-badge');
+                if (insignia) {
+                    insignia.textContent = evento.detail.total;
+                    insignia.style.display = evento.detail.total > 0 ? 'inline-block' : 'none';
+                }
+            } else {
+                actualizarInsigniaCarrito();
+            }
+        } catch (error) {
+            actualizarInsigniaCarrito();
         }
-      } else {
-        actualizarBadgeCarrito();
-      }
-    } catch (err) {
-      console.warn('Error manejando cart:updated en navbar:', err);
-      actualizarBadgeCarrito();
-    }
-  });
-  // Escuchar cambios en other tabs
-  window.addEventListener('storage', function (e) {
-    if (e.key === 'cart') actualizarBadgeCarrito();
-  });
+    });
+
+    // Actualizar badge si cambia el carrito en otra pestaña
+    window.addEventListener('storage', function (evento) {
+        if (evento.key === 'cart') actualizarInsigniaCarrito();
+    });
 }
 
-// Inicializar tanto en carga normal como cuando el partial de navbar se inserta
 document.addEventListener('DOMContentLoaded', inicializarNavbar);
 document.addEventListener('navbar:ready', inicializarNavbar);

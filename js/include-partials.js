@@ -1,50 +1,47 @@
-// Carga navbar y footer en cada página
+// Cargar componentes parciales (navbar, footer) mediante fetch
 function incluirParcial(id, url) {
-  fetch(url)
-    .then(res => res.text())
-    .then(html => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.outerHTML = html;
-      // Despachar eventos específicos para que otros scripts se inicialicen
-      // una vez el partial esté disponible en el DOM.
-      if (id === 'navbar') {
-        // Asegurar que el script de inicialización del navbar esté disponible,
-        // luego notificar a los listeners.
-        // Cargar dinamicamente navbar.js para que se ejecute después de insertar el partial.
-        // Usamos una bandera global para evitar cargarlo múltiples veces.
-        if (!window.__navbar_script_loaded) {
-          window.__navbar_script_loaded = true;
-          const s = document.createElement('script');
-          s.src = 'js/navbar.js';
-          s.onload = () => document.dispatchEvent(new Event('navbar:ready'));
-          document.body.appendChild(s);
-        } else {
-          document.dispatchEvent(new Event('navbar:ready'));
-        }
+    fetch(url)
+        .then(respuesta => respuesta.text())
+        .then(html => {
+            const elemento = document.getElementById(id);
+            if (!elemento) return;
+            elemento.outerHTML = html;
 
-        // También intentamos actualizar el badge del carrito inmediatamente
-        // tras insertar el partial (por si navbar.js aún no se ha inicializado).
-        try {
-          const raw = localStorage.getItem('cart');
-          const cart = raw ? JSON.parse(raw) : [];
-          const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
-          // el elemento puede no existir todavía si el partial no contiene badge
-          const badge = document.getElementById('cart-badge');
-          if (badge) {
-            badge.textContent = total;
-            badge.style.display = total > 0 ? 'inline-block' : 'none';
-          }
-        } catch (e) {
-          console.warn('No se pudo actualizar badge tras inyectar navbar:', e);
-        }
-      }
-      if (id === 'main-footer') {
-        document.dispatchEvent(new Event('footer:ready'));
-      }
-    });
+            // Inicializar navbar y cargar script asociado
+            if (id === 'navbar') {
+                if (!window.__script_navbar_cargado) {
+                    window.__script_navbar_cargado = true;
+                    const script = document.createElement('script');
+                    script.src = 'js/navbar.js';
+                    script.onload = () => document.dispatchEvent(new Event('navbar:ready'));
+                    document.body.appendChild(script);
+                } else {
+                    document.dispatchEvent(new Event('navbar:ready'));
+                }
+
+                // Actualizar badge del carrito inmediatamente
+                try {
+                    const datos = localStorage.getItem('cart');
+                    const carrito = datos ? JSON.parse(datos) : [];
+                    const total = Array.isArray(carrito) ? carrito.reduce((suma, item) => suma + (Number(item.count || 0)), 0) : 0;
+                    const insignia = document.getElementById('cart-badge');
+                    if (insignia) {
+                        insignia.textContent = total;
+                        insignia.style.display = total > 0 ? 'inline-block' : 'none';
+                    }
+                } catch (error) {
+                }
+            }
+            
+            // Emitir evento cuando el footer está listo
+            if (id === 'main-footer') {
+                document.dispatchEvent(new Event('footer:ready'));
+            }
+        });
 }
+
+// Cargar navbar y footer al iniciar
 document.addEventListener('DOMContentLoaded', function () {
-  if (document.getElementById('navbar')) incluirParcial('navbar', 'navbar.html');
-  if (document.getElementById('main-footer')) incluirParcial('main-footer', 'footer.html');
+    if (document.getElementById('navbar')) incluirParcial('navbar', 'navbar.html');
+    if (document.getElementById('main-footer')) incluirParcial('main-footer', 'footer.html');
 });

@@ -1,10 +1,11 @@
+// Verificar que el usuario haya iniciado sesión
 if (!localStorage.getItem("sesionActiva")) {
     window.location.href = "login.html";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Definición de categorías
-    const categories = [
+    // Lista de categorías disponibles
+    const categorias = [
         { id: 101, name: "Autos" },
         { id: 102, name: "Juguetes" },
         { id: 103, name: "Muebles" },
@@ -16,77 +17,69 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: 109, name: "Celulares" }
     ];
 
-    // Función para asignar evento a un elemento
-    function assignCategoryEvent(element, cat) {
-        if (element) {
-            element.addEventListener("click", function (e) {
-                e.preventDefault();
-                localStorage.setItem("catID", cat.id);
-                localStorage.setItem("catName", cat.name);
+    // Asignar evento click para navegar a productos de categoría
+    function asignarEventoCategoria(elemento, categoria) {
+        if (elemento) {
+            elemento.addEventListener("click", function (evento) {
+                evento.preventDefault();
+                localStorage.setItem("catID", categoria.id);
+                localStorage.setItem("catName", categoria.name);
                 window.location = "products.html";
             });
         }
     }
 
-    // Portada (cards)
-    categories.forEach(cat => {
-        const el = document.getElementById(cat.name.toLowerCase());
-        assignCategoryEvent(el, cat);
+    // Asignar eventos a elementos con ID de categoría
+    categorias.forEach(categoria => {
+        const elemento = document.getElementById(categoria.name.toLowerCase());
+        asignarEventoCategoria(elemento, categoria);
     });
 
-    // Navbar
+    // Asignar eventos a elementos del menú dropdown
     document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(function (item) {
-        const text = item.textContent.trim();
-        const cat = categories.find(c => c.name === text);
-        if (cat) assignCategoryEvent(item, cat);
+        const texto = item.textContent.trim();
+        const categoria = categorias.find(c => c.name === texto);
+        if (categoria) asignarEventoCategoria(item, categoria);
     });
 });
-const body = document.body;
 
-// Si el usuario ya había elegido un tema antes, recuérdalo
+const cuerpo = document.body;
+
+// Aplicar tema oscuro si está configurado
 if (localStorage.getItem("theme") === "dark") {
-    body.classList.add("dark-mode");
-}
-// Theme is centralized in js/theme.js
-
-
-/*
-let index = 0;
-const slides = document.querySelectorAll('.slide');
-
-setInterval(() => {
-  slides[index].classList.remove('active');
-  index = (index + 1) % slides.length;
-  slides[index].classList.add('active');
-}, 3000); ]*/
-
-
-
-function initAdSlider(sliderId, interval = 3500) {
-  const slider = document.getElementById(sliderId);
-  if (!slider) return;
-  const slides = Array.from(slider.querySelectorAll('.ad-slide'));
-  if (!slides.length) return;
-  let current = 0;
-
-  function show(index) {
-    slides.forEach((s, i) => s.classList.toggle('active', i === index));
-  }
-
-  show(current);
-
-  const t = setInterval(() => {
-    current = (current + 1) % slides.length;
-    show(current);
-  }, interval);
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) clearInterval(t);
-  });
+    cuerpo.classList.add("dark-mode");
 }
 
+// Inicializar carrusel de anuncios con rotación automática
+function inicializarDeslizadorAnuncios(idDeslizador, intervalo = 3500) {
+    const deslizador = document.getElementById(idDeslizador);
+    if (!deslizador) return;
+    const diapositivas = Array.from(deslizador.querySelectorAll('.ad-slide'));
+    if (!diapositivas.length) return;
+    let actual = 0;
+
+    // Mostrar diapositiva en el índice especificado
+    function mostrar(indice) {
+        diapositivas.forEach((diapositiva, i) => diapositiva.classList.toggle('active', i === indice));
+    }
+
+    mostrar(actual);
+
+    // Rotar diapositivas automáticamente
+    const temporizador = setInterval(() => {
+        actual = (actual + 1) % diapositivas.length;
+        mostrar(actual);
+    }, intervalo);
+
+    // Detener carrusel cuando la pestaña no está visible
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearInterval(temporizador);
+    });
+}
+
+// Inicializar todos los carruseles de anuncios
 document.addEventListener('DOMContentLoaded', () => {
-  initAdSlider('adSliderLeft', 4100);
-  initAdSlider('adSliderTopRight', 3700);
-  initAdSlider('adSliderBottomRight', 3800);
+    inicializarDeslizadorAnuncios('adSliderLeft', 4100);
+    inicializarDeslizadorAnuncios('adSliderTopRight', 3700);
+    inicializarDeslizadorAnuncios('adSliderBottomRight', 3800);
 });

@@ -1,9 +1,9 @@
-const btnAbrirChat = document.getElementById('abrirChat');
-const btnCerrarChat = document.getElementById('cerrarChat');
-const chatContainer = document.getElementById('chatContainer');
-const btnEnviar = document.getElementById('enviarMensaje');
+const botonAbrirChat = document.getElementById('abrirChat');
+const botonCerrarChat = document.getElementById('cerrarChat');
+const contenedorChat = document.getElementById('chatContainer');
+const botonEnviar = document.getElementById('enviarMensaje');
 const inputMensaje = document.getElementById('mensajeInput');
-const chatMensajes = document.getElementById('chatMensajes');
+const mensajesChat = document.getElementById('chatMensajes');
 
 const respuestas = {
   'producto dañado': 'Lamentamos que hayas recibido un producto dañado. Contacta a soporte para solucionarlo.',
@@ -50,32 +50,38 @@ const respuestas = {
   'llamar': 'En este momento solo atendemos por chat y correo electrónico.'
 };
 
-btnAbrirChat.addEventListener('click', () => chatContainer.classList.toggle('cerrado'));
-btnCerrarChat.addEventListener('click', () => chatContainer.classList.add('cerrado'));
+// Abrir/cerrar ventana de chat
+botonAbrirChat.addEventListener('click', () => contenedorChat.classList.toggle('cerrado'));
+botonCerrarChat.addEventListener('click', () => contenedorChat.classList.add('cerrado'));
 
+// Buscar respuesta según palabras clave en el mensaje
 function obtenerRespuesta(texto) {
   const clave = Object.keys(respuestas).find(k => texto.toLowerCase().includes(k));
   return clave ? respuestas[clave] : 'Lo siento, no puedo responder a esa pregunta.';
 }
 
-btnEnviar.addEventListener('click', () => {
+// Procesar mensaje del usuario y generar respuesta
+botonEnviar.addEventListener('click', () => {
   const texto = inputMensaje.value.trim();
   if(!texto) return;
 
-  const msgUsuario = document.createElement('div');
-  msgUsuario.className = 'mensaje usuario';
-  msgUsuario.textContent = texto;
-  chatMensajes.appendChild(msgUsuario);
+  // Mostrar mensaje del usuario
+  const mensajeUsuario = document.createElement('div');
+  mensajeUsuario.className = 'mensaje usuario';
+  mensajeUsuario.textContent = texto;
+  mensajesChat.appendChild(mensajeUsuario);
 
-  const msgIA = document.createElement('div');
-  msgIA.className = 'mensaje ia';
-  msgIA.textContent = 'Escribiendo...';
-  chatMensajes.appendChild(msgIA);
-  chatMensajes.scrollTop = chatMensajes.scrollHeight;
+  // Mostrar indicador de escritura
+  const mensajeIA = document.createElement('div');
+  mensajeIA.className = 'mensaje ia';
+  mensajeIA.textContent = 'Escribiendo...';
+  mensajesChat.appendChild(mensajeIA);
+  mensajesChat.scrollTop = mensajesChat.scrollHeight;
 
+  // Simular tiempo de respuesta
   setTimeout(() => {
-    msgIA.textContent = obtenerRespuesta(texto);
-    chatMensajes.scrollTop = chatMensajes.scrollHeight;
+    mensajeIA.textContent = obtenerRespuesta(texto);
+    mensajesChat.scrollTop = mensajesChat.scrollHeight;
   }, 800);
 
   inputMensaje.value = '';
