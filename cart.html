@@ -30,41 +30,45 @@
         No hay productos en el carrito.
       </div>
 
-      <!-- Tarjeta de total y acción; se ocultará cuando el carrito esté vacío -->
+
+
+
+
+      <!-- Tarjeta de total y acción -->
       <div id="cart-total-card" class="card mt-4" style="display:none;">
         <div class="card-body">
-            <div class="mb-2">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <small class="mb-0 text-muted">Subtotal (artículos)</small>
-                </div>
-                <div class="d-flex align-items-center">
-                  <label class="me-2 mb-0 text-muted">Seleccionar todos</label>
-                  <input id="select-all" type="checkbox" aria-label="Seleccionar todos" />
-                  <span id="cart-subtotal-all" class="fw-bold text-muted ms-3">$0</span>
-                </div>
+          <div class="mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="mb-0 text-muted">Subtotal (artículos)</small>
               </div>
-              <!-- Lista de desglose por artículo -->
-              <ul id="cart-breakdown" class="list-group list-group-flush mt-2 mb-2"></ul>
-            </div>
-            <div class="mb-2">
-              <div id="cart-discount-row" class="d-flex justify-content-between align-items-center small text-muted" style="display:none;">
-                <div>
-                  <div>Descuento</div>
-                  <small id="cart-discount-reason" class="text-muted" style="display:none;"></small>
-                </div>
-                <div id="cart-discount-amount">- $0</div>
+              <div class="d-flex align-items-center">
+                <label class="me-2 mb-0 text-muted">Seleccionar todos</label>
+                <input id="select-all" type="checkbox" aria-label="Seleccionar todos" />
+                <span id="cart-subtotal-all" class="fw-bold text-muted ms-3">$0</span>
               </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center total-section">
-              <h5 class="mb-0">Total</h5>
-              <h4 id="cart-total" class="fw-bold text-success">$0</h4>
+            <ul id="cart-breakdown" class="list-group list-group-flush mt-2 mb-2"></ul>
+          </div>
+          <div class="mb-2">
+            <div id="cart-discount-row" class="d-flex justify-content-between align-items-center small text-muted" style="display:none;">
+              <div>
+                <div>Descuento</div>
+                <small id="cart-discount-reason" class="text-muted" style="display:none;"></small>
+              </div>
+              <div id="cart-discount-amount">- $0</div>
             </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center total-section">
+            <h5 class="mb-0">Total</h5>
+            <h4 id="cart-total" class="fw-bold text-success">$0</h4>
+          </div>
           <div class="text-end mt-3">
             <button id="checkout-btn" class="btn btn-success btn-lg">Finalizar compra</button>
           </div>
         </div>
       </div>
+
     </div>
   </main>
 
@@ -75,7 +79,7 @@
   <script src="js/init.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/include-partials.js"></script>
-  <script src="js/theme.js"></script> 
+  <script src="js/theme.js"></script>
   <script src="js/navbar-user.js"></script>
 </body>
 
