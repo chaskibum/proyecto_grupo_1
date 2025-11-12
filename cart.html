@@ -30,10 +30,128 @@
         No hay productos en el carrito.
       </div>
 
+      <!-- Tipo de envío -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Tipo de Envío</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioPremium" value="0.15">
+            <label class="form-check-label" for="envioPremium">Premium 2 a 5 días (15%)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioExpress" value="0.07">
+            <label class="form-check-label" for="envioExpress">Express 5 a 8 días (7%)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioStandard" value="0.05">
+            <label class="form-check-label" for="envioStandard">Standard 12 a 15 días (5%)</label>
+          </div>
+        </div>
+      </div>
 
-    <!--Formas de pago -->
-   <iframe src="finalizar-compra.html" style="width:100%; height:800px; border:none;"></iframe>
+      <!-- Dirección de Envío -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Dirección de Envío</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="departamento" class="form-label">Departamento</label>
+              <input type="text" id="departamento" class="form-control" placeholder="Ej: Montevideo">
+            </div>
+            <div class="col-md-4">
+              <label for="localidad" class="form-label">Localidad</label>
+              <input type="text" id="localidad" class="form-control" placeholder="Ej: Pocitos">
+            </div>
+            <div class="col-md-4">
+              <label for="calle" class="form-label">Calle</label>
+              <input type="text" id="calle" class="form-control" placeholder="Ej: Rivera">
+            </div>
+            <div class="col-md-2">
+              <label for="numero" class="form-label">Número</label>
+              <input type="text" id="numero" class="form-control" placeholder="Ej: 1234">
+            </div>
+            <div class="col-md-4">
+              <label for="esquina" class="form-label">Esquina</label>
+              <input type="text" id="esquina" class="form-control" placeholder="Ej: Soca">
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Forma de Pago -->
+      <div id="card-forma-de-pago" class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-light">
+          <h5 class="mb-0 fw-semibold text-dark">Forma de Pago</h5>
+        </div>
+
+        <div class="card-body">
+          <!-- Opción: Tarjeta de Crédito -->
+          <div class="pago-opcion d-flex align-items-center justify-content-between p-3 border rounded-3 mb-3 hover-shadow">
+            <div class="d-flex align-items-center gap-2">
+              <input class="form-check-input me-2" type="radio" name="pago" id="pagoTarjeta" value="tarjeta">
+              <label class="form-check-label fw-medium mb-0" for="pagoTarjeta">
+                Tarjeta de Crédito
+              </label>
+              <div class="d-flex align-items-center gap-2 ms-3">
+                <img src="img/Visa.png" alt="Visa" width="55" height="35" class="rounded border bg-white p-1">
+                <img src="img/MasterCard.png" alt="MasterCard" width="55" height="35" class="rounded border bg-white p-1">
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos de Tarjeta -->
+          <div id="form-tarjeta" class="bg-light p-3 rounded-3 mb-3" style="display:none;">
+            <div class="mb-3">
+              <label for="nombreTarjeta" class="form-label">Nombre en la tarjeta</label>
+              <input type="text" class="form-control" id="nombreTarjeta" placeholder="Ej: Fernanda Pérez">
+            </div>
+            <div class="mb-3">
+              <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
+              <input type="text" class="form-control" id="numeroTarjeta" placeholder="XXXX-XXXX-XXXX-XXXX">
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="vencimiento" class="form-label">Vencimiento</label>
+                <input type="month" class="form-control" id="vencimiento">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" maxlength="3" placeholder="123">
+              </div>
+            </div>
+          </div>
+
+          <!-- Opción: Transferencia Bancaria -->
+          <div class="pago-opcion d-flex align-items-center justify-content-between p-3 border rounded-3 hover-shadow">
+            <div class="d-flex align-items-center gap-2">
+              <input class="form-check-input me-2" type="radio" name="pago" id="pagoTransferencia" value="transferencia">
+              <label class="form-check-label fw-medium mb-0" for="pagoTransferencia">
+                Transferencia Bancaria
+              </label>
+              <div class="d-flex align-items-center gap-2 ms-3">
+                <img src="img/MasterCard.png" alt="MasterCard" width="55" height="35" class="rounded border bg-white p-1">
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos de Transferencia -->
+          <div id="form-transferencia" class="bg-light p-3 rounded-3 mt-3" style="display:none;">
+            <p class="mb-2 text-muted small">Complete los datos de su transferencia:</p>
+            <div class="mb-3">
+              <label for="banco" class="form-label">Banco</label>
+              <input type="text" class="form-control" id="banco" placeholder="Ej: Banco República">
+            </div>
+            <div class="mb-3">
+              <label for="numeroCuenta" class="form-label">Número de cuenta</label>
+              <input type="text" class="form-control" id="numeroCuenta" placeholder="Ej: 123456789">
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Tarjeta de total y acción -->
       <div id="cart-total-card" class="card mt-4" style="display:none;">
@@ -49,21 +167,28 @@
                 <span id="cart-subtotal-all" class="fw-bold text-muted ms-3">$0</span>
               </div>
             </div>
+
+            <!-- Desglose de carrito -->
             <ul id="cart-breakdown" class="list-group list-group-flush mt-2 mb-2"></ul>
-          </div>
-          <div class="mb-2">
-            <div id="cart-discount-row" class="d-flex justify-content-between align-items-center small text-muted" style="display:none;">
-              <div>
-                <div>Descuento</div>
-                <small id="cart-discount-reason" class="text-muted" style="display:none;"></small>
-              </div>
-              <div id="cart-discount-amount">- $0</div>
+
+            <!-- Línea de descuento -->
+            <div id="cart-discount-row" class="d-flex justify-content-between align-items-center mt-1">
+              <small class="text-muted mb-0">Descuento</small>
+              <span id="cart-discount-amount" class="fw-bold text-danger">- $0</span>
             </div>
+
+            <!-- Envio -->
+           <div id="cart-shipping-row" class="d-flex justify-content-between align-items-center mt-1">
+              <small class="text-muted mb-0">Envío</small>
+             <span id="cart-shipping-amount" class="fw-bold text-primary">$0</span>
           </div>
+
+
           <div class="d-flex justify-content-between align-items-center total-section">
             <h5 class="mb-0">Total</h5>
             <h4 id="cart-total" class="fw-bold text-success">$0</h4>
           </div>
+
           <div class="text-end mt-3">
             <button id="checkout-btn" class="btn btn-success btn-lg">Finalizar compra</button>
           </div>
