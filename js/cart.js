@@ -1,3 +1,13 @@
+// ================================
+// cart.js - Gestión del carrito
+// Descripción: funciones para cargar/guardar el carrito en localStorage,
+// renderizar la UI del carrito, calcular totales (subtotal, envío, descuento)
+// y procesamiento básico del checkout (validaciones y creación de compras).
+// Todos los comentarios y mensajes de usuario están en español.
+// ================================
+
+// Calcula un descuento basado en la fecha de nacimiento almacenada en
+// `perfilUsuario` en localStorage. Devuelve un número entre 0 y 1.
 function obtenerDescuentoNacimiento() {
   try {
     const rawPerfil = localStorage.getItem('perfilUsuario');
@@ -16,6 +26,8 @@ function obtenerDescuentoNacimiento() {
   }
 }
 
+// Carga datos guardados de tarjeta y dirección desde localStorage.
+// Devuelve un objeto normalizado con las propiedades `tarjeta` y `direccion`.
 function loadSavedCheckoutData() {
   const defaults = {
     tarjeta: { enabled: false, nombre: '', numero: '', vencimiento: '', cvv: '' },
@@ -45,6 +57,8 @@ function loadSavedCheckoutData() {
   }
 }
 
+// Inicialización principal al cargar el DOM: configura referencias a elementos
+// del DOM, toggles para usar datos guardados y renderiza el carrito.
 document.addEventListener('DOMContentLoaded', function () {
   const CLAVE_ALMACENAMIENTO = 'cart';
   const contenedorItems = document.getElementById('cart-items');
@@ -69,16 +83,20 @@ document.addEventListener('DOMContentLoaded', function () {
   const radiosEnvio = document.querySelectorAll('input[name="tipoEnvio"]');
   const savedProfileData = loadSavedCheckoutData();
 
+  // Comprueba si una dirección guardada está completa (todos los campos requeridos)
   function direccionCompleta(dir) {
     if (!dir || !dir.enabled) return false;
     return ['departamento', 'localidad', 'calle', 'numero', 'esquina'].every(key => dir[key] && String(dir[key]).trim());
   }
 
+  // Comprueba si una tarjeta guardada tiene todos los campos necesarios
   function tarjetaCompleta(card) {
     if (!card || !card.enabled) return false;
     return ['nombre', 'numero', 'vencimiento', 'cvv'].every(key => card[key] && String(card[key]).trim());
   }
 
+  // Rellena inputs del formulario de envío con los valores de la dirección
+  // guardada (si existen).
   function aplicarDireccionGuardada(dir) {
     const map = {
       departamento: 'departamento',
@@ -95,6 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Rellena inputs del formulario de pago con los valores de la tarjeta
+  // guardada (si existen).
   function aplicarTarjetaGuardada(card) {
     const fields = {
       nombre: document.getElementById('nombreTarjeta'),
@@ -107,12 +127,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Devuelve una cadena corta que resume la dirección (calle, localidad, departamento)
   function resumenDireccionGuardada(dir) {
     if (!dir) return '';
     const parts = [dir.calle && `${dir.calle} ${dir.numero || ''}`.trim(), dir.localidad, dir.departamento].filter(Boolean);
     return parts.join(', ');
   }
 
+  // Devuelve la tarjeta enmascarada (****1234) para mostrar en la UI
   function resumenTarjetaGuardada(card) {
     if (!card || !card.numero) return '';
     const clean = card.numero.replace(/[^0-9]/g, '');
@@ -120,6 +142,8 @@ document.addEventListener('DOMContentLoaded', function () {
     return `****${clean.slice(-4)}`;
   }
 
+  // Añade al DOM un switch para permitir al usuario usar la dirección guardada
+  // y rellena los campos si marca la opción.
   function agregarToggleDireccionGuardada() {
     if (!direccionCard || !savedProfileData || !direccionCompleta(savedProfileData.direccion)) return;
     const body = direccionCard.querySelector('.card-body');
@@ -138,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Añade al DOM un switch para permitir al usuario usar la tarjeta guardada
+  // y selecciona la opción de pago correspondiente.
   function agregarToggleTarjetaGuardada() {
     if (!pagoCard || !savedProfileData || !tarjetaCompleta(savedProfileData.tarjeta)) return;
     const body = pagoCard.querySelector('.card-body');
@@ -166,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
   agregarToggleTarjetaGuardada();
 
   // Cargar carrito desde localStorage
+  // Devuelve un array de items o [] en caso de error/ausencia.
   function cargarCarrito() {
     try {
       const raw = localStorage.getItem(CLAVE_ALMACENAMIENTO);
@@ -177,32 +204,41 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Guarda el carrito en localStorage y emite un evento `cart:updated`
+  // con el total de ítems para actualizar visualizaciones externas.
   function guardarCarrito(cart) {
     localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(cart));
     const totalItems = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
     document.dispatchEvent(new CustomEvent('cart:updated', { detail: { total: totalItems } }));
   }
 
+  // Calcula el subtotal de los productos seleccionados en el carrito.
   function calcularSubtotal(cart) {
     return cart
       .filter(it => it && it.selected !== false)
       .reduce((sum, it) => sum + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
   }
 
+  // Lee el radio seleccionado de tipo de envío y devuelve su valor numérico
+  // (porcentaje usado para calcular costo de envío).
   function obtenerPorcentajeEnvio() {
     const seleccionado = document.querySelector('input[name="tipoEnvio"]:checked');
     return seleccionado ? Number(seleccionado.value) : 0;
   }
 
+  // Calcula el costo de envío aplicando el porcentaje al subtotal.
   function calcularEnvio(subtotal) {
     const porcentaje = obtenerPorcentajeEnvio();
     return subtotal * porcentaje;
   }
 
+  // Suma subtotal + envio - descuento para obtener el total final.
   function calcularTotal(subtotal, envio, descuento) {
     return subtotal + envio - descuento;
   }
 
+  // Renderiza la lista de items del carrito en la UI, y gestiona visibilidad
+  // de secciones (envío, dirección, pago) según si hay items.
   function renderizarCarrito() {
     const cart = cargarCarrito();
     contenedorItems.innerHTML = '';
@@ -260,6 +296,8 @@ document.addEventListener('DOMContentLoaded', function () {
     adjuntarControles();
   }
 
+  // Recalcula y actualiza los valores monetarios mostrados (subtotal, envío,
+  // descuento, total) y habilita/deshabilita el botón de finalizar.
   function actualizarTotales() {
     const cart = cargarCarrito();
     const subtotal = calcularSubtotal(cart);
@@ -300,6 +338,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (selectAllBox) selectAllBox.checked = allSelected;
   }
 
+  // Adjunta manejadores de eventos a inputs dinámicos (cantidad, eliminar,
+  // seleccionar) y controles globales (select all, cambios de envío).
   function adjuntarControles() {
     const qtyInputs = document.querySelectorAll('.cart-qty');
     const deleteBtns = document.querySelectorAll('.btn-delete');
@@ -314,6 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
     radiosEnvio.forEach(radio => radio.addEventListener('change', actualizarTotales));
   }
 
+  // Handler: cuando cambia la cantidad de un item, actualiza el carrito.
   function cambioCantidad(e) {
     const id = e.target.getAttribute('data-id');
     let val = parseInt(e.target.value, 10);
@@ -327,6 +368,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Handler: marca/desmarca un item como seleccionado para la compra.
   function cambioSeleccion(e) {
     const id = e.target.getAttribute('data-id');
     const checked = e.target.checked;
@@ -339,6 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Handler: selecciona o deselecciona todos los items del carrito.
   function seleccionarTodo(e) {
     const checked = e.target.checked;
     const cart = cargarCarrito();
@@ -347,6 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderizarCarrito();
   }
 
+  // Handler: elimina un item del carrito y lo persiste.
   function eliminarItem(e) {
     const id = e.currentTarget.getAttribute('data-id');
     let cart = cargarCarrito();
