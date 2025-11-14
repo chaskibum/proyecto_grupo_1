@@ -5,57 +5,204 @@ const btnEnviar = document.getElementById('enviarMensaje');
 const inputMensaje = document.getElementById('mensajeInput');
 const chatMensajes = document.getElementById('chatMensajes');
 
-const respuestas = {
-  'producto dañado': 'Lamentamos que hayas recibido un producto dañado. Contacta a soporte para solucionarlo.',
-  'envíos todo el país': 'Hacemos envíos a todo Uruguay, sin importar la ciudad.',
-  'métodos de pago': 'Aceptamos tarjetas, transferencias y pagos en puntos habilitados.',
-  'devolver producto': 'Puedes devolver un producto dentro de 14 días si está en perfectas condiciones.',
-  'horario de atención': 'Nuestro horario es de lunes a viernes de 9 a 18 hs y sábados de 10 a 14 hs.',
-  'seguimiento de pedido': 'Ingresa tu número de orden en "Mis compras" para seguir tu pedido.',
-  'tiempo de entrega': 'Los pedidos tardan entre 3 y 7 días hábiles, dependiendo de tu ubicación.',
-  'promociones vigentes': 'Tenemos ofertas y descuentos semanales, revisa la sección "Ofertas".',
-  'contacto soporte': 'Escríbenos a soporte@emercado.uy o usa este chat.',
-  'garantía': 'Todos los productos tienen garantía mínima de 6 meses.',
-  'cambiar dirección': 'Puedes cambiar la dirección antes de que el pedido sea despachado.',
-  'producto agotado': 'Deja tu correo y te avisaremos cuando vuelva a estar disponible.',
-  'tarjeta no funciona': 'Verifica que tu tarjeta esté habilitada; si falla, contacta tu banco.',
-  'costo de envío': 'Se calcula automáticamente según la dirección y tamaño del pedido.',
-  'ofertas especiales': 'Tenemos descuentos por temporada y códigos de descuento exclusivos.',
-  'cancelar pedido': 'Puedes cancelar tu pedido antes del despacho contactando soporte.',
-  'devolución por cambio': 'Se puede cambiar el producto dentro del periodo de devolución.',
-  'soporte técnico': 'Nuestro equipo de soporte técnico puede ayudarte con configuraciones y dudas.',
-  'productos recomendados': 'Revisa "Recomendados para ti" según tus búsquedas.',
-  'factura': 'Puedes descargar la factura en "Mis compras" o solicitarla por correo.',
-  'envío urgente': 'Selecciona “Entrega rápida” para recibir tu pedido antes.',
-  'recoger en tienda': 'Puedes elegir la opción "Retiro en tienda" si está disponible en tu zona.',
-  'horas para retirar': 'Los retiros están disponibles dentro del horario de atención del local.',
-  'mercado pago': 'Sí, aceptamos Mercado Pago.',
-  'promociones bancarias': 'Algunos bancos ofrecen cuotas o descuentos especiales. Revisa la sección pagos.',
-  'cuotas': 'Aceptamos pagos en cuotas según las tarjetas disponibles.',
-  'sin stock': 'Ese producto está sin stock actualmente, pero pronto tendremos más.',
-  'cambiar producto': 'Puedes solicitar un cambio dentro del período de garantía o devolución.',
-  'tarda mucho': 'Los envíos pueden retrasarse en fechas especiales o días de alto volumen.',
-  'dónde está mi pedido': 'Para saber dónde está tu paquete, revisa la sección "Mis compras".',
-  'no funciona': 'Lamentamos el inconveniente, por favor envíanos más detalles del problema.',
-  'manual': 'Puedes encontrar manuales y guías en la descripción del producto.',
-  'certificación': 'Nuestros productos cuentan con certificaciones según la normativa uruguaya.',
-  'fuera del país': 'Actualmente no realizamos envíos fuera de Uruguay.',
-  'qué incluye': 'En la descripción del producto está el detalle de lo que incluye la compra.',
-  'precio': 'Los precios están detallados en cada producto. Cualquier variación se aplica al finalizar la compra.',
-  'error pago': 'Intenta otra forma de pago o vuelve a intentarlo más tarde.',
-  'cupón': 'Si tienes un cupón, ingrésalo al finalizar tu compra.',
-  'soporte whatsapp': 'Próximamente habilitaremos atención por WhatsApp.',
-  'confirmación pedido': 'Recibirás un email con la confirmación una vez completes la compra.',
-  'packaging': 'Empaquetamos cuidadosamente los productos para evitar daños.',
-  'llamar': 'En este momento solo atendemos por chat y correo electrónico.'
-};
+const respuestas = [
+  {
+    keywords: ['producto dañado', 'recibí un producto roto', 'llego roto', 'dañado'],
+    respuesta: 'Lamentamos que hayas recibido un producto dañado. Contacta a soporte para solucionarlo.'
+  },
+  {
+    keywords: ['envíos todo el país', 'envían a todo uruguay', 'llegan a cualquier ciudad'],
+    respuesta: 'Hacemos envíos a todo Uruguay, sin importar la ciudad.'
+  },
+  {
+    keywords: ['métodos de pago', 'formas de pago', 'como pago'],
+    respuesta: 'Aceptamos tarjetas, transferencias y pagos en puntos habilitados.'
+  },
+  {
+    keywords: ['devolver producto', 'quiero devolver', 'cambio', 'retornar producto'],
+    respuesta: 'Puedes devolver un producto dentro de 14 días si está en perfectas condiciones.'
+  },
+  {
+    keywords: ['horario de atención', 'cuando abren', 'horarios'],
+    respuesta: 'Nuestro horario es de lunes a viernes de 9 a 18 hs y sábados de 10 a 14 hs.'
+  },
+  {
+    keywords: ['seguimiento de pedido', 'donde esta mi pedido', 'rastrear pedido', 'tracking'],
+    respuesta: 'Ingresa tu número de orden en "Mis compras" para seguir tu pedido.'
+  },
+  {
+    keywords: ['tiempo de entrega', 'cuando llega', 'envío demora', 'llega'],
+    respuesta: 'Los pedidos tardan entre 3 y 7 días hábiles, dependiendo de tu ubicación.'
+  },
+  {
+    keywords: ['promociones', 'ofertas', 'descuentos'],
+    respuesta: 'Tenemos ofertas y descuentos semanales, revisa la sección "Ofertas".'
+  },
+  {
+    keywords: ['contacto soporte', 'ayuda', 'soporte'],
+    respuesta: 'Escríbenos a soporte@emercado.uy o usa este chat.'
+  },
+  {
+    keywords: ['garantía', 'garantia', 'cobertura'],
+    respuesta: 'Todos los productos tienen garantía mínima de 6 meses.'
+  },
+  {
+    keywords: ['cambiar dirección', 'modificar dirección', 'agregar dirección'],
+    respuesta: 'Puedes agregar o cambiar la dirección en tu perfil antes de que el pedido sea despachado.'
+  },
+  {
+    keywords: ['agregar tarjeta', 'guardar tarjeta', 'datos de tarjeta', 'perfil tarjeta'],
+    respuesta: 'Puedes agregar tu tarjeta en tu perfil para que el pago sea más rápido en futuras compras.'
+  },
+  {
+    keywords: ['pedido perdido', 'no llega mi pedido', 'no lo recibí'],
+    respuesta: 'Si tu pedido no llega, contacta soporte con tu número de orden para rastrearlo.'
+  },
+  {
+    keywords: ['cancelar pedido', 'anular pedido', 'quitar pedido'],
+    respuesta: 'Puedes cancelar tu pedido antes del despacho contactando soporte.'
+  },
+  {
+    keywords: ['pedido modificado', 'modificar pedido', 'cambiar pedido'],
+    respuesta: 'Puedes modificar tu pedido solo antes de que sea despachado, contactando soporte.'
+  },
+  {
+    keywords: ['envío urgente', 'entrega rápida', 'prioridad envío'],
+    respuesta: 'Selecciona “Entrega rápida” para recibir tu pedido antes.'
+  },
+  {
+    keywords: ['recoger en tienda', 'retiro tienda', 'retirar local'],
+    respuesta: 'Puedes elegir la opción "Retiro en tienda" si está disponible en tu zona.'
+  },
+  {
+    keywords: ['mercado pago', 'pago online', 'pago mercado'],
+    respuesta: 'Sí, aceptamos Mercado Pago.'
+  },
+  {
+    keywords: ['cuotas', 'pagar en cuotas', 'tarjeta cuotas'],
+    respuesta: 'Aceptamos pagos en cuotas según las tarjetas disponibles.'
+  },
+  {
+    keywords: ['problema con pago', 'tarjeta no funciona', 'error pago', 'tarjeta rechazada'],
+    respuesta: 'Verifica que tu tarjeta esté habilitada y tenga saldo disponible; si falla, contacta a tu banco.'
+  },
+  {
+    keywords: ['descuento cumpleaños', 'promoción cumpleaños', 'oferta cumpleaños'],
+    respuesta: 'Si es tu cumpleaños, revisa si tienes un cupón de descuento especial disponible.'
+  },
+  {
+    keywords: ['reembolso', 'devolución dinero', 'pago devuelto'],
+    respuesta: 'Los reembolsos se procesan dentro de 5 a 7 días hábiles luego de la confirmación de devolución.'
+  },
+  {
+    keywords: ['puntos de pago', 'pagar en abitab', 'pagar en redpagos'],
+    respuesta: 'Aceptamos pagos en Abitab, Redpagos y otros puntos habilitados en Uruguay.'
+  },
+  {
+    keywords: ['faq', 'preguntas frecuentes', 'ayuda rápida'],
+    respuesta: 'Revisa nuestra sección de preguntas frecuentes para soluciones rápidas.'
+  },
+  {
+    keywords: ['factura', 'facturación electrónica', 'comprobante'],
+    respuesta: 'Puedes descargar la factura en "Mis compras" o solicitarla por correo. Todas las facturas se generan automáticamente.'
+  },
+  {
+    keywords: ['problema entrega', 'no llega el pedido', 'envío retrasado'],
+    respuesta: 'Si hay problemas con la entrega, contacta soporte indicando tu número de pedido.'
+  },
+  {
+    keywords: ['dirección en perfil', 'guardar dirección', 'perfil'],
+    respuesta: 'Puedes guardar tu dirección en el perfil para que los pedidos futuros sean más fáciles de completar.'
+  },
+  {
+    keywords: ['tarjeta en perfil', 'guardar tarjeta', 'datos de pago'],
+    respuesta: 'Agregando tu tarjeta en el perfil, el checkout será más rápido y seguro.'
+  },
+  {
+    keywords: ['manual', 'instrucciones', 'guía producto'],
+    respuesta: 'Puedes encontrar manuales y guías en la descripción del producto.'
+  },
+  {
+    keywords: ['certificación', 'homologación', 'normativa'],
+    respuesta: 'Nuestros productos cuentan con certificaciones según la normativa uruguaya.'
+  },
+  {
+    keywords: ['modificar cantidad', 'cambiar cantidad', 'sumar producto', 'restar producto'],
+    respuesta: 'Puedes cambiar la cantidad de productos directamente en el carrito antes de finalizar la compra.'
+  },
+  {
+    keywords: ['guardar favoritos', 'wishlist', 'lista de deseos', 'deseos'],
+    respuesta: 'Puedes agregar productos a tu lista de favoritos para comprarlos más tarde.'
+  },
+  {
+    keywords: ['suscripción', 'newsletter', 'boletín', 'recibir novedades'],
+    respuesta: 'Suscribiéndote al newsletter recibirás promociones y novedades directamente por correo.'
+  },
+  {
+    keywords: ['soporte chat', 'chat en vivo', 'ayuda en línea'],
+    respuesta: 'Nuestro chat en línea está disponible para consultas rápidas durante horario de atención.'
+  },
+  {
+    keywords: ['producto incompatible', 'no funciona con', 'problema compatibilidad'],
+    respuesta: 'Verifica las especificaciones del producto antes de comprar; si hay problemas, contacta soporte.'
+  },
+  {
+    keywords: ['devolución parcial', 'cambiar solo un producto', 'reembolso parcial'],
+    respuesta: 'Puedes devolver o cambiar solo algunos productos de tu pedido, contactando soporte.'
+  },
+  {
+    keywords: ['confirmación pago', 'pago exitoso', 'recibo de pago'],
+    respuesta: 'Recibirás un email confirmando el pago una vez que se procese correctamente.'
+  },
+  {
+    keywords: ['pedido urgente', 'express', 'rápido', 'prioridad'],
+    respuesta: 'Selecciona la opción de envío express en el checkout para recibir tu pedido más rápido.'
+  },
+  {
+    keywords: ['código promocional', 'cupón descuento', 'aplicar cupón'],
+    respuesta: 'Ingresa tu código promocional en el checkout para aplicar el descuento correspondiente.'
+  },
+  {
+    keywords: ['seguimiento devolución', 'rastrear devolución', 'estado devolución'],
+    respuesta: 'Puedes seguir el estado de tu devolución en la sección "Mis compras" o contactando soporte.'
+  },
+  {
+    keywords: ['problema con factura', 'factura incorrecta', 'comprobante incorrecto'],
+    respuesta: 'Si tu factura es incorrecta, contacta soporte para que se genere una nueva.'
+  },
+  {
+    keywords: ['dirección incorrecta', 'cambiar domicilio', 'actualizar dirección'],
+    respuesta: 'Si tu dirección es incorrecta, actualízala en tu perfil antes de que el pedido sea despachado.'
+  },
+  {
+    keywords: ['envío gratis', 'promoción envío', 'descuento envío'],
+    respuesta: 'Algunas compras superando cierto monto pueden acceder a envío gratuito, revisa promociones vigentes.'
+  },
+  {
+    keywords: ['paquete abierto', 'producto abierto', 'recibí abierto'],
+    respuesta: 'Si tu paquete llegó abierto o incompleto, contacta soporte inmediatamente para solucionarlo.'
+  },
+  {
+    keywords: ['soporte app', 'problemas aplicación', 'error app'],
+    respuesta: 'Si tienes problemas con la aplicación, revisa actualizaciones o contacta soporte técnico.'
+  }
+];
+
 
 btnAbrirChat.addEventListener('click', () => chatContainer.classList.toggle('cerrado'));
 btnCerrarChat.addEventListener('click', () => chatContainer.classList.add('cerrado'));
 
 function obtenerRespuesta(texto) {
-  const clave = Object.keys(respuestas).find(k => texto.toLowerCase().includes(k));
-  return clave ? respuestas[clave] : 'Lo siento, no puedo responder a esa pregunta.';
+  texto = texto.toLowerCase();
+
+  for (let i = 0; i < respuestas.length; i++) {
+    const item = respuestas[i];
+    if (item.keywords.some(k => texto.includes(k.toLowerCase()))) {
+      return item.respuesta;
+    }
+  }
+
+  return 'Lo siento, no puedo responder a esa pregunta.';
 }
 
 btnEnviar.addEventListener('click', () => {
