@@ -248,6 +248,34 @@
 </div>
     </form>
   </main>
+  <div class="boton-chat-flotante" id="abrirChat">💬</div>
+
+<div class="chat-flotante cerrado" id="chatContainer">
+
+  <div class="chat-header">
+    <h2>Asistente AI</h2>
+    <button id="cerrarChat">✖</button>
+  </div>
+
+  <div class="chat-mensajes" id="chatMensajes">
+    <div class="mensaje usuario">¿Qué hago si el producto llega dañado?</div>
+    <div class="mensaje ia">Se puede solicitar reemplazo o devolución contactando nuestro soporte en los 7 días posteriores a la entrega.</div>
+
+    <div class="mensaje usuario">¿Hacen envíos a todo el país o solo a ciertas ciudades?</div>
+    <div class="mensaje ia">Realizamos envíos a todo Uruguay, los tiempos y costos varían según ubicación.</div>
+
+    <div class="mensaje usuario">¿Qué métodos de pago aceptan?</div>
+    <div class="mensaje ia">Se acepta tarjeta de crédito, débito, transferencias y pagos en puntos habilitados.</div>
+
+    <div class="mensaje usuario">¿Puedo devolver un producto si no me gusta?</div>
+    <div class="mensaje ia">Sí, dentro de los 14 días, siempre que esté en perfecto estado.</div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu pregunta...">
+    <button id="enviarMensaje">Enviar</button>
+  </div>
+</div>
 
 
   <footer id="main-footer"></footer>
@@ -258,6 +286,7 @@
   <script src="js/include-partials.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/navbar-user.js"></script>
+  <script src="js/IA.js"></script>
 </body>
 
 </html>
