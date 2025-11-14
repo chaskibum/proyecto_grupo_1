@@ -1,3 +1,50 @@
+function obtenerDescuentoNacimiento() {
+  try {
+    const rawPerfil = localStorage.getItem('perfilUsuario');
+    if (!rawPerfil) return 0;
+    const perfil = JSON.parse(rawPerfil);
+    if (!perfil || !perfil.birthdate) return 0;
+    const b = new Date(perfil.birthdate);
+    if (isNaN(b.getTime())) return 0;
+    const today = new Date();
+    if (b.getDate() === today.getDate() && b.getMonth() === today.getMonth()) {
+      return 0.1; // 10% cumpleanos
+    }
+    return (b.getMonth() + 1) / 100; // porcentaje por mes
+  } catch (e) {
+    return 0;
+  }
+}
+
+function loadSavedCheckoutData() {
+  const defaults = {
+    tarjeta: { enabled: false, nombre: '', numero: '', vencimiento: '', cvv: '' },
+    direccion: { enabled: false, departamento: '', localidad: '', calle: '', numero: '', esquina: '' }
+  };
+  try {
+    const raw = localStorage.getItem('tarjetasDirecciones');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return null;
+    const normalized = {
+      tarjeta: Object.assign({}, defaults.tarjeta, parsed.tarjeta && typeof parsed.tarjeta === 'object' ? parsed.tarjeta : {}),
+      direccion: Object.assign({}, defaults.direccion, parsed.direccion && typeof parsed.direccion === 'object' ? parsed.direccion : {})
+    };
+    if (typeof parsed.tarjeta === 'string' && !normalized.tarjeta.numero) {
+      normalized.tarjeta.numero = parsed.tarjeta;
+      normalized.tarjeta.enabled = true;
+    }
+    if (typeof parsed.direccion === 'string' && !normalized.direccion.calle) {
+      normalized.direccion.calle = parsed.direccion;
+      normalized.direccion.enabled = true;
+    }
+    return normalized;
+  } catch (e) {
+    console.warn('No se pudo leer tarjetasDirecciones:', e);
+    return null;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   const CLAVE_ALMACENAMIENTO = 'cart';
   const contenedorItems = document.getElementById('cart-items');
@@ -20,6 +67,103 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Radios de envío
   const radiosEnvio = document.querySelectorAll('input[name="tipoEnvio"]');
+  const savedProfileData = loadSavedCheckoutData();
+
+  function direccionCompleta(dir) {
+    if (!dir || !dir.enabled) return false;
+    return ['departamento', 'localidad', 'calle', 'numero', 'esquina'].every(key => dir[key] && String(dir[key]).trim());
+  }
+
+  function tarjetaCompleta(card) {
+    if (!card || !card.enabled) return false;
+    return ['nombre', 'numero', 'vencimiento', 'cvv'].every(key => card[key] && String(card[key]).trim());
+  }
+
+  function aplicarDireccionGuardada(dir) {
+    const map = {
+      departamento: 'departamento',
+      localidad: 'localidad',
+      calle: 'calle',
+      numero: 'numero',
+      esquina: 'esquina'
+    };
+    Object.keys(map).forEach(key => {
+      const el = document.getElementById(map[key]);
+      if (el && typeof dir[key] !== 'undefined') {
+        el.value = dir[key] || '';
+      }
+    });
+  }
+
+  function aplicarTarjetaGuardada(card) {
+    const fields = {
+      nombre: document.getElementById('nombreTarjeta'),
+      numero: document.getElementById('numeroTarjeta'),
+      vencimiento: document.getElementById('vencimiento'),
+      cvv: document.getElementById('cvv')
+    };
+    Object.keys(fields).forEach(key => {
+      if (fields[key]) fields[key].value = card[key] || '';
+    });
+  }
+
+  function resumenDireccionGuardada(dir) {
+    if (!dir) return '';
+    const parts = [dir.calle && `${dir.calle} ${dir.numero || ''}`.trim(), dir.localidad, dir.departamento].filter(Boolean);
+    return parts.join(', ');
+  }
+
+  function resumenTarjetaGuardada(card) {
+    if (!card || !card.numero) return '';
+    const clean = card.numero.replace(/[^0-9]/g, '');
+    if (clean.length <= 4) return clean;
+    return `****${clean.slice(-4)}`;
+  }
+
+  function agregarToggleDireccionGuardada() {
+    if (!direccionCard || !savedProfileData || !direccionCompleta(savedProfileData.direccion)) return;
+    const body = direccionCard.querySelector('.card-body');
+    if (!body) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'form-check form-switch mb-3';
+    const resumen = resumenDireccionGuardada(savedProfileData.direccion);
+    wrapper.innerHTML = `
+      <input class="form-check-input" type="checkbox" id="usarDireccionGuardada">
+      <label class="form-check-label" for="usarDireccionGuardada">Usar direccion guardada${resumen ? ` (${resumen})` : ''}</label>
+    `;
+    body.prepend(wrapper);
+    const checkbox = wrapper.querySelector('input');
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) aplicarDireccionGuardada(savedProfileData.direccion);
+    });
+  }
+
+  function agregarToggleTarjetaGuardada() {
+    if (!pagoCard || !savedProfileData || !tarjetaCompleta(savedProfileData.tarjeta)) return;
+    const body = pagoCard.querySelector('.card-body');
+    if (!body) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'form-check form-switch mb-3';
+    const masked = resumenTarjetaGuardada(savedProfileData.tarjeta);
+    wrapper.innerHTML = `
+      <input class="form-check-input" type="checkbox" id="usarTarjetaGuardada">
+      <label class="form-check-label" for="usarTarjetaGuardada">Usar tarjeta guardada${masked ? ` (${masked})` : ''}</label>
+    `;
+    body.prepend(wrapper);
+    const checkbox = wrapper.querySelector('input');
+    checkbox.addEventListener('change', () => {
+      if (!checkbox.checked) return;
+      const radio = document.getElementById('pagoTarjeta');
+      if (radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      aplicarTarjetaGuardada(savedProfileData.tarjeta);
+    });
+  }
+
+  agregarToggleDireccionGuardada();
+  agregarToggleTarjetaGuardada();
 
   // Cargar carrito desde localStorage
   function cargarCarrito() {
@@ -57,24 +201,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function calcularTotal(subtotal, envio, descuento) {
     return subtotal + envio - descuento;
-  }
-
-  function obtenerDescuentoNacimiento() {
-    try {
-      const rawPerfil = localStorage.getItem('perfilUsuario');
-      if (!rawPerfil) return 0;
-      const perfil = JSON.parse(rawPerfil);
-      if (!perfil || !perfil.birthdate) return 0;
-      const b = new Date(perfil.birthdate);
-      if (isNaN(b.getTime())) return 0;
-      const today = new Date();
-      if (b.getDate() === today.getDate() && b.getMonth() === today.getMonth()) {
-        return 0.1; // 10% cumpleaños
-      }
-      return (b.getMonth() + 1) / 100; // porcentaje por mes
-    } catch (e) {
-      return 0;
-    }
   }
 
   function renderizarCarrito() {
@@ -370,13 +496,42 @@ document.getElementById("btnConfirmarCompra")?.addEventListener("click", functio
 
     const prev = JSON.parse(localStorage.getItem(claveCompras) || '[]');
     const timestamp = new Date().toISOString();
+    const subtotal = seleccionados.reduce((sum, it) => sum + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
+    const descuentoPercent = obtenerDescuentoNacimiento();
+    const descuento = Math.round(subtotal * descuentoPercent);
+    const shippingRadio = document.querySelector('input[name="tipoEnvio"]:checked');
+    const shippingPercent = shippingRadio ? Number(shippingRadio.value) : 0;
+    const envio = subtotal * shippingPercent;
+    const shippingLabel = shippingRadio ? (shippingRadio.nextElementSibling?.textContent || '').trim() : '';
+    const currency = (seleccionados[0] && seleccionados[0].currency) ? seleccionados[0].currency : '$';
+    const total = subtotal + envio - descuento;
+
+    const orderMeta = {
+      purchasedAt: timestamp,
+      orderCurrency: currency,
+      orderSubtotal: subtotal,
+      orderDiscountAmount: descuento,
+      orderDiscountPercent: Math.round(descuentoPercent * 100 * 100) / 100, // porcentaje con dos decimales
+      orderDiscountReason: descuento > 0 ? 'Descuento por fecha de nacimiento' : '',
+      orderShippingPercent: Math.round(shippingPercent * 100 * 100) / 100,
+      orderShippingCost: envio,
+      orderShippingLabel: shippingLabel,
+      shippingPercent: Math.round(shippingPercent * 100 * 100) / 100,
+      shippingCost: envio,
+      shippingLabel: shippingLabel,
+      envioPercent: Math.round(shippingPercent * 100 * 100) / 100,
+      envioCost: envio,
+      selectedShipping: shippingLabel,
+      orderTotal: total
+    };
 
     const nuevasCompras = seleccionados.map(it => ({
       ...it,
-      purchasedAt: timestamp
+      ...orderMeta
     }));
 
     localStorage.setItem(claveCompras, JSON.stringify(prev.concat(nuevasCompras)));
+    localStorage.setItem(`purchase_meta_${timestamp}`, JSON.stringify(orderMeta));
 
     const restantes = cart.filter(it => !(it && it.selected !== false));
     localStorage.setItem('cart', JSON.stringify(restantes));
@@ -396,3 +551,4 @@ document.getElementById("btnConfirmarCompra")?.addEventListener("click", functio
     showError("Ocurrió un error al procesar la compra.");
   }
 });
+

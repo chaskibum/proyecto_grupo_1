@@ -11,8 +11,7 @@
     const apellidoValor = document.getElementById('apellidoValor');
     const emailValor = document.getElementById('emailValor');
     const telefonoValor = document.getElementById('telefonoValor');
-  const birthdateValor = document.getElementById('birthdateValor');
-
+    const fechaNacimientoValor = document.getElementById('birthdateValor');
     const inputNombre = document.getElementById('inputNombre');
     const inputApellido = document.getElementById('inputApellido');
     const inputEmail = document.getElementById('inputEmail');
@@ -27,7 +26,7 @@
         try {
             return JSON.parse(raw);
         } catch (e) {
-            console.error('perfil parse error', e);
+          console.error('Error al parsear el perfil', e);
             return null;
         }
     }
@@ -43,19 +42,19 @@
     telefonoValor.textContent = obj && obj.telefono ? obj.telefono : '-';
     // Mostrar fecha de nacimiento en formato local si existe
     try {
-      if (birthdateValor) {
+      if (fechaNacimientoValor) {
         if (obj && obj.birthdate) {
           const d = new Date(obj.birthdate);
           if (!isNaN(d.getTime())) {
-            birthdateValor.textContent = new Intl.DateTimeFormat('es-ES').format(d);
+            fechaNacimientoValor.textContent = new Intl.DateTimeFormat('es-ES').format(d);
           } else {
-            birthdateValor.textContent = obj.birthdate || '-';
+            fechaNacimientoValor.textContent = obj.birthdate || '-';
           }
         } else {
-          birthdateValor.textContent = '-';
+          fechaNacimientoValor.textContent = '-';
         }
       }
-    } catch (e) { if (birthdateValor) birthdateValor.textContent = '-'; }
+    } catch (e) { if (fechaNacimientoValor) fechaNacimientoValor.textContent = '-'; }
     }
 
     function populateForm(obj) {
@@ -100,7 +99,7 @@
         birthdate: existente && existente.birthdate ? existente.birthdate : undefined
       };
 
-            // Basic validation: email if provided should include @
+            // Validación básica: si se proporciona email debe incluir @
             if (newData.email && !newData.email.includes('@')) {
                 alert('Ingrese un email válido.');
                 return;
@@ -113,10 +112,10 @@
     }
 
     if (cancelarBtn) {
-        cancelarBtn.addEventListener('click', function () {
-            // just hide form and keep existing display
-            showForm(false);
-        });
+      cancelarBtn.addEventListener('click', function () {
+        // solo ocultar el formulario y mantener la visualización existente
+        showForm(false);
+      });
     }
 
 })();
@@ -299,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
-      console.error('Error parseando purchases:', e);
+      console.error('Error parseando compras:', e);
       return [];
     }
   }
@@ -315,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // count purchases by unique purchasedAt timestamps
+    // contar compras por marcas de tiempo únicas (purchasedAt)
     const groups = {};
     purchases.forEach(item => {
       const key = item.purchasedAt || (Math.random().toString(36).slice(2));
@@ -324,10 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     const purchaseCount = Object.keys(groups).length;
 
-    // total spent across all purchases
+    // total gastado en todas las compras
     const total = purchases.reduce((s, it) => s + (Number(it.unitCost || 0) * Number(it.count || 0)), 0);
 
-    // currency: prefer first item's currency
+    // moneda: preferir la moneda del primer elemento
     const currency = (purchases[0] && purchases[0].currency) ? (purchases[0].currency + ' ') : '';
 
     if (countEl) countEl.textContent = String(purchaseCount);
@@ -361,93 +360,257 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 (function () {
-    const STORAGE_KEY = 'tarjetasDirecciones';
+  const STORAGE_KEY = 'tarjetasDirecciones';
+  const triggerBtn = document.querySelector('.tarjetas-direcciones');
+  if (!triggerBtn) return;
 
-    const editarBtn = document.querySelector('.tarjetas-direcciones');
-    let displayEl = null;
-    let formEl = null;
+  const summaryEl = document.createElement('div');
+  summaryEl.classList.add('mt-2', 'text-muted');
+  triggerBtn.after(summaryEl);
 
-    displayEl = document.createElement('div');
-    displayEl.classList.add('mt-2');
-    editarBtn.after(displayEl);
+  const formWrapper = document.createElement('div');
+  formWrapper.className = 'mt-3 d-none';
+  formWrapper.innerHTML = `
+    <div class="p-3 border rounded-3 bg-white shadow-sm">
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="perfilGuardarTarjeta">
+        <label class="form-check-label" for="perfilGuardarTarjeta">Guardar datos de tarjeta</label>
+      </div>
+      <div id="perfilTarjetaFields" class="bg-light border rounded-3 p-3 mb-3">
+        <div class="mb-3">
+          <label class="form-label" for="perfilNombreTarjeta">Nombre en la tarjeta</label>
+          <input type="text" class="form-control" id="perfilNombreTarjeta" placeholder="Ej: Fernanda Perez">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="perfilNumeroTarjeta">Numero de tarjeta</label>
+          <input type="text" class="form-control" id="perfilNumeroTarjeta" placeholder="XXXX-XXXX-XXXX-XXXX">
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="perfilVencimientoTarjeta">Vencimiento</label>
+            <input type="month" class="form-control" id="perfilVencimientoTarjeta">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="perfilCvvTarjeta">CVV</label>
+            <input type="text" class="form-control" maxlength="3" id="perfilCvvTarjeta" placeholder="123">
+          </div>
+        </div>
+      </div>
 
-    function loadDatos() {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return null;
-        try {
-            return JSON.parse(raw);
-        } catch (e) {
-            console.error('tarjetas parse error', e);
-            return null;
-        }
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="perfilGuardarDireccion">
+        <label class="form-check-label" for="perfilGuardarDireccion">Guardar direccion de envio</label>
+      </div>
+      <div id="perfilDireccionFields" class="bg-light border rounded-3 p-3 mb-3">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label" for="perfilDepartamento">Departamento</label>
+            <input type="text" class="form-control" id="perfilDepartamento" placeholder="Ej: Montevideo">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="perfilLocalidad">Localidad</label>
+            <input type="text" class="form-control" id="perfilLocalidad" placeholder="Ej: Pocitos">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="perfilCalle">Calle</label>
+            <input type="text" class="form-control" id="perfilCalle" placeholder="Ej: Rivera">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label" for="perfilNumero">Numero</label>
+            <input type="text" class="form-control" id="perfilNumero" placeholder="Ej: 1234">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="perfilEsquina">Esquina</label>
+            <input type="text" class="form-control" id="perfilEsquina" placeholder="Ej: Soca">
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-success" id="perfilGuardarDatos">Guardar</button>
+        <button type="button" class="btn btn-secondary" id="perfilCancelarDatos">Cancelar</button>
+      </div>
+    </div>
+  `;
+  summaryEl.after(formWrapper);
+
+  const cardToggle = formWrapper.querySelector('#perfilGuardarTarjeta');
+  const addressToggle = formWrapper.querySelector('#perfilGuardarDireccion');
+  const cardFields = formWrapper.querySelector('#perfilTarjetaFields');
+  const addressFields = formWrapper.querySelector('#perfilDireccionFields');
+  const saveBtn = formWrapper.querySelector('#perfilGuardarDatos');
+  const cancelBtn = formWrapper.querySelector('#perfilCancelarDatos');
+
+  const inputs = {
+    card: {
+      nombre: formWrapper.querySelector('#perfilNombreTarjeta'),
+      numero: formWrapper.querySelector('#perfilNumeroTarjeta'),
+      vencimiento: formWrapper.querySelector('#perfilVencimientoTarjeta'),
+      cvv: formWrapper.querySelector('#perfilCvvTarjeta')
+    },
+    address: {
+      departamento: formWrapper.querySelector('#perfilDepartamento'),
+      localidad: formWrapper.querySelector('#perfilLocalidad'),
+      calle: formWrapper.querySelector('#perfilCalle'),
+      numero: formWrapper.querySelector('#perfilNumero'),
+      esquina: formWrapper.querySelector('#perfilEsquina')
     }
+  };
 
-    function saveDatos(obj) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+  const defaults = {
+    tarjeta: { enabled: false, nombre: '', numero: '', vencimiento: '', cvv: '' },
+    direccion: { enabled: false, departamento: '', localidad: '', calle: '', numero: '', esquina: '' }
+  };
+
+  function cloneDefaults() {
+    return {
+      tarjeta: Object.assign({}, defaults.tarjeta),
+      direccion: Object.assign({}, defaults.direccion)
+    };
+  }
+
+  function loadDatos() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return cloneDefaults();
+      const parsed = JSON.parse(raw);
+      return {
+        tarjeta: Object.assign({}, defaults.tarjeta, parsed && parsed.tarjeta ? parsed.tarjeta : {}),
+        direccion: Object.assign({}, defaults.direccion, parsed && parsed.direccion ? parsed.direccion : {})
+      };
+    } catch (e) {
+      console.error('Error al parsear tarjetas/direcciones', e);
+      return cloneDefaults();
     }
+  }
 
-    function populateDisplay(obj) {
-        if (!obj) {
-            displayEl.innerHTML = `<p>No hay datos guardados.</p>`;
-            return;
-        }
-        let html = '';
-        if (obj.tarjeta) html += `<p><strong>Tarjeta:</strong> ${obj.tarjeta}</p>`;
-        if (obj.direccion) html += `<p><strong>Dirección:</strong> ${obj.direccion}</p>`;
-        displayEl.innerHTML = html || `<p>No hay datos guardados.</p>`;
-    }
+  function saveDatos(obj) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+  }
 
-    function showForm(show) {
-        if (!formEl) return;
-        if (show) {
-            formEl.classList.remove('d-none');
-            displayEl.classList.add('d-none');
-        } else {
-            formEl.classList.add('d-none');
-            displayEl.classList.remove('d-none');
-        }
-    }
+  function maskCard(numero) {
+    if (!numero) return '';
+    const clean = numero.replace(/[^0-9]/g, '');
+    if (clean.length <= 4) return clean;
+    return `****${clean.slice(-4)}`;
+  }
 
-    function createForm() {
-        const datos = loadDatos();
-        formEl = document.createElement('div');
-        formEl.classList.add('mt-2', 'd-none');
-        formEl.innerHTML = `
-            <div class="mb-2">
-                <label class="form-label">Tarjeta</label>
-                <input type="text" class="form-control" id="inputTarjeta" placeholder="Número de tarjeta" value="${datos && datos.tarjeta ? datos.tarjeta : ''}">
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="inputDireccion" placeholder="Dirección" value="${datos && datos.direccion ? datos.direccion : ''}">
-            </div>
-            <button type="button" class="btn btn-success" id="guardarTarjeta">Guardar</button>
-            <button type="button" class="btn btn-secondary" id="cancelarTarjeta">Cancelar</button>
-        `;
-        editarBtn.after(formEl);
+  function resumenDireccion(dir) {
+    if (!dir) return '';
+    const parts = [dir.calle && `${dir.calle} ${dir.numero || ''}`.trim(), dir.localidad, dir.departamento].filter(Boolean);
+    return parts.join(', ');
+  }
 
-        formEl.querySelector('#guardarTarjeta').addEventListener('click', () => {
-            const nuevaData = {
-                tarjeta: formEl.querySelector('#inputTarjeta').value.trim(),
-                direccion: formEl.querySelector('#inputDireccion').value.trim()
-            };
-            saveDatos(nuevaData);
-            populateDisplay(nuevaData);
-            showForm(false);
-        });
+  function populateDisplay(data) {
+    const cardTxt = (data.tarjeta.enabled && data.tarjeta.numero)
+      ? `${maskCard(data.tarjeta.numero)} (vence ${data.tarjeta.vencimiento || '-'})`
+      : 'No guardada';
+    const dirTxt = data.direccion.enabled
+      ? (resumenDireccion(data.direccion) || 'Datos incompletos')
+      : 'No guardada';
+    summaryEl.innerHTML = `
+      <p class="mb-1"><strong>Tarjeta:</strong> ${cardTxt}</p>
+      <p class="mb-1"><strong>Direccion:</strong> ${dirTxt}</p>
+      <small class="text-muted">Haz click en esta seccion para editar o guardar tus datos.</small>
+    `;
+  }
 
-        formEl.querySelector('#cancelarTarjeta').addEventListener('click', () => {
-            showForm(false);
-        });
-    }
-
-    populateDisplay(loadDatos());
-    createForm();
-
-    editarBtn.addEventListener('click', () => {
-        const datos = loadDatos();
-        formEl.querySelector('#inputTarjeta').value = datos && datos.tarjeta ? datos.tarjeta : '';
-        formEl.querySelector('#inputDireccion').value = datos && datos.direccion ? datos.direccion : '';
-        showForm(true);
+  function toggleSection(section, enabled) {
+    if (!section) return;
+    section.classList.toggle('opacity-50', !enabled);
+    section.querySelectorAll('input').forEach(inp => {
+      inp.disabled = !enabled;
     });
+  }
+
+  function setFormValues(data) {
+    cardToggle.checked = Boolean(data.tarjeta.enabled);
+    addressToggle.checked = Boolean(data.direccion.enabled);
+    inputs.card.nombre.value = data.tarjeta.nombre || '';
+    inputs.card.numero.value = data.tarjeta.numero || '';
+    inputs.card.vencimiento.value = data.tarjeta.vencimiento || '';
+    inputs.card.cvv.value = data.tarjeta.cvv || '';
+
+    inputs.address.departamento.value = data.direccion.departamento || '';
+    inputs.address.localidad.value = data.direccion.localidad || '';
+    inputs.address.calle.value = data.direccion.calle || '';
+    inputs.address.numero.value = data.direccion.numero || '';
+    inputs.address.esquina.value = data.direccion.esquina || '';
+
+    toggleSection(cardFields, cardToggle.checked);
+    toggleSection(addressFields, addressToggle.checked);
+  }
+
+  cardToggle.addEventListener('change', () => toggleSection(cardFields, cardToggle.checked));
+  addressToggle.addEventListener('change', () => toggleSection(addressFields, addressToggle.checked));
+
+  triggerBtn.addEventListener('click', () => {
+    const datos = loadDatos();
+    setFormValues(datos);
+    formWrapper.classList.toggle('d-none');
+  });
+
+  saveBtn.addEventListener('click', () => {
+    const cardValues = {
+      nombre: inputs.card.nombre.value.trim(),
+      numero: inputs.card.numero.value.trim(),
+      vencimiento: inputs.card.vencimiento.value.trim(),
+      cvv: inputs.card.cvv.value.trim()
+    };
+    const addressValues = {
+      departamento: inputs.address.departamento.value.trim(),
+      localidad: inputs.address.localidad.value.trim(),
+      calle: inputs.address.calle.value.trim(),
+      numero: inputs.address.numero.value.trim(),
+      esquina: inputs.address.esquina.value.trim()
+    };
+
+    if (cardToggle.checked) {
+      const faltan = Object.values(cardValues).some(v => !v);
+      if (faltan) {
+        alert('Completa todos los campos de la tarjeta para guardarla.');
+        return;
+      }
+    }
+
+    if (addressToggle.checked) {
+      const faltan = Object.values(addressValues).some(v => !v);
+      if (faltan) {
+        alert('Completa todos los campos de direccion para guardarla.');
+        return;
+      }
+    }
+
+    const payload = {
+      tarjeta: Object.assign({}, cardValues, { enabled: cardToggle.checked }),
+      direccion: Object.assign({}, addressValues, { enabled: addressToggle.checked })
+    };
+
+    saveDatos(payload);
+    populateDisplay(payload);
+    formWrapper.classList.add('d-none');
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    formWrapper.classList.add('d-none');
+  });
+
+  populateDisplay(loadDatos());
 })();
+
+(function () {
+  const helpButton = document.querySelector('.ayuda-soporte');
+  if (!helpButton) return;
+
+  helpButton.addEventListener('click', () => {
+    try {
+      sessionStorage.setItem('openChatRedirect', '1');
+    } catch (e) {
+      // Ignorar errores de almacenamiento (modo incógnito, etc.)
+    }
+    window.location.href = 'index.html?openChat=1';
+  });
+})();
+
+
+

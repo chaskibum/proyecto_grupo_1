@@ -80,3 +80,35 @@ btnEnviar.addEventListener('click', () => {
 
   inputMensaje.value = '';
 });
+
+(function autoOpenChatIfNeeded() {
+  if (!chatContainer) return;
+  let shouldOpen = false;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('openChat') === '1') {
+      shouldOpen = true;
+      params.delete('openChat');
+      const query = params.toString();
+      const newUrl = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`;
+      window.history.replaceState({}, '', newUrl);
+    }
+  } catch (e) { /* ignore */ }
+
+  if (!shouldOpen) {
+    try {
+      if (sessionStorage.getItem('openChatRedirect') === '1') {
+        shouldOpen = true;
+        sessionStorage.removeItem('openChatRedirect');
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  if (shouldOpen) {
+    setTimeout(() => {
+      chatContainer.classList.remove('cerrado');
+      chatContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (inputMensaje) inputMensaje.focus();
+    }, 100);
+  }
+})();
