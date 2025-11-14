@@ -19,6 +19,7 @@
   <div id="navbar"></div>
 
   <main class="container py-4">
+    <form id="checkout-form">
     <h1 class="mb-4">Mi carrito</h1>
 
     <!-- Contenedor dinámico para items del carrito -->
@@ -37,7 +38,7 @@
         </div>
         <div class="card-body">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioPremium" value="0.15">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioPremium" value="0.15" required>
             <label class="form-check-label" for="envioPremium">Premium 2 a 5 días (15%)</label>
           </div>
           <div class="form-check">
@@ -60,23 +61,23 @@
           <div class="row g-3">
             <div class="col-md-4">
               <label for="departamento" class="form-label">Departamento</label>
-              <input type="text" id="departamento" class="form-control" placeholder="Ej: Montevideo">
+              <input type="text" id="departamento" class="form-control" placeholder="Ej: Montevideo" required>
             </div>
             <div class="col-md-4">
               <label for="localidad" class="form-label">Localidad</label>
-              <input type="text" id="localidad" class="form-control" placeholder="Ej: Pocitos">
+              <input type="text" id="localidad" class="form-control" placeholder="Ej: Pocitos" required>
             </div>
             <div class="col-md-4">
               <label for="calle" class="form-label">Calle</label>
-              <input type="text" id="calle" class="form-control" placeholder="Ej: Rivera">
+              <input type="text" id="calle" class="form-control" placeholder="Ej: Rivera" required>
             </div>
             <div class="col-md-2">
               <label for="numero" class="form-label">Número</label>
-              <input type="text" id="numero" class="form-control" placeholder="Ej: 1234">
+              <input type="text" id="numero" class="form-control" placeholder="Ej: 1234" required>
             </div>
             <div class="col-md-4">
               <label for="esquina" class="form-label">Esquina</label>
-              <input type="text" id="esquina" class="form-control" placeholder="Ej: Soca">
+              <input type="text" id="esquina" class="form-control" placeholder="Ej: Soca" required>
             </div>
           </div>
         </div>
@@ -107,20 +108,20 @@
           <div id="form-tarjeta" class="bg-light p-3 rounded-3 mb-3" style="display:none;">
             <div class="mb-3">
               <label for="nombreTarjeta" class="form-label">Nombre en la tarjeta</label>
-              <input type="text" class="form-control" id="nombreTarjeta" placeholder="Ej: Fernanda Pérez">
+              <input type="text" class="form-control" id="nombreTarjeta" placeholder="Ej: Fernanda Pérez" required>
             </div>
             <div class="mb-3">
               <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
-              <input type="text" class="form-control" id="numeroTarjeta" placeholder="XXXX-XXXX-XXXX-XXXX">
+              <input type="text" class="form-control" id="numeroTarjeta" placeholder="XXXX-XXXX-XXXX-XXXX" required>
             </div>
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="vencimiento" class="form-label">Vencimiento</label>
-                <input type="month" class="form-control" id="vencimiento">
+                <input type="month" class="form-control" id="vencimiento" required>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="cvv" class="form-label">CVV</label>
-                <input type="text" class="form-control" id="cvv" maxlength="3" placeholder="123">
+                <input type="text" class="form-control" id="cvv" maxlength="3" placeholder="123" required>
               </div>
             </div>
           </div>
@@ -143,11 +144,11 @@
             <p class="mb-2 text-muted small">Complete los datos de su transferencia:</p>
             <div class="mb-3">
               <label for="banco" class="form-label">Banco</label>
-              <input type="text" class="form-control" id="banco" placeholder="Ej: Banco República">
+              <input type="text" class="form-control" id="banco" placeholder="Ej: Banco República" required>
             </div>
             <div class="mb-3">
               <label for="numeroCuenta" class="form-label">Número de cuenta</label>
-              <input type="text" class="form-control" id="numeroCuenta" placeholder="Ej: 123456789">
+              <input type="text" class="form-control" id="numeroCuenta" placeholder="Ej: 123456789" required>
             </div>
           </div>
         </div>
@@ -163,7 +164,7 @@
               </div>
               <div class="d-flex align-items-center">
                 <label class="me-2 mb-0 text-muted">Seleccionar todos</label>
-                <input id="select-all" type="checkbox" aria-label="Seleccionar todos" />
+                <input id="select-all" type="checkbox" aria-label="Seleccionar todos"/>
                 <span id="cart-subtotal-all" class="fw-bold text-muted ms-3">$0</span>
               </div>
             </div>
@@ -196,6 +197,52 @@
       </div>
 
     </div>
+    <div class="modal fade" id="modalError" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Error en la compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalErrorMsg"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalConfirmar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-primary">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Confirmar compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">¿Estás seguro de realizar la compra?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmarCompra">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalExito" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-success">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">Compra realizada</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">La compra se realizó con éxito.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </form>
   </main>
 
 

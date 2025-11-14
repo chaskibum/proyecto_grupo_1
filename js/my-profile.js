@@ -344,3 +344,110 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(function () {
+    const STORAGE_KEY = 'tarjetasDirecciones';
+
+    const editarBtn = document.querySelector('.tarjetas-direcciones');
+    let displayEl = null;
+    let formEl = null;
+
+    displayEl = document.createElement('div');
+    displayEl.classList.add('mt-2');
+    editarBtn.after(displayEl);
+
+    function loadDatos() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        try {
+            return JSON.parse(raw);
+        } catch (e) {
+            console.error('tarjetas parse error', e);
+            return null;
+        }
+    }
+
+    function saveDatos(obj) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+    }
+
+    function populateDisplay(obj) {
+        if (!obj) {
+            displayEl.innerHTML = `<p>No hay datos guardados.</p>`;
+            return;
+        }
+        let html = '';
+        if (obj.tarjeta) html += `<p><strong>Tarjeta:</strong> ${obj.tarjeta}</p>`;
+        if (obj.direccion) html += `<p><strong>Dirección:</strong> ${obj.direccion}</p>`;
+        displayEl.innerHTML = html || `<p>No hay datos guardados.</p>`;
+    }
+
+    function showForm(show) {
+        if (!formEl) return;
+        if (show) {
+            formEl.classList.remove('d-none');
+            displayEl.classList.add('d-none');
+        } else {
+            formEl.classList.add('d-none');
+            displayEl.classList.remove('d-none');
+        }
+    }
+
+    function createForm() {
+        const datos = loadDatos();
+        formEl = document.createElement('div');
+        formEl.classList.add('mt-2', 'd-none');
+        formEl.innerHTML = `
+            <div class="mb-2">
+                <label class="form-label">Tarjeta</label>
+                <input type="text" class="form-control" id="inputTarjeta" placeholder="Número de tarjeta" value="${datos && datos.tarjeta ? datos.tarjeta : ''}">
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="inputDireccion" placeholder="Dirección" value="${datos && datos.direccion ? datos.direccion : ''}">
+            </div>
+            <button type="button" class="btn btn-success" id="guardarTarjeta">Guardar</button>
+            <button type="button" class="btn btn-secondary" id="cancelarTarjeta">Cancelar</button>
+        `;
+        editarBtn.after(formEl);
+
+        formEl.querySelector('#guardarTarjeta').addEventListener('click', () => {
+            const nuevaData = {
+                tarjeta: formEl.querySelector('#inputTarjeta').value.trim(),
+                direccion: formEl.querySelector('#inputDireccion').value.trim()
+            };
+            saveDatos(nuevaData);
+            populateDisplay(nuevaData);
+            showForm(false);
+        });
+
+        formEl.querySelector('#cancelarTarjeta').addEventListener('click', () => {
+            showForm(false);
+        });
+    }
+
+    populateDisplay(loadDatos());
+    createForm();
+
+    editarBtn.addEventListener('click', () => {
+        const datos = loadDatos();
+        formEl.querySelector('#inputTarjeta').value = datos && datos.tarjeta ? datos.tarjeta : '';
+        formEl.querySelector('#inputDireccion').value = datos && datos.direccion ? datos.direccion : '';
+        showForm(true);
+    });
+})();

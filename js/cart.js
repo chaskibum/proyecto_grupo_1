@@ -164,12 +164,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const anySelected = cart.some(it => it && it.selected !== false);
     const selectAllBox = document.getElementById('select-all');
-    const permitirFinalizar = anySelected && selectAllBox && selectAllBox.checked;
+    const permitirFinalizar = anySelected;
 
     if (botonFinalizar) {
       botonFinalizar.disabled = !permitirFinalizar;
       botonFinalizar.classList.toggle('disabled', !permitirFinalizar);
     }
+    const allSelected = cart.length > 0 && cart.every(it => it && it.selected !== false);
+    if (selectAllBox) selectAllBox.checked = allSelected;
   }
 
   function adjuntarControles() {
@@ -227,28 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
     renderizarCarrito();
   }
 
-  if (botonFinalizar) {
-    botonFinalizar.addEventListener('click', function () {
-      const cart = cargarCarrito();
-      if (!cart || cart.length === 0) return;
-      const selected = cart.filter(it => it && it.selected !== false);
-      if (!selected || selected.length === 0) {
-        alert('Seleccione al menos un producto para comprar.');
-        return;
-      }
-      const prev = JSON.parse(localStorage.getItem('purchases') || '[]');
-      const timestamp = new Date().toISOString();
-      const toSave = selected.map(item => Object.assign({}, item, { purchasedAt: timestamp }));
-      localStorage.setItem('purchases', JSON.stringify(prev.concat(toSave)));
-
-      const remaining = cart.filter(it => !(it && it.selected !== false));
-      guardarCarrito(remaining);
-
-      renderizarCarrito();
-      window.location.href = "index.html";
-    });
-  }
-
   renderizarCarrito();
 });
 
@@ -273,4 +253,146 @@ document.addEventListener('DOMContentLoaded', function () {
     formTarjeta.style.display = 'none';
     formTransferencia.style.display = 'block';
   });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById("checkout-btn")?.addEventListener("click", function () {
+  const selectedShipping = document.querySelector('input[name="tipoEnvio"]:checked');
+  const departamento = document.getElementById("departamento").value.trim();
+  const localidad = document.getElementById("localidad").value.trim();
+  const calle = document.getElementById("calle").value.trim();
+  const numero = document.getElementById("numero").value.trim();
+  const esquina = document.getElementById("esquina").value.trim();
+  const pago = document.querySelector('input[name="pago"]:checked');
+
+  const radios = document.querySelectorAll('input[name="tipoEnvio"]');
+  if (!selectedShipping) {
+    radios.forEach(r => r.parentElement.classList.add('border', 'border-danger', 'rounded'));
+    setTimeout(() => {
+      radios.forEach(r => r.parentElement.classList.remove('border', 'border-danger', 'rounded'));
+    }, 3000);
+    showError("Debes seleccionar un tipo de envío.");
+    return;
+  }
+
+  const direccionInputs = [departamento, localidad, calle, numero, esquina];
+  const direccionCampos = [ "departamento", "localidad", "calle", "numero", "esquina" ];
+  if (direccionInputs.some(v => !v)) {
+    direccionCampos.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.value.trim()) el.classList.add('is-invalid');
+    });
+    setTimeout(() => {
+      direccionCampos.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('is-invalid');
+      });
+    }, 3000);
+    showError("Debes completar todos los campos de la dirección de envío.");
+    return;
+  }
+
+  if (!pago) {
+    showError("Debes seleccionar una forma de pago.");
+    return;
+  }
+
+  if (pago.value === "tarjeta") {
+    const camposTarjeta = ["nombreTarjeta", "numeroTarjeta", "vencimiento", "cvv"];
+    const incompletos = camposTarjeta.filter(id => !document.getElementById(id).value.trim());
+    if (incompletos.length > 0) {
+      incompletos.forEach(id => document.getElementById(id).classList.add('is-invalid'));
+      setTimeout(() => {
+        incompletos.forEach(id => document.getElementById(id).classList.remove('is-invalid'));
+      }, 3000);
+      showError("Debes completar todos los campos de la tarjeta.");
+      return;
+    }
+  }
+
+  if (pago.value === "transferencia") {
+    const camposTransferencia = ["banco", "numeroCuenta"];
+    const incompletos = camposTransferencia.filter(id => !document.getElementById(id).value.trim());
+    if (incompletos.length > 0) {
+      incompletos.forEach(id => document.getElementById(id).classList.add('is-invalid'));
+      setTimeout(() => {
+        incompletos.forEach(id => document.getElementById(id).classList.remove('is-invalid'));
+      }, 3000);
+      showError("Debes completar los datos de la transferencia.");
+      return;
+    }
+  }
+
+  const modalConfirm = new bootstrap.Modal(document.getElementById("modalConfirmar"));
+  modalConfirm.show();
+});
+
+function showError(msg) {
+  const modal = new bootstrap.Modal(document.getElementById("modalError"));
+  document.getElementById("modalErrorMsg").innerText = msg;
+  modal.show();
+}
+
+
+
+
+
+
+
+
+
+
+document.getElementById("btnConfirmarCompra")?.addEventListener("click", function () {
+  try {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const seleccionados = cart.filter(it => it && it.selected !== false);
+
+    if (seleccionados.length === 0) {
+      showError("No hay productos seleccionados para comprar.");
+      return;
+    }
+
+    const usuario = localStorage.getItem('usuarioActivo');
+    const claveCompras = usuario ? `purchases_${usuario}` : 'purchases';
+
+    const prev = JSON.parse(localStorage.getItem(claveCompras) || '[]');
+    const timestamp = new Date().toISOString();
+
+    const nuevasCompras = seleccionados.map(it => ({
+      ...it,
+      purchasedAt: timestamp
+    }));
+
+    localStorage.setItem(claveCompras, JSON.stringify(prev.concat(nuevasCompras)));
+
+    const restantes = cart.filter(it => !(it && it.selected !== false));
+    localStorage.setItem('cart', JSON.stringify(restantes));
+
+    if (typeof renderizarCarrito === "function") {
+      renderizarCarrito();
+    }
+
+    const modalExito = new bootstrap.Modal(document.getElementById("modalExito"));
+    modalExito.show();
+
+    const modalConfirmar = bootstrap.Modal.getInstance(document.getElementById("modalConfirmar"));
+    if (modalConfirmar) modalConfirmar.hide();
+
+  } catch (e) {
+    console.error(e);
+    showError("Ocurrió un error al procesar la compra.");
+  }
 });
