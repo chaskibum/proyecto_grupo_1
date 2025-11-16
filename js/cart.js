@@ -447,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+//esta parte la explico yo (Santiago R)//
 
 document.getElementById("checkout-btn")?.addEventListener("click", function () {
   const selectedShipping = document.querySelector('input[name="tipoEnvio"]:checked');
