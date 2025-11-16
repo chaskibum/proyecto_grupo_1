@@ -439,6 +439,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
+
+
+
+
+
+
+
 document.getElementById("checkout-btn")?.addEventListener("click", function () {
   const selectedShipping = document.querySelector('input[name="tipoEnvio"]:checked');
   const departamento = document.getElementById("departamento").value.trim();
@@ -555,7 +564,7 @@ document.getElementById("btnConfirmarCompra")?.addEventListener("click", functio
       orderCurrency: currency,
       orderSubtotal: subtotal,
       orderDiscountAmount: descuento,
-      orderDiscountPercent: Math.round(descuentoPercent * 100 * 100) / 100, // porcentaje con dos decimales
+      orderDiscountPercent: Math.round(descuentoPercent * 100 * 100) / 100,
       orderDiscountReason: descuento > 0 ? 'Descuento por fecha de nacimiento' : '',
       orderShippingPercent: Math.round(shippingPercent * 100 * 100) / 100,
       orderShippingCost: envio,
