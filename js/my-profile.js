@@ -614,3 +614,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
+
+
+
+
+const mensajes = [
+  { texto: "Nueva oferta disponible", icono: "bi bi-bag-check-fill" },
+  { texto: "La oferta ha caducado", icono: "bi bi-x-octagon-fill" },
+  { texto: "Tu producto ya está en camino", icono: "bi bi-truck" },
+  { texto: "¡Anotate a nuestro nuevo sorteo!", icono: "bi bi-gift-fill" },
+  { texto: "Tienes un nuevo mensaje", icono: "bi bi-chat-left-dots-fill" },
+  { texto: "Actualizamos tu perfil exitosamente", icono: "bi bi-person-check-fill" }
+];
+
+let notificacionesActivas = localStorage.getItem("notificacionesActivas") !== "false";
+
+const btnToggle = document.getElementById("toggleNotificacionesBtn");
+
+if (btnToggle) {
+  actualizarBoton();
+  btnToggle.addEventListener("click", () => {
+    notificacionesActivas = !notificacionesActivas;
+    localStorage.setItem("notificacionesActivas", notificacionesActivas);
+    actualizarBoton();
+  });
+}
+
+function actualizarBoton() {
+  btnToggle.textContent = `Notificaciones: ${notificacionesActivas ? "ACTIVADAS" : "DESACTIVADAS"}`;
+}
+
+function mostrarToast(msg) {
+  const cont = document.getElementById("notificaciones-container");
+
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = `
+    <i class="${msg.icono}"></i>
+    <span>${msg.texto}</span>
+    <span class="cerrar">&times;</span>
+  `;
+
+  cont.appendChild(toast);
+
+  toast.querySelector(".cerrar").addEventListener("click", () => toast.remove());
+
+  setTimeout(() => toast.remove(), 8000);
+}
+
+setInterval(() => {
+  if (!notificacionesActivas) return;
+  const msg = mensajes[Math.floor(Math.random() * mensajes.length)];
+  mostrarToast(msg);
+}, 15000);

@@ -1158,3 +1158,79 @@ body.dark-mode #img-perfil i.bi-plus-circle-fill {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
+
+
+
+
+
+
+
+
+/*notificaciones */
+#notificaciones-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999999;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e1e1e;
+  color: white;
+  padding: 14px 20px;
+  border-left: 5px solid #4da6ff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.35);
+  font-family: Arial, sans-serif;
+  opacity: 0;
+  transform: translateX(120%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 6s;
+  position: relative;
+}
+
+.toast i {
+  font-size: 22px;
+  color: #4da6ff;
+}
+
+.toast .cerrar {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ccc;
+}
+
+.toast .cerrar:hover {
+  color: white;
+}
+
+@keyframes slideIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateX(120%); }
+}
+
+.noti-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 15px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.noti-btn:hover {
+  background: #444;
+}
