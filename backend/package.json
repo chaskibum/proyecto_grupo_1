@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend para el proyecto de e-commerce",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "descargar": "node download_data.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
