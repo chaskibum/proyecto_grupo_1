@@ -4,18 +4,6 @@
     {
       "src": "backend/app.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "**/*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "**/*.js",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -32,12 +20,21 @@
       "dest": "backend/app.js"
     },
     {
-      "src": "/",
-      "dest": "/index.html"
+      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|json|woff|woff2|ttf|eot|webp))",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "/$1"
     },
     {
-      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|json|woff|woff2|ttf|eot))",
-      "dest": "/$1"
+      "src": "/",
+      "dest": "/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ]
 }
