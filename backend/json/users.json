@@ -12,5 +12,19 @@
     "email": "asd@aa",
     "password": "ABRLSDJA363**E",
     "birthdate": "2006-02-24"
+  },
+  {
+    "id": 1764156735397,
+    "username": "GrupoAnsiedad",
+    "email": "grupo1@gmail.com",
+    "password": "AMSOTWJQ*ATB",
+    "birthdate": "2001-01-01"
+  },
+  {
+    "id": 1764156806074,
+    "username": "Ansiedad",
+    "email": "grupo1a@gmail.com",
+    "password": "AMSOTWJQ*ATB",
+    "birthdate": "2001-01-01"
   }
 ]
