@@ -42,6 +42,12 @@ app.post('/register', async (req, res) => {
         const { data: authData, error: authError } = await supabase.auth.signUp({
             email: email,
             password: password,
+            options: {
+                emailRedirectTo: undefined,
+                data: {
+                    username: username
+                }
+            }
         });
 
         if (authError) {
