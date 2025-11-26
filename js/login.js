@@ -29,6 +29,8 @@ document.getElementById("login").addEventListener("submit", function (event) {
     .then(data => {
         // Guardar token
         localStorage.setItem("token", data.token);
+        localStorage.setItem("sesionActiva", "true");
+        localStorage.setItem("usuarioActivo", usuario);
 
         showAlert("Bienvenido, " + usuario + "!");
 
@@ -61,16 +63,3 @@ function volver() {
         window.location.href = "index.html";
     }
 }
-
-// ------- DARK MODE -------
-button.addEventListener("click", () => {
-    body.classList.toggle("dark-mode");
-
-    if (body.classList.contains("dark-mode")) {
-        icon.className = "bi bi-sun-fill";
-        localStorage.setItem("theme", "dark");
-    } else {
-        icon.className = "bi bi-moon-fill";
-        localStorage.setItem("theme", "light");
-    }
-});

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  if (!localStorage.getItem('sesionActiva')) {
+  if (!localStorage.getItem('sesionActiva') && !localStorage.getItem('token')) {
     window.location.href = 'login.html';
     return;
   }
