@@ -14,7 +14,7 @@ document.getElementById("login").addEventListener("submit", function (event) {
         return;
     }
 
-    // --- LOGIN CONTRA BACKEND ---
+    // --- LOGIN CONTRA BACKEND CON SUPABASE ---
     fetch("http://localhost:3000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,12 +27,21 @@ document.getElementById("login").addEventListener("submit", function (event) {
         return res.json();
     })
     .then(data => {
-        // Guardar token
+        // Guardar tokens y datos del usuario
         localStorage.setItem("token", data.token);
+        localStorage.setItem("supabaseToken", data.supabaseToken);
         localStorage.setItem("sesionActiva", "true");
-        localStorage.setItem("usuarioActivo", usuario);
+        localStorage.setItem("usuarioActivo", data.user.username);
+        
+        // Guardar información adicional del usuario
+        localStorage.setItem("userData", JSON.stringify({
+            id: data.user.id,
+            username: data.user.username,
+            email: data.user.email,
+            birthdate: data.user.birthdate
+        }));
 
-        showAlert("Bienvenido, " + usuario + "!");
+        showAlert("Bienvenido, " + data.user.username + "!");
 
         // REDIRECCIÓN DESPUÉS DEL LOGIN
         setTimeout(() => {
