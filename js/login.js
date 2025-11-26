@@ -1,55 +1,54 @@
 document.getElementById("login").addEventListener("submit", function (event) {
     event.preventDefault();
-    let usuario = document.getElementById("name").value;
-    let contrasena = document.getElementById("pword").value;
-    let birth = document.getElementById("birthdate")?.value;
-    if (usuario === "" || contrasena === "" || !birth) {
+
+    let usuario = document.getElementById("name").value.trim();
+    let contrasena = document.getElementById("pword").value.trim();
+
+    if (usuario === "" || contrasena === "") {
         showAlert("Por favor, complete todos los campos requeridos.");
         return;
     }
+
     if (usuario.length > 10) {
         showAlert("El nombre de usuario no puede tener más de 10 caracteres.");
         return;
     }
 
-    // Validar edad mínima 18 años
-    const birthDate = new Date(birth);
-    if (isNaN(birthDate.getTime())) {
-        showAlert('Fecha de nacimiento inválida.');
-        return;
-    }
-    const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear() - (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate()) ? 1 : 0);
-    if (age < 18) {
-        showAlert('Debes ser mayor de 18 años para iniciar sesión.');
-        return;
-    }
+    // --- LOGIN CONTRA BACKEND ---
+    fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: usuario, password: contrasena })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error("Credenciales incorrectas");
+        }
+        return res.json();
+    })
+    .then(data => {
+        // Guardar token
+        localStorage.setItem("token", data.token);
 
-    // Login simulado: guardar sesión y perfil (si no existe o para actualizar birthdate)
-    try {
-        const rawPerfil = localStorage.getItem('perfilUsuario');
-        let perfil = rawPerfil ? JSON.parse(rawPerfil) : {};
-        perfil.nombre = perfil.nombre || usuario;
-        perfil.birthdate = perfil.birthdate || birth;
-        // si la fecha ingresada es distinta a la guardada, actualizamos con la ingresada
-        if (perfil.birthdate !== birth) perfil.birthdate = birth;
-        localStorage.setItem('perfilUsuario', JSON.stringify(perfil));
-    } catch (e) {
-        console.warn('No se pudo actualizar perfil en localStorage', e);
-    }
+        showAlert("Bienvenido, " + usuario + "!");
 
-    showAlert("Bienvenido, " + usuario + "!");
-    localStorage.setItem("sesionActiva", "true");
-    localStorage.setItem("usuarioActivo", usuario);
-    setTimeout(() => {
-        window.location.href = "index.html";
-    }, 1500);
+        // REDIRECCIÓN DESPUÉS DEL LOGIN
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 1200);
+    })
+    .catch(err => {
+        showAlert(err.message);
+    });
 });
 
 function showAlert(mensaje) {
     const alerta = document.getElementById("alert");
-    document.getElementById("msalert").innerText = mensaje;
+    const msalert = document.getElementById("msalert");
+
+    msalert.innerText = mensaje;
     alerta.style.display = "block";
+
     setTimeout(() => {
         alerta.style.display = "none";
     }, 2000);
@@ -63,6 +62,7 @@ function volver() {
     }
 }
 
+// ------- DARK MODE -------
 button.addEventListener("click", () => {
     body.classList.toggle("dark-mode");
 

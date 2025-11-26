@@ -139,23 +139,31 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         // Guardar perfil de usuario con fecha de nacimiento
-        try {
-            const nombre = document.getElementById('name')?.value || '';
-            const email = document.getElementById('email')?.value || '';
-            const perfil = {
-                nombre: nombre,
-                email: email,
-                birthdate: birthInput.value
-            };
-            localStorage.setItem('perfilUsuario', JSON.stringify(perfil));
-            // opcional: establecer usuario activo
-            localStorage.setItem('usuarioActivo', nombre);
-        } catch (e) {
-            console.warn('No se pudo guardar perfil en localStorage', e);
-        }
+        const payload = {
+    username: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('pword').value,
+    birthdate: birthInput.value
+};
 
-        mostrarAlerta('¡Gracias por registrarte!', true);
+fetch("http://localhost:3000/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+})
+    .then(res => res.json())
+    .then(data => {
+        if (data.message === "Usuario registrado con éxito") {
+            mostrarAlerta("¡Gracias por registrarte!", true);
+        } else {
+            mostrarAlerta(data.message);
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        mostrarAlerta("Error al conectar con el servidor");
     });
+});
 });
 
 function volver() {
