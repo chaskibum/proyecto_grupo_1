@@ -8,33 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/login",
+      "src": "/(.*)",
       "dest": "backend/app.js"
-    },
-    {
-      "src": "/register",
-      "dest": "backend/app.js"
-    },
-    {
-      "src": "/emercado-api/(.*)",
-      "dest": "backend/app.js"
-    },
-    {
-      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|json|woff|woff2|ttf|eot|webp))",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
     }
   ]
 }
