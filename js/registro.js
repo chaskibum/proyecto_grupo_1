@@ -146,7 +146,11 @@ document.addEventListener('DOMContentLoaded', function () {
     birthdate: birthInput.value
 };
 
-fetch("http://localhost:3000/register", {
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000' 
+    : window.location.origin;
+
+fetch(`${API_URL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)

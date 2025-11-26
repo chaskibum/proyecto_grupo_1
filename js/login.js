@@ -15,7 +15,11 @@ document.getElementById("login").addEventListener("submit", function (event) {
     }
 
     // --- LOGIN CONTRA BACKEND CON SUPABASE ---
-    fetch("http://localhost:3000/login", {
+    const API_URL = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000' 
+        : window.location.origin;
+    
+    fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: usuario, password: contrasena })

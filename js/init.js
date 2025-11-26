@@ -1,10 +1,14 @@
-const CATEGORIES_URL = "http://localhost:3000/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "http://localhost:3000/emercado-api/sell/publish.json";
-const PRODUCTS_URL = "http://localhost:3000/emercado-api/cats_products/";
-const PRODUCT_INFO_URL = "http://localhost:3000/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "http://localhost:3000/emercado-api/products_comments/";
-const CART_INFO_URL = "http://localhost:3000/emercado-api/user_cart/";
-const CART_BUY_URL = "http://localhost:3000/emercado-api/cart/buy.json";
+const API_BASE = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000' 
+    : window.location.origin;
+
+const CATEGORIES_URL = `${API_BASE}/emercado-api/cats/cat.json`;
+const PUBLISH_PRODUCT_URL = `${API_BASE}/emercado-api/sell/publish.json`;
+const PRODUCTS_URL = `${API_BASE}/emercado-api/cats_products/`;
+const PRODUCT_INFO_URL = `${API_BASE}/emercado-api/products/`;
+const PRODUCT_INFO_COMMENTS_URL = `${API_BASE}/emercado-api/products_comments/`;
+const CART_INFO_URL = `${API_BASE}/emercado-api/user_cart/`;
+const CART_BUY_URL = `${API_BASE}/emercado-api/cart/buy.json`;
 const EXT_TYPE = ".json";
 
 let showSpinner = function () {
