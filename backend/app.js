@@ -15,8 +15,8 @@ app.use(express.json());
 // Servir JSON como API
 app.use('/emercado-api', express.static(path.join(__dirname, 'json')));
 
-// Servir frontend desde la carpeta anterior
-app.use(express.static(path.join(__dirname, '..')));
+// Servir archivos estáticos desde la carpeta actual (backend)
+app.use(express.static(__dirname));
 
 const usersPath = path.join(__dirname, 'json', 'users.json');
 
