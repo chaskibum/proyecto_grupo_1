@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('./middleware/auth');
 
 const app = express();
 const PUERTO = 3000;
@@ -11,7 +12,11 @@ app.use(cors());
 app.use(express.json());
 
 // Servir JSON como API
-app.use('/emercado-api', express.static(path.join(__dirname, 'json')));
+app.use(
+  '/emercado-api',
+  authMiddleware,
+  express.static(path.join(__dirname, 'json'))
+);
 
 // Servir frontend desde la carpeta anterior
 app.use(express.static(path.join(__dirname, '..')));
