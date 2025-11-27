@@ -4,12 +4,14 @@ const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('./middleware/auth');
+const cartRoutes = require('./routes/cart');
 
 const app = express();
 const PUERTO = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use('/cart', authMiddleware, cartRoutes);
 
 // Servir JSON como API
 app.use(
