@@ -1,0 +1,210 @@
+.back-btn {
+  display: inline-block;
+  padding: 12px 36px;
+  border: 2px solid #000000;
+  border-radius: 32px;
+  color: #000000;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: transparent;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.back-btn:hover {
+  background: #222;
+  color: #ffffff;
+}
+.register-bg {
+  min-height: 100vh;
+  background: #f7f8fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-box {
+  display: flex;
+  width: 720px;
+  max-width: 98vw;
+  min-height: 400px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+  overflow: hidden;
+  gap: 68px;
+}
+
+.register-form-side {
+  flex: 1 1 0;
+  background: #fff;
+  padding: 44px 36px 36px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.register-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 28px;
+  color: #222;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.register-label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: #222;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.register-input {
+  width: 100%;
+  border: none;
+  border-radius: 22px;
+  background: #f2f2f2;
+  padding: 14px 18px;
+  font-size: 1rem;
+  margin-bottom: 18px;
+  outline: none;
+  transition: box-shadow 0.2s, border 0.2s;
+  box-shadow: 0 2px 8px #ececec inset;
+  color: #222;
+}
+.register-input:focus {
+  box-shadow: 0 0 0 2px #15c7b6;
+  border: 1.5px solid #15c7b6;
+}
+
+/* Indicador de fuerza de contraseña */
+.pwd-strength {
+  margin-top: 4px; /* reducir para pegarse al input de contraseña */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.confirm-label {
+  margin-top: 14px; /* añade separación antes del label confirmar */
+}
+.pwd-strength-bar {
+  width: 160px;
+  height: 12px;
+  background: #e6e6e6;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.pwd-strength-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: red;
+  transition: width 0.25s ease, background 0.25s ease;
+}
+.pwd-strength-text {
+  font-size: 0.95rem;
+  color: #444;
+  min-width: 64px;
+}
+
+.neumorphic-btn {
+  width: 100%;
+  background: #15c7b6;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #ececec inset;
+  transition: background 0.2s;
+}
+.neumorphic-btn:hover {
+  background: #119e91;
+}
+
+.register-welcome-side {
+  flex: 1 1 0;
+  background: linear-gradient(120deg, #bdbdbd 0%, #222 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.welcome-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+.welcome-desc {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+.login-btn {
+  display: inline-block;
+  padding: 12px 36px;
+  border: 2px solid #fff;
+  border-radius: 32px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: transparent;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.login-btn:hover {
+  background: #fff;
+  color: #222;
+}
+
+@media (max-width: 900px) {
+  .register-box {
+    width: 98vw;
+    min-width: 0;
+  }
+}
+@media (max-width: 700px) {
+  .register-box {
+    flex-direction: column;
+    min-height: 0;
+    width: 98vw;
+    max-width: 98vw;
+    border-radius: 14px;
+  }
+  .register-form-side, .register-welcome-side {
+    padding: 32px 16px;
+  }
+  .register-welcome-side {
+    border-radius: 0 0 18px 18px;
+    min-height: 180px;
+  }
+}
+@media (max-width: 500px) {
+  .register-title, .welcome-title {
+    font-size: 1.2rem;
+  }
+  .register-box {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .register-form-side, .register-welcome-side {
+    padding: 12px 2vw 10px 2vw;
+  }
+}

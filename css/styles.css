@@ -1,3 +1,71 @@
+/* Footer */
+.footer-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100vw;
+  padding: 0 0 10px 0;
+  margin: 0;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 100;
+}
+
+.footer-left {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 30px;
+}
+
+.footer-text {
+  font-size: 1.2rem;
+  color: #000;
+  font-weight: 600;
+}
+
+.footer-right {
+  text-align: right;
+  margin-right: 40px;
+}
+
+#logo_jap {
+  width: 100px;
+  height: auto;
+}
+
+#logo_jap {
+  height: 80px;
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .footer-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 10px 0;
+  }
+
+  .footer-left {
+    margin-left: 10px;
+  }
+
+  .footer-right {
+    width: 100%;
+    text-align: left;
+    margin: 10px 0 0 10px;
+  }
+
+  #logo_jap {
+    height: 80px;
+  }
+}
+
 .jumbotron,
 .card-body,
 .container,
@@ -9,9 +77,127 @@
   font-weight: bold;
 }
 
-nav a {
+#boton,
+#vender {
+  width: 35%;
+  margin: 0 auto;
+  margin-top: 5rem;
+}
+
+/* Navbar */
+
+.navbar-nav a {
+  padding-inline: 2rem
+}
+
+nav.navbar a.nav-link,
+nav.navbar .dropdown-toggle {
   text-decoration: none;
 }
+
+nav.navbar {
+  padding: 0 !important;
+}
+
+@media (max-width:991.98px) {
+  nav.navbar .navbar-nav {
+    flex-direction: column !important;
+    width: 100%;
+    align-items: flex-start !important;
+  }
+
+  .navbar-nav a {
+    padding-inline: 0rem
+  }
+
+  nav.navbar nav-item {
+    width: 100%;
+  }
+
+  nav.navbar .dropdown-menu {
+    width: 100%;
+  }
+
+/* My-profile: posicionar botón Editar dentro de Información Personal */
+.infoPersonal {
+  position: relative;
+  padding-top: 1rem;
+}
+.infoPersonal .edit-profile-btn {
+  margin-left: 1rem;
+  white-space: nowrap;
+}
+@media (min-width: 576px) {
+  .infoPersonal .edit-profile-btn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+}
+@media (max-width: 575.98px) {
+  .infoPersonal .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .infoPersonal .edit-profile-btn {
+    position: static;
+    align-self: flex-start;
+  }
+}
+
+/* Profile header styles */
+.profile-header { margin-top: 1rem; margin-bottom: 1rem; }
+.profile-username { font-size: 3rem; margin: 0; }
+.profile-email { color: #6c757d; font-size: 1rem; margin-top: 0.25rem; }
+
+}
+
+/* Navbar Cantidad de productos */
+
+#cart-badge {
+  display: inline-block;
+  min-width: 24px;
+  height: 24px;
+  line-height: 22px;
+  padding: 0 6px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+}
+
+
+
+/* Manoo like */
+#mano-like {
+  margin-top: -2px !important;
+  margin-left: 10px !important;
+  position: absolute;
+}
+
+
+/* Icon Menú Query */
+
+.navbar-toggler {
+  margin-top: 1rem;
+  border: none;
+}
+
+/*  Buscador  */
+#buscador {
+  width: 20%;
+  border-radius: 30px;
+  margin-top: 1rem;
+}
+
+
+@media (max-width: 991px) {
+  #buscador {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 .bd-placeholder-img {
   font-size: 1.125rem;
@@ -22,11 +208,40 @@ nav a {
   user-select: none;
 }
 
+
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
+
+  #boton,
+  #vender {
+    width: 20%;
+  }
+
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
 }
+
+@media (min-width: 1366px) {
+  .footer-text {
+    font-size: 2rem;
+    color: #000;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+
+  #boton,
+  #vender {
+    width: 15%;
+  }
+
+}
+
+
 
 .jumbotron {
   height: 50vh;
@@ -41,12 +256,6 @@ nav a {
   font-weight: bold;
 }
 
-@media (min-width: 768px) {
-  .jumbotron {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
 
 .jumbotron p:last-child {
   margin-bottom: 0;
@@ -74,6 +283,7 @@ footer {
 
 footer p {
   margin-bottom: .25rem;
+
 }
 
 .site-header a {
@@ -187,4 +397,840 @@ a.custom-card:hover {
 
 .checked {
   color: orange;
+}
+
+
+
+
+button {
+  background-color: rgb(0, 214, 203);
+  color: white;
+  width: 17px 17px;
+  font-size: 20px;
+  border: 3px rgb(255, 255, 255);
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+button:hover {
+  background-color: #0064c2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input:hover {
+  border-color: rgb(0, 0, 0);
+}
+
+.alerta {
+  display: none;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #000000;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+.alerta p {
+  margin-bottom: 10px;
+}
+
+hr {
+  margin: 20px 0;
+  height: 2px;
+  border: none;
+  background-color: #001e3f;
+}
+
+
+
+/* boton vender */
+
+#vender {
+  font-size: 1rem;
+  padding: .375rem .75rem;
+  border-radius: 30px;
+  color: #212529;
+  border-color: #212529;
+  background-color: #fff;
+}
+
+#vender:hover {
+  background-color: #212529;
+  color: #fff;
+}
+
+
+/* info de productos en cel y tablet */
+.tooltip-cel {
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0, 80rem;
+  background-color: rgba(83, 83, 83, 0.8);
+  color: white;
+  text-align: center;
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+/* boton vender */
+
+#vender {
+  display: block;
+  margin: 20px auto;
+  font-size: 1rem;
+  padding: .375rem .75rem;
+  border-radius: 30px;
+  color: #212529;
+  border-color: #212529;
+  background-color: #fff;
+}
+
+#vender:hover {
+  background-color: #212529;
+  color: #fff;
+}
+
+/*  Productos  */
+
+button.btn-dark.mt-auto {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-body .btn {
+  align-self: flex-end;
+}
+
+/*  inicio sesion name */
+
+#inicio-sesion {
+  padding-left: 0;
+}
+
+.my-4 {
+  margin-bottom: 4rem !important;
+}
+
+
+/*filtros de precios */
+
+
+.Filtros {
+  margin-top: -3rem;
+  border-radius: 5px;
+  padding: 15px;
+  gap: 7px;
+  margin-bottom: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+}
+
+.orden {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0;
+  color: black;
+  gap: 7px;
+}
+
+.orden button {
+  background-color: rgb(216, 216, 216);
+  border: 1px solid rgb(112, 112, 112);
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0;
+  border: black;
+}
+
+.orden button:hover {
+  background-color: rgb(100, 100, 100);
+}
+
+.orden-ascendente,
+.orden-descentende {
+  margin: 0;
+}
+
+.filtro-precio {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+.filtro-precio label {
+  margin: 0;
+  font-weight: bold;
+  min-width: 50px;
+  color: rgb(94, 94, 94);
+}
+
+.filtro-precio input {
+  margin: 0;
+  border-radius: 4px;
+  width: 100px;
+  padding: 10px;
+  border: 1px solid rgb(145, 145, 145);
+}
+
+#filtro {
+  color: black;
+  background-color: rgb(231, 231, 231);
+  margin: 0;
+}
+
+#filtro:hover {
+  background-color: rgb(170, 170, 170);
+}
+
+#limpiar {
+  margin: 0;
+}
+
+#limpiar:hover {
+  color: blue;
+}
+
+@media (max-width: 600px) {
+  .filtro-precio {
+    flex-direction: column;
+    align-items: stretch; /* que cada elemento ocupe todo el ancho */
+    gap: 8px; /* separación entre elementos */
+  }
+
+  .filtro-precio label,
+  .filtro-precio input,
+  .filtro-precio button,
+  .filtro-precio a {
+    width: 100%; /* ocupan todo el ancho disponible */
+    text-align: center; /* centrado opcional para los botones y link */
+  }
+
+  .filtro-precio input {
+    box-sizing: border-box; /* para que padding no rompa el ancho */
+  }
+}
+
+@media (max-width: 600px) {
+  .divPerfilFoto {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  text-align: center;     
+}
+
+}
+
+
+:root {
+  --card-bg: #ffffff;
+  --card-text: #212529;
+  --card-border: rgba(0, 0, 0, 0.125);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --muted-text: #6c757d;
+  --link-color: #0d6efd;
+}
+
+body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Tema oscuro */
+.dark-mode {
+  --bg-color: #000000;
+  --text-color: #f5f5f5;
+  --card-bg: #1e1e1e;
+  --card-text: #e0e0e0;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  --muted-text: #b0b0b0;
+  --link-color: #66b3ff;
+}
+
+/* Estilos para cards - aplican en ambos temas */
+.card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border-color: var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.card-body {
+  background-color: transparent;
+  color: var(--card-text);
+}
+
+.card-title,
+.card h5,
+.card h4,
+.card .price {
+  color: var(--card-text) !important;
+}
+
+.card-text,
+.card p {
+  color: var(--card-text);
+}
+
+/* Texto secundario dentro de cards (estrellas, contadores, etc) */
+.card small,
+.card .text-muted {
+  color: var(--muted-text) !important;
+}
+
+/* Asegurar que los enlaces en cards sean visibles */
+.card a {
+  color: var(--link-color);
+}
+
+.card a:hover {
+  color: var(--link-color);
+  opacity: 0.8;
+}
+
+#fotoPerfilBtn {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, 0.2s;
+  background: transparent;
+}
+
+#fotoPerfilBtn i {
+  font-size: 10rem;
+  color: #6c757d;
+  transition: transform 0.2s, color 0.2s;
+}
+
+#fotoPerfilBtn:hover {
+  background-color: rgba(0,0,0,0.1);
+  transform: scale(1.05);
+}
+
+#fotoPerfilBtn:hover i {
+  color: #343a40;
+  transform: scale(1.05);
+  width: 80px;
+  height: 80px;
+}
+
+button#editarPerfil {
+  margin-top: 1rem;
+}
+
+.osc {
+  transition: 0.2s;
+  all: unset;
+  display: block;
+  cursor: pointer;
+  font-size: 3rem;
+  
+}
+
+.infoPersonal,
+.datosCuenta,
+.seguridad,
+.tarjetas-direcciones,
+.privacidad,
+.notificaciones,
+.ayuda-soporte {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;  
+  transition: 0.2s;
+}
+
+.infoPersonal:hover,
+.datosCuenta:hover,
+.osc:hover,
+.seguridad:hover,
+.tarjetas-direcciones:hover,
+.privacidad:hover,
+.notificaciones:hover,
+.ayuda-soporte:hover {
+  background-color: rgba(0, 0, 0, 0.05); 
+}
+
+
+/*-------------My-profile css Modo dark-------------------*/
+
+#oscuro {
+  border: none;
+  margin: 0;
+  outline: none !important;    
+  box-shadow: none 
+}
+
+#img-perfil {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+#fotoPerfil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+  color: #6c757d;
+  font-size: 120px;
+  text-align: center;
+  line-height: 120px;
+  border: 2px solid #dee2e6;
+  margin-top: 20px; 
+}
+
+#img-perfil i.bi-plus-circle-fill {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(10%, 80%);
+  font-size: 40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-color: white;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 80%;
+}
+
+
+#img-perfil i.bi-plus-circle-fill:hover {
+  transform: translate(10%, 80%) scale(1.15);
+}
+
+/*--------- Dark mode------------ */
+
+body.dark-mode #img-perfil i.bi-plus-circle-fill {
+  background-color: rgb(0, 0, 0) !important;
+  color: white !important; 
+}
+
+
+
+
+
+
+
+
+
+.globo-opciones {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 150px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.globo-opciones .btn {
+  font-size: 0.9rem;
+  padding: 5px 8px;
+}
+
+.globo-flechita {
+  position: absolute;
+  bottom: 100%;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #fff;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.imagen-recorte {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 10px;
+}
+
+#fotoPerfil.tiene-foto {
+  background-size: cover;  
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%; 
+  color: transparent; 
+}
+
+
+#fotoPerfil img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin-top: 20px;
+}
+
+.imagen-recorte {
+  max-width: 100%;
+  max-height: 70vh; 
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+
+
+
+
+
+/*CHAT ASISTENTE IA*/
+.chat-flotante {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  width: 350px;
+  max-height: 80vh;
+  background-color: #f6f7f8;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.chat-flotante.cerrado {
+  display: none;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  background-color: #ffffff;
+}
+
+.chat-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.chat-header button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.chat-mensajes {
+  flex: 1;
+  padding: 12px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #f6f7f8;
+}
+
+.mensaje {
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 75%;
+}
+
+.mensaje.usuario {
+  background-color: #1173d4;
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.mensaje.ia {
+  background-color: #e0e0e0;
+  color: #111;
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px 16px;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+  gap: 8px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.chat-input button {
+  background-color: #1173d4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.boton-chat-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #1173d4;
+  z-index: 10000;
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.dark .chat-title {
+  color: #111;
+}
+
+
+
+/*ofertas */
+.ads-container-compact {
+  display: flex;
+  gap: 12px;
+  max-width: 880px;
+  margin: 12px auto;
+  align-items: stretch;
+}
+
+.ad-vertical {
+  width: 280px;
+  height: 360px;
+}
+
+.ad-right-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.ad-horizontal {
+  height: 174px;
+}
+
+.ad-slider {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+}
+
+.ad-slide {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.ad-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ad-slide.active {
+  display: block;
+  animation: fade 600ms;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@media (max-width: 720px) {
+  .ads-container-compact {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 12px;
+  }
+  .ad-vertical { width: 100%; height: 220px; }
+  .ad-horizontal { height: 140px; }
+}
+
+.ad-slide {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.ad-slide:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+
+
+
+
+
+
+
+/*notificaciones */
+#notificaciones-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999999;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e1e1e;
+  color: white;
+  padding: 14px 20px;
+  border-left: 5px solid #4da6ff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.35);
+  font-family: Arial, sans-serif;
+  opacity: 0;
+  transform: translateX(120%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 6s;
+  position: relative;
+}
+
+.toast i {
+  font-size: 22px;
+  color: #4da6ff;
+}
+
+.toast .cerrar {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ccc;
+}
+
+.toast .cerrar:hover {
+  color: white;
+}
+
+@keyframes slideIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateX(120%); }
+}
+
+.noti-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 15px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.noti-btn:hover {
+  background: #444;
 }

@@ -9,70 +9,187 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
-          </li>
-          <li class="nav-item">
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
+  <div id="navbar"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+        // Actualizar badge inmediatamente tras insertar el partial (respaldo)
+        try {
+          const raw = localStorage.getItem('cart');
+          const cart = raw ? JSON.parse(raw) : [];
+          const total = Array.isArray(cart) ? cart.reduce((s, it) => s + (Number(it.count || 0)), 0) : 0;
+          const badge = document.getElementById('cart-badge');
+          if (badge) {
+            badge.textContent = total;
+            badge.style.display = total > 0 ? 'inline-block' : 'none';
+          }
+        } catch (e) {
+          console.warn('No se pudo actualizar badge tras inyectar navbar en index:', e);
+        }
+        // Load navbar.js dynamically if needed, then dispatch navbar:ready
+        if (!window.__navbar_script_loaded) {
+          window.__navbar_script_loaded = true;
+          const s = document.createElement('script');
+          s.src = 'js/navbar.js';
+          s.onload = () => document.dispatchEvent(new Event('navbar:ready'));
+          document.body.appendChild(s);
+        } else {
+          document.dispatchEvent(new Event('navbar:ready'));
+        }
+
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = usuario;
+          link.href = 'my-profile.html';
+        }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '104',
+          'Computadoras': '105',
+          'Vestimenta': '106',
+          'Electrodomésticos': '107',
+          'Deporte': '108',
+          'Celulares': '109'
+        };
+        
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      });
+  </script>
+
   <main>
-    <div class="jumbotron text-center"></div>
-    <div class="album py-5 bg-light">
+    <div class="album py-5">
       <div class="container">
+        <h2 class="my-4" id="articulos-favoritos">Artículos más vendidos <svg id="mano-like"
+            xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
+            class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+            <path
+              d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
+          </svg></h2>
         <div class="row">
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm custom-card cursor-active" id="autos">
-              <img class="bd-placeholder-img card-img-top" src="img/cars_index.jpg"
-                alt="Imgagen representativa de la categoría 'Autos'">
-              <h3 class="m-3">Autos</h3>
+          <div class="col-12 col-sm-6 col-md-4 " onclick="window.location.href='products.html'" style="cursor:pointer;">
+            <div class="card mb-4  custom-card cursor-active h-100" id="autos">
+              <img class="bd-placeholder-img card-img-top" style="height:200px; object-fit: cover;"
+                src="img/cars_index.jpg" alt="Imgagen representativa de la categoría 'Autos'">
+              <h3 class="m-3"><a>Autos</a></h3>
               <div class="card-body">
                 <p class="card-text">Los mejores precios en autos 0 kilómetro, de alta y media gama.</p>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm custom-card cursor-active" id="juguetes">
-              <img class="bd-placeholder-img card-img-top" src="img/toys_index.jpg"
-                alt="Imgagen representativa de la categoría 'Juguetes'">
+          <div class="col-12 col-sm-6 col-md-4 ">
+            <div class="card mb-4 custom-card cursor-active h-100" id="juguetes">
+              <img class="bd-placeholder-img card-img-top" style="height:200px; object-fit: cover;"
+                src="img/toys_index.jpg" alt="Imgagen representativa de la categoría 'Juguetes'">
               <h3 class="m-3">Juguetes</h3>
               <div class="card-body">
                 <p class="card-text">Encuentra aquí los mejores precios para niños/as de cualquier edad.</p>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm custom-card cursor-active" id="muebles">
-              <img class="bd-placeholder-img card-img-top" src="img/furniture_index.jpg"
-                alt="Imgagen representativa de la categoría 'Muebles'">
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card mb-4 custom-card cursor-active h-100" id="muebles">
+              <img class="bd-placeholder-img card-img-top" style="height:200px; object-fit: cover;"
+                src="img/furniture_index.jpg" alt="Imgagen representativa de la categoría 'Muebles'">
               <h3 class="m-3">Muebles</h3>
               <div class="card-body">
                 <p class="card-text">Muebles antiguos, nuevos y para ser armados por uno mismo.</p>
               </div>
             </div>
           </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="card mb-4  custom-card cursor-active h-100" id="computadoras">
+              <img class="bd-placeholder-img card-img-top" style="height:200px; object-fit: cover;"
+                src="img/prod40281_3.jpg" alt="Imgagen representativa de la categoría 'Computadoras'">
+              <h3 class="m-3">Compus</h3>
+              <div class="card-body">
+                <p class="card-text">Todo en cuanto a computadoras, para uso de oficina y/o juegos.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <a class="btn btn-light btn-lg btn-block" href="categories.html">Y mucho más!</a>
+
+        <div class="ads-container-compact">
+          <!-- Izquierda -->
+           <div class="ad-vertical">
+            <div class="ad-slider" id="adSliderLeft">
+              <div class="ad-slide active">
+                <img src="https://images.unsplash.com/photo-1609017604163-e4ca9c619b9b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA==&auto=format&fit=crop&q=80&w=387" alt="Anuncio vertical 1">
+              </div>
+              <div class="ad-slide">
+                <img src="https://plus.unsplash.com/premium_photo-1672759267853-533e2d24813c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=917" alt="Anuncio vertical 2">
+              </div>
+            </div>
+           </div>
+           <!-- Derecha (aca hay 2 :)) -->
+            <div class="ad-right-stack">
+              <div class="ad-horizontal">
+                <div class="ad-slider" id="adSliderTopRight">
+                  <div class="ad-slide active">
+                    <img src="https://images.unsplash.com/photo-1527264935190-1401c51b5bbc?ixlib=rb-4.1.0&auto=format&fit=crop&w=800&q=80" alt="Anuncio horizontal arriba 1">
+                  </div>
+                  <div class="ad-slide">
+                    <img src="https://plus.unsplash.com/premium_photo-1670509045675-af9f249b1bbe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=835" alt="Anuncio horizontal arriba 2">
+                  </div>
+                </div>
+              </div>
+
+              <div class="ad-horizontal">
+                <div class="ad-slider" id="adSliderBottomRight">
+                  <div class="ad-slide active">
+                    <img src="https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870" alt="Anuncio horizontal abajo 1">
+                  </div>
+                  <div class="ad-slide">
+                    <img src="https://media.istockphoto.com/id/1714635626/photo/english-text-free-shipping-on-a-red-paper-revealed-by-a-torn-cardboard.jpg?s=1024x1024&w=is&k=20&c=q9B-KgkTtqwUzP_aeyTV_2id0nxFe3itZw7YCLQfK_k=" alt="Anuncio horizontal abajo 2">
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+
+
+
+
+    
+
+
+
+        <div class="row" id="boton">
+          <button type="button" class="btn btn-outline-dark" style="border-radius:30px" id="ver-mas">Ver más <img
+              src="img/ver-mas.svg" alt="icono ver más" style="width:16px; height:auto; margin-left:10px;"></button>
         </div>
       </div>
     </div>
@@ -82,12 +199,56 @@
       <p class="float-end">
         <a href="#">Volver arriba</a>
       </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
+      <img class="bd-placeholder-img card-img-top" id="logo_jap" src="img/logo_jap.svg" alt="icono_jap"
+        style="cursor: pointer;" onclick="window.location.href='https://jovenesaprogramar.edu.uy/'">
+    </p>
+
     </div>
   </footer>
+
+  
+
+
+  <div class="boton-chat-flotante" id="abrirChat">💬</div>
+
+<div class="chat-flotante cerrado" id="chatContainer">
+
+  <div class="chat-header">
+    <h2>Asistente AI</h2>
+    <button id="cerrarChat">✖</button>
+  </div>
+
+  <div class="chat-mensajes" id="chatMensajes">
+    <div class="mensaje usuario">¿Qué hago si el producto llega dañado?</div>
+    <div class="mensaje ia">Se puede solicitar reemplazo o devolución contactando nuestro soporte en los 7 días posteriores a la entrega.</div>
+
+    <div class="mensaje usuario">¿Hacen envíos a todo el país o solo a ciertas ciudades?</div>
+    <div class="mensaje ia">Realizamos envíos a todo Uruguay, los tiempos y costos varían según ubicación.</div>
+
+    <div class="mensaje usuario">¿Qué métodos de pago aceptan?</div>
+    <div class="mensaje ia">Se acepta tarjeta de crédito, débito, transferencias y pagos en puntos habilitados.</div>
+
+    <div class="mensaje usuario">¿Puedo devolver un producto si no me gusta?</div>
+    <div class="mensaje ia">Sí, dentro de los 14 días, siempre que esté en perfecto estado.</div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu pregunta...">
+    <button id="enviarMensaje">Enviar</button>
+  </div>
+</div>
+
+
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/index.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/IA.js"></script>
+  <div id="notificaciones-container"></div>
+  <script src="notificaciones.js"></script>
+  <link rel="stylesheet" href="notificaciones.css">
 </body>
+<script src="js/navbar-user.js"></script>
 
 </html>

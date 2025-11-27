@@ -4,63 +4,293 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>eMercado - Todo lo que busques está aquí</title>
+  <title>Mi Carrito</title>
+
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+  <link href="css/cart.css" rel="stylesheet">
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
-          </li>
-          <li class="nav-item">
-          </li>
-        </ul>
+  <div id="navbar"></div>
+
+  <main class="container py-4">
+    <button onclick="history.back()" 
+        style="background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center;  gap: 5px; color:black">              
+    <span style="font-weight: bold;">←</span> Volver
+</button>
+    <form id="checkout-form">
+    <h1 class="mb-4">Mi carrito</h1>
+
+    <!-- Contenedor dinámico para items del carrito -->
+    <div id="cart-container">
+      <div id="cart-items" class="mb-3"></div>
+
+      <!-- Mensaje cuando no hay productos -->
+      <div id="cart-empty" class="alert alert-info" role="alert" style="display:none;">
+        No hay productos en el carrito.
       </div>
-    </div>
-  </nav>
-  <main>
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+
+      <!-- Tipo de envío -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Tipo de Envío</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioPremium" value="0.15" required>
+            <label class="form-check-label" for="envioPremium">Premium 2 a 5 días (15%)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioExpress" value="0.07">
+            <label class="form-check-label" for="envioExpress">Express 5 a 8 días (7%)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoEnvio" id="envioStandard" value="0.05">
+            <label class="form-check-label" for="envioStandard">Standard 12 a 15 días (5%)</label>
+          </div>
+        </div>
       </div>
+
+      <!-- Dirección de Envío -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Dirección de Envío</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="departamento" class="form-label">Departamento</label>
+              <input type="text" id="departamento" class="form-control" placeholder="Ej: Montevideo" required>
+            </div>
+            <div class="col-md-4">
+              <label for="localidad" class="form-label">Localidad</label>
+              <input type="text" id="localidad" class="form-control" placeholder="Ej: Pocitos" required>
+            </div>
+            <div class="col-md-4">
+              <label for="calle" class="form-label">Calle</label>
+              <input type="text" id="calle" class="form-control" placeholder="Ej: Rivera" required>
+            </div>
+            <div class="col-md-2">
+              <label for="numero" class="form-label">Número</label>
+              <input type="text" id="numero" class="form-control" placeholder="Ej: 1234" required>
+            </div>
+            <div class="col-md-4">
+              <label for="esquina" class="form-label">Esquina</label>
+              <input type="text" id="esquina" class="form-control" placeholder="Ej: Soca" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forma de Pago -->
+      <div id="card-forma-de-pago" class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-light">
+          <h5 class="mb-0 fw-semibold text-dark">Forma de Pago</h5>
+        </div>
+
+        <div class="card-body">
+          <!-- Opción: Tarjeta de Crédito -->
+          <div class="pago-opcion d-flex align-items-center justify-content-between p-3 border rounded-3 mb-3 hover-shadow">
+            <div class="d-flex align-items-center gap-2">
+              <input class="form-check-input me-2" type="radio" name="pago" id="pagoTarjeta" value="tarjeta">
+              <label class="form-check-label fw-medium mb-0" for="pagoTarjeta">
+                Tarjeta de Crédito
+              </label>
+              <div class="d-flex align-items-center gap-2 ms-3">
+                <img src="img/Visa.png" alt="Visa" width="55" height="35" class="rounded border bg-white p-1">
+                <img src="img/MasterCard.png" alt="MasterCard" width="55" height="35" class="rounded border bg-white p-1">
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos de Tarjeta -->
+          <div id="form-tarjeta" class="bg-light p-3 rounded-3 mb-3" style="display:none;">
+            <div class="mb-3">
+              <label for="nombreTarjeta" class="form-label">Nombre en la tarjeta</label>
+              <input type="text" class="form-control" id="nombreTarjeta" placeholder="Ej: Fernanda Pérez" required>
+            </div>
+            <div class="mb-3">
+              <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
+              <input type="text" class="form-control" id="numeroTarjeta" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="vencimiento" class="form-label">Vencimiento</label>
+                <input type="month" class="form-control" id="vencimiento" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" maxlength="3" placeholder="123" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opción: Transferencia Bancaria -->
+          <div class="pago-opcion d-flex align-items-center justify-content-between p-3 border rounded-3 hover-shadow">
+            <div class="d-flex align-items-center gap-2">
+              <input class="form-check-input me-2" type="radio" name="pago" id="pagoTransferencia" value="transferencia">
+              <label class="form-check-label fw-medium mb-0" for="pagoTransferencia">
+                Transferencia Bancaria
+              </label>
+              <div class="d-flex align-items-center gap-2 ms-3">
+                <img src="img/MasterCard.png" alt="MasterCard" width="55" height="35" class="rounded border bg-white p-1">
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos de Transferencia -->
+          <div id="form-transferencia" class="bg-light p-3 rounded-3 mt-3" style="display:none;">
+            <p class="mb-2 text-muted small">Complete los datos de su transferencia:</p>
+            <div class="mb-3">
+              <label for="banco" class="form-label">Banco</label>
+              <input type="text" class="form-control" id="banco" placeholder="Ej: Banco República" required>
+            </div>
+            <div class="mb-3">
+              <label for="numeroCuenta" class="form-label">Número de cuenta</label>
+              <input type="text" class="form-control" id="numeroCuenta" placeholder="Ej: 123456789" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta de total y acción -->
+      <div id="cart-total-card" class="card mt-4" style="display:none;">
+        <div class="card-body">
+          <div class="mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="mb-0 text-muted">Subtotal (artículos)</small>
+              </div>
+              <div class="d-flex align-items-center">
+                <label class="me-2 mb-0 text-muted">Seleccionar todos</label>
+                <input id="select-all" type="checkbox" aria-label="Seleccionar todos"/>
+                <span id="cart-subtotal-all" class="fw-bold text-muted ms-3">$0</span>
+              </div>
+            </div>
+
+            <!-- Desglose de carrito -->
+            <ul id="cart-breakdown" class="list-group list-group-flush mt-2 mb-2"></ul>
+
+            <!-- Línea de descuento -->
+            <div id="cart-discount-row" class="d-flex justify-content-between align-items-center mt-1">
+              <small class="text-muted mb-0">Descuento</small>
+              <span id="cart-discount-amount" class="fw-bold text-danger">- $0</span>
+            </div>
+
+            <!-- Envio -->
+           <div id="cart-shipping-row" class="d-flex justify-content-between align-items-center mt-1">
+              <small class="text-muted mb-0">Envío</small>
+             <span id="cart-shipping-amount" class="fw-bold text-primary">$0</span>
+          </div>
+
+
+          <div class="d-flex justify-content-between align-items-center total-section">
+            <h5 class="mb-0">Total</h5>
+            <h4 id="cart-total" class="fw-bold text-success">$0</h4>
+          </div>
+
+          <div class="text-end mt-3">
+            <button id="checkout-btn" class="btn btn-success btn-lg">Finalizar compra</button>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </main>
-  <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
-  </footer>
-  <div id="spinner-wrapper">
-    <div class="lds-ring">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div class="modal fade" id="modalError" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Error en la compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalErrorMsg"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Aceptar</button>
+      </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="modalConfirmar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-primary">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Confirmar compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">¿Estás seguro de realizar la compra?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmarCompra">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalExito" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-success">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">Compra realizada</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">La compra se realizó con éxito.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </form>
+  </main>
+  <div class="boton-chat-flotante" id="abrirChat">💬</div>
+
+<div class="chat-flotante cerrado" id="chatContainer">
+
+  <div class="chat-header">
+    <h2>Asistente AI</h2>
+    <button id="cerrarChat">✖</button>
+  </div>
+
+  <div class="chat-mensajes" id="chatMensajes">
+    <div class="mensaje usuario">¿Qué hago si el producto llega dañado?</div>
+    <div class="mensaje ia">Se puede solicitar reemplazo o devolución contactando nuestro soporte en los 7 días posteriores a la entrega.</div>
+
+    <div class="mensaje usuario">¿Hacen envíos a todo el país o solo a ciertas ciudades?</div>
+    <div class="mensaje ia">Realizamos envíos a todo Uruguay, los tiempos y costos varían según ubicación.</div>
+
+    <div class="mensaje usuario">¿Qué métodos de pago aceptan?</div>
+    <div class="mensaje ia">Se acepta tarjeta de crédito, débito, transferencias y pagos en puntos habilitados.</div>
+
+    <div class="mensaje usuario">¿Puedo devolver un producto si no me gusta?</div>
+    <div class="mensaje ia">Sí, dentro de los 14 días, siempre que esté en perfecto estado.</div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu pregunta...">
+    <button id="enviarMensaje">Enviar</button>
+  </div>
+</div>
+
+
+  <footer id="main-footer"></footer>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/include-partials.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/navbar-user.js"></script>
+  <script src="js/IA.js"></script>
+  <div id="notificaciones-container"></div>
+  <script src="notificaciones.js"></script>
+  <link rel="stylesheet" href="notificaciones.css">
 </body>
 
 </html>
+

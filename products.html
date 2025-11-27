@@ -10,47 +10,144 @@
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+  <script src="js/categories.js"></script>
+  <script src="js/nombrecat.js"></script>
+
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
-          </li>
-          <li class="nav-item">
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
+  <div id="navbar"></div>
+
+  <script>    
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = usuario;
+          link.href = 'my-profile.html';
+        }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '104',
+          'Computadoras': '105',
+          'Vestimenta': '106',
+          'Electrodomésticos': '107',
+          'Deporte': '108',
+          'Celulares': '109'
+        };
+
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      });
+  </script>
+
   <main class="pb-5 container">
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+      <h2 class="my-4" id="category-title">Categoría: <span id="catname"></span></h2>
+
+
+      <div class="Filtros">
+        <div class="orden">
+
+          <button class="valorado">⭐</button>
+          <button class="orden-ascendente">⬆︎$</button>
+          <button class="orden-descendente">⬇︎$</button>
+          <button class="rel">⬆︎🛒</button>
+
+        </div>
+
+        <div class="filtro-precio">
+          <label>Precio</label>
+          <input type="number" id="precio-min" placeholder="Mínimo">
+          <input type="number" id="precio-max" placeholder="Máximo">
+          <button id="filtro">Filtrar</button>
+          <a href="#" id="limpiar">Limpiar</a>
+        </div>
+
+      </div>
+
+      
+
+
+
+
+      <div class="row" id="products-container">
+      </div>
+
+      <div class="ads-container-compact">
+          <!-- Izquierda -->
+           <div class="ad-vertical">
+            <div class="ad-slider" id="adSliderLeft">
+              <div class="ad-slide active">
+                <img src="https://images.unsplash.com/photo-1609017604163-e4ca9c619b9b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA==&auto=format&fit=crop&q=80&w=387" alt="Anuncio vertical 1">
+              </div>
+              <div class="ad-slide">
+                <img src="https://plus.unsplash.com/premium_photo-1672759267853-533e2d24813c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=917" alt="Anuncio vertical 2">
+              </div>
+            </div>
+           </div>
+           <!-- Derecha (aca hay 2 :)) -->
+            <div class="ad-right-stack">
+              <div class="ad-horizontal">
+                <div class="ad-slider" id="adSliderTopRight">
+                  <div class="ad-slide active">
+                    <img src="https://images.unsplash.com/photo-1527264935190-1401c51b5bbc?ixlib=rb-4.1.0&auto=format&fit=crop&w=800&q=80" alt="Anuncio horizontal arriba 1">
+                  </div>
+                  <div class="ad-slide">
+                    <img src="https://plus.unsplash.com/premium_photo-1670509045675-af9f249b1bbe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=835" alt="Anuncio horizontal arriba 2">
+                  </div>
+                </div>
+              </div>
+
+              <div class="ad-horizontal">
+                <div class="ad-slider" id="adSliderBottomRight">
+                  <div class="ad-slide active">
+                    <img src="https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870" alt="Anuncio horizontal abajo 1">
+                  </div>
+                  <div class="ad-slide">
+                    <img src="https://media.istockphoto.com/id/1714635626/photo/english-text-free-shipping-on-a-red-paper-revealed-by-a-torn-cardboard.jpg?s=1024x1024&w=is&k=20&c=q9B-KgkTtqwUzP_aeyTV_2id0nxFe3itZw7YCLQfK_k=" alt="Anuncio horizontal abajo 2">
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+      <div class="row" id="boton">
+        <button type="button" class="btn btn-outline-dark" style="border-radius:30px" id="ver-mas">Ver más <img
+            src="img/ver-mas.svg" alt="icono ver más" style="width:16px; height:auto; margin-left:10px;"></button>
       </div>
     </div>
   </main>
-  <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
-  </footer>
+  <footer id="main-footer"></footer>
   <div id="spinner-wrapper">
     <div class="lds-ring">
       <div></div>
@@ -59,9 +156,47 @@
       <div></div>
     </div>
   </div>
+  <div class="boton-chat-flotante" id="abrirChat">💬</div>
+
+<div class="chat-flotante cerrado" id="chatContainer">
+
+  <div class="chat-header">
+    <h2>Asistente AI</h2>
+    <button id="cerrarChat">✖</button>
+  </div>
+
+  <div class="chat-mensajes" id="chatMensajes">
+    <div class="mensaje usuario">¿Qué hago si el producto llega dañado?</div>
+    <div class="mensaje ia">Se puede solicitar reemplazo o devolución contactando nuestro soporte en los 7 días posteriores a la entrega.</div>
+
+    <div class="mensaje usuario">¿Hacen envíos a todo el país o solo a ciertas ciudades?</div>
+    <div class="mensaje ia">Realizamos envíos a todo Uruguay, los tiempos y costos varían según ubicación.</div>
+
+    <div class="mensaje usuario">¿Qué métodos de pago aceptan?</div>
+    <div class="mensaje ia">Se acepta tarjeta de crédito, débito, transferencias y pagos en puntos habilitados.</div>
+
+    <div class="mensaje usuario">¿Puedo devolver un producto si no me gusta?</div>
+    <div class="mensaje ia">Sí, dentro de los 14 días, siempre que esté en perfecto estado.</div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu pregunta...">
+    <button id="enviarMensaje">Enviar</button>
+  </div>
+</div>
+  
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/products.js"></script>
+  <script src="js/include-partials.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/navbar-user.js"></script>
+  <script src="js/index.js"></script>
+  <script src="js/IA.js"></script>
+  <div id="notificaciones-container"></div>
+  <script src="notificaciones.js"></script>
+  <link rel="stylesheet" href="notificaciones.css">
 </body>
+
 
 </html>

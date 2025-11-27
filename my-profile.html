@@ -8,6 +8,9 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -27,47 +30,214 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
-          </li>
-          <li class="nav-item">
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <div id="navbar"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+        document.dispatchEvent(new Event('navbar:ready'));
+
+
+        const usuario = localStorage.getItem('usuarioActivo');
+        const link = document.getElementById('inicio-sesion');
+        if (usuario && link) {
+          link.textContent = 'Cerrar sesión';
+          link.href = 'login.html';
+        }
+
+        const ID_MAP = {
+          'Autos': '101',
+          'Juguetes': '102',
+          'Muebles': '103',
+          'Herramientas': '104',
+          'Computadoras': '105',
+          'Vestimenta': '106',
+          'Electrodomésticos': '107',
+          'Deporte': '108',
+          'Celulares': '109'
+        };
+
+        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(a => {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            const name = (a.dataset.catName || a.textContent).trim();
+            const id = a.dataset.catId || ID_MAP[name];
+            if (id) {
+              localStorage.setItem('catID', id);
+              localStorage.setItem('catName', name);
+              window.location.href = 'products.html';
+            }
+          });
+        });
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      });
+  </script>
+
   <main>
+
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+
+      <div class="perfil">
+        
+<div class="divPerfilFoto">
+  <div id="img-perfil">
+  <div id="fotoPerfil" class="bi bi-person-circle"></div>
+  <i class="bi bi-plus-circle-fill" id="agregarFoto"></i>
+  <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+</div>
+
+
+  <div class="profile-header">
+    <h1 id="usuarioActivoDisplay" class="profile-username">-</h1>
+    <div id="usuarioEmailSubtitle" class="profile-email">-</div>
+  </div>
+</div>
+
+      <hr>
+
+      <section class="infoPersonal">
+        <div class="d-flex align-items-start">
+          <h4 class="flex-grow-1"><i class="bi bi-info-square"></i> Información Personal</h4>
+          <button id="editarPerfil" class="btn btn-primary edit-profile-btn">Editar perfil</button>
+        </div>
+        <p>Información de tu documento de identidad.</p>
+
+        <div id="personal-details" class="mt-3">
+          <p><strong>Nombre:</strong> <span id="nombreValor">-</span></p>
+          <p><strong>Apellido:</strong> <span id="apellidoValor">-</span></p>
+          <p><strong>Email:</strong> <span id="emailValor">-</span></p>
+          <p><strong>Teléfono:</strong> <span id="telefonoValor">-</span></p>
+          <p><strong>Fecha de nacimiento:</strong> <span id="birthdateValor">-</span></p>
+        </div>
+
+        <form id="personal-form" class="mt-3 d-none">
+          <div class="mb-2">
+            <label for="inputNombre" class="form-label">Nombre</label>
+            <input id="inputNombre" class="form-control" type="text" placeholder="Nombre">
+          </div>
+          <div class="mb-2">
+            <label for="inputApellido" class="form-label">Apellido</label>
+            <input id="inputApellido" class="form-control" type="text" placeholder="Apellido">
+          </div>
+          <div class="mb-2">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input id="inputEmail" class="form-control" type="email" placeholder="Email">
+          </div>
+          <div class="mb-2">
+            <label for="inputTelefono" class="form-label">Teléfono</label>
+            <input id="inputTelefono" class="form-control" type="tel" placeholder="Teléfono">
+          </div>
+          <button type="button" id="guardarPerfil" class="btn btn-success">Guardar</button>
+          <button type="button" id="cancelarPerfil" class="btn btn-secondary">Cancelar</button>
+        </form>
+
+      </section>
+
+      <hr>
+
+      <!-- Resumen del historial de compras -->
+      <div id="purchase-summary" class="mt-3">
+        <h4><i class="bi bi-bag-check"></i> Historial de compras</h4>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="small text-muted">Compras realizadas</div>
+            <div id="purchases-count" class="fs-5">0</div>
+          </div>
+          <div class="col-6 text-end">
+            <div class="small text-muted">Total gastado</div>
+            <div id="purchases-total" class="fs-5">USD 0</div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <a id="ver-historial-btn" href="historial.html" class="btn btn-outline-primary">Ver historial completo</a>
+        </div>
       </div>
+
+      <hr>
+
+      <button class="seguridad">
+        <h4><i class= "bi bi-shield-lock"></i> Seguridad</h4>
+        <p>Configura la seguridad de tu cuenta.</p>
+        </button>
+
+      <hr>
+
+      <button class="tarjetas-direcciones">
+        <h4><i class="bi bi-credit-card"></i> <i class="bi bi-geo-alt"></i> Tarjetas y Direcciones</h4>
+        <p>Tarjetas y direcciones guardadas en tu cuenta.</p>
+        </button>
+
+      <hr>
+
+      <button class="privacidad">
+        <h4><i class="bi bi-shield-exclamation"></i> Privacidad</h4>
+        <p>Preferencias y control sobre el uso de tus datos.</p>
+        </button>
+
+      <hr>
+
+      <button class="notificaciones">
+        <h4><i class="bi bi-bell"></i> Notificaciones</h4>
+        <p>Elige que tipo de información quieres recibir.</p>
+        </button>
+      <button id="toggleNotificacionesBtn" class="noti-btn"> Notificaciones: ACTIVADAS </button>
+
+      <hr>
+
+      <button class="ayuda-soporte">
+        <h4><i class="bi bi-patch-question-fill"></i> Ayuda y Soporte</h4>
+        <p>Si necesitas ayuda, haz click aquí!</p>
+        </button>
+
     </div>
+
   </main>
-  <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
-  </footer>
+  <footer id="main-footer"></footer>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/navbar-user.js"></script>
+  <script src="js/include-partials.js"></script>
   <script src="js/my-profile.js"></script>
+  <div id="notificaciones-container"></div>
+  <script src="notificaciones.js"></script>
+  <link rel="stylesheet" href="notificaciones.css">
+
+  <script>
+    // populate top-level username/email: prefer usuarioActivo, fallback to perfilUsuario
+    (function(){
+      try {
+        const userDisplay = document.getElementById('usuarioActivoDisplay');
+        const emailSub = document.getElementById('usuarioEmailSubtitle');
+
+        const usuarioActivo = localStorage.getItem('usuarioActivo');
+        let perfil = null;
+        try { perfil = JSON.parse(localStorage.getItem('perfilUsuario')); } catch(e) { /* ignore */ }
+
+        if (userDisplay) {
+          if (usuarioActivo) userDisplay.textContent = usuarioActivo;
+          else if (perfil && perfil.nombre) userDisplay.textContent = perfil.nombre;
+        }
+
+        if (emailSub) {
+          const email = (perfil && perfil.email) ? perfil.email : localStorage.getItem('email') || '';
+          emailSub.textContent = email || '';
+        }
+      } catch(e){/* ignore */}
+    })();
+  </script>
+
 </body>
 
 </html>
