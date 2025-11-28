@@ -4,7 +4,6 @@ function mostrarAlerta(mensaje, esExito = false) {
     console.log('mostrarAlerta llamado:', mensaje, esExito);
     if (!alerta || !msalert) {
         console.warn('Elemento alerta o msalert no encontrado — creando elementos de alerta temporalmente');
-        // crear elementos de alerta si no existen
         const nuevo = document.createElement('div');
         nuevo.id = 'alert';
         nuevo.className = 'alerta';
@@ -14,7 +13,6 @@ function mostrarAlerta(mensaje, esExito = false) {
         document.body.appendChild(nuevo);
         return;
     }
-    // refrescar referencias
     const alertaRef = document.getElementById('alert');
     const msalertRef = document.getElementById('msalert');
     if (!alertaRef || !msalertRef) {
@@ -23,9 +21,7 @@ function mostrarAlerta(mensaje, esExito = false) {
     }
     const alertaEl = alertaRef;
     const msalertEl = msalertRef;
-    // usar las referencias locales para setear contenido y estilos
     msalertEl.textContent = mensaje;
-    // Forzar estilos inline para asegurar visibilidad durante depuración
     alertaEl.style.display = 'block';
     alertaEl.style.background = esExito ? '#d4edda' : '#f8d7da';
     alertaEl.style.color = esExito ? '#155724' : '#721c24';
@@ -34,7 +30,6 @@ function mostrarAlerta(mensaje, esExito = false) {
     alertaEl.style.transform = 'translateX(-50%)';
     alertaEl.style.zIndex = '99999';
 
-    // -- Banner de depuración persistente (para asegurar visibilidad durante pruebas)
     let debugBanner = document.getElementById('debug-alert');
     if (!debugBanner) {
         debugBanner = document.createElement('div');
@@ -67,10 +62,8 @@ function mostrarAlerta(mensaje, esExito = false) {
 function evaluatePasswordStrength(value) {
     let score = 0;
     if (!value) return {score: 0, label: ''};
-    // length
     if (value.length >= 6) score += 1;
     if (value.length >= 12) score += 1;
-    // variety
     if (/[A-Z]/.test(value)) score += 1;
     if (/[0-9]/.test(value)) score += 1;
     if (/[^A-Za-z0-9]/.test(value)) score += 1;
@@ -103,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
             mostrarAlerta('Por favor, completa todos los campos.');
             return;
         }
-        // Validar fecha de nacimiento y edad mínima (18 años)
         const birthInput = form.querySelector('#birthdate');
         if (!birthInput || !birthInput.value) {
             mostrarAlerta('Por favor, ingresa tu fecha de nacimiento.');
@@ -120,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
             mostrarAlerta('Debes ser mayor de 18 años para registrarte.');
             return;
         }
-        // Validar que las contraseñas coincidan
         const pwd1 = form.querySelector('#pword');
         const pwd2 = form.querySelector('#pwordConfirm');
         if (pwd1 && pwd2 && pwd1.value !== pwd2.value) {
@@ -129,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             pwd2.classList.add('is-invalid');
             return;
         }
-        // Validar fuerza mínima (Fuerte o Muy Fuerte)
         if (pwd1) {
             const res = evaluatePasswordStrength(pwd1.value);
             if (res.score < 4) {
@@ -138,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
         }
-        // Guardar perfil de usuario con fecha de nacimiento
         const payload = {
     username: document.getElementById('name').value,
     email: document.getElementById('email').value,
@@ -172,7 +161,6 @@ function volver() {
     }
 }
 
-// Indicador de fuerza de contraseña
 document.addEventListener('DOMContentLoaded', function () {
     const pwd = document.getElementById('pword');
     const fill = document.getElementById('pwdStrengthFill');
@@ -183,10 +171,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const res = evaluatePasswordStrength(val);
         const pct = Math.min(100, Math.round((res.score / 5) * 100));
         fill.style.width = pct + '%';
-        // colorear por score
-        if (res.score >= 4) fill.style.background = '#16a34a'; // green
-        else if (res.score >= 3) fill.style.background = '#f59e0b'; // amber
-        else fill.style.background = '#ef4444'; // red
+        if (res.score >= 4) fill.style.background = '#16a34a';
+        else if (res.score >= 3) fill.style.background = '#f59e0b';
+        else fill.style.background = '#ef4444';
         text.textContent = res.label;
     });
 });

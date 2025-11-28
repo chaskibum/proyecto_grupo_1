@@ -14,7 +14,6 @@ document.getElementById("login").addEventListener("submit", function (event) {
         return;
     }
 
-    // --- LOGIN CONTRA BACKEND ---
     fetch("http://localhost:3000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,14 +26,12 @@ document.getElementById("login").addEventListener("submit", function (event) {
         return res.json();
     })
     .then(data => {
-        // Guardar token
         localStorage.setItem("token", data.token);
         localStorage.setItem("sesionActiva", "true");
         localStorage.setItem("usuarioActivo", usuario);
 
         showAlert("Bienvenido, " + usuario + "!");
 
-        // REDIRECCIÓN DESPUÉS DEL LOGIN
         setTimeout(() => {
             window.location.href = "index.html";
         }, 1200);
