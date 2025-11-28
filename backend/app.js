@@ -39,7 +39,7 @@ app.post('/register', (req, res) => {
         id: Date.now(),
         username,
         email,
-        password,      // (sin tocar, vos lo manejás así)
+        password,    
         birthdate
     };
 

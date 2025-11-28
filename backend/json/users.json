@@ -12,5 +12,12 @@
     "email": "asd@aa",
     "password": "ABRLSDJA363**E",
     "birthdate": "2006-02-24"
+  },
+  {
+    "id": 1764368488438,
+    "username": "santiago peña",
+    "email": "santi@prueba.com",
+    "password": "pruebasupabase1!",
+    "birthdate": "2001-03-19"
   }
 ]
