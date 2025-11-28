@@ -13,21 +13,16 @@ app.use(cors());
 app.use(express.json());
 app.use('/cart', authMiddleware, cartRoutes);
 
-// Servir JSON como API
 app.use(
   '/emercado-api',
   authMiddleware,
   express.static(path.join(__dirname, 'json'))
 );
 
-// Servir frontend desde la carpeta anterior
 app.use(express.static(path.join(__dirname, '..')));
 
 const usersPath = path.join(__dirname, 'json', 'users.json');
 
-// -----------------------------
-//  REGISTRO
-// -----------------------------
 app.post('/register', (req, res) => {
     const { username, email, password, birthdate } = req.body;
 
@@ -46,7 +41,7 @@ app.post('/register', (req, res) => {
         id: Date.now(),
         username,
         email,
-        password,      // (sin tocar, vos lo manejás así)
+        password,
         birthdate
     };
 
@@ -56,9 +51,6 @@ app.post('/register', (req, res) => {
     return res.json({ message: "Usuario registrado con éxito" });
 });
 
-// -----------------------------
-//  LOGIN
-// -----------------------------
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
@@ -84,8 +76,6 @@ app.post('/login', (req, res) => {
 
     return res.json({ token });
 });
-
-// -----------------------------
 
 app.listen(PUERTO, () => {
     console.log(`Servidor corriendo en http://localhost:${PUERTO}`);
